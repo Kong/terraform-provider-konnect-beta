@@ -14,5 +14,6 @@ type CreatePortalCustomDomainSSL struct {
 	SkipCaCheck              types.Bool     `tfsdk:"skip_ca_check"`
 	UploadedAt               types.String   `tfsdk:"uploaded_at"`
 	ValidationErrors         []types.String `tfsdk:"validation_errors"`
+	ValidationWarning        types.String   `tfsdk:"validation_warning"`
 	VerificationStatus       types.String   `tfsdk:"verification_status"`
 }

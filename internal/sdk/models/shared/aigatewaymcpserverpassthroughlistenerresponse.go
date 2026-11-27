@@ -7,28 +7,37 @@ import (
 	"time"
 )
 
-// AIGatewayMCPServerPassthroughListenerResponse - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type AIGatewayMCPServerPassthroughListenerResponse struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"passthrough-listener" json:"type"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Routing, logging, and server configuration for the MCP Server.
 	Config AIGatewayMCPServerWithUpstreamConfigOutput `json:"config"`
 	// Per-tool access-control overrides for tools advertised by the remote MCP Server. Each
 	// entry is matched to a remote tool by `name`; only its access-control rules are applied.
 	//
 	Tools []AIGatewayMCPPassthroughTool `json:"tools,omitempty"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	Access *AIGatewayMCPServerListenerAccess `json:"access,omitempty"`
+	// Per-prompt access-control overrides for prompts advertised by the remote MCP Server.
+	// Each entry is matched to a remote prompt by `name`; only its access-control rules are
+	// applied. Prompts without an entry are governed by `access.default_prompt_acls`. Each
+	// `name` must be unique within this MCP Server.
+	//
+	// **Requires a minimum runtime version of `2.5`**.
+	Prompts []AIGatewayMCPPrompt `json:"prompts,omitempty"`
+	// Per-resource access-control overrides for resources and resource templates advertised
+	// by the remote MCP Server. Each entry is matched to a remote resource by `uri`; only its
+	// access-control rules are applied. Resources without an entry are governed by
+	// `access.default_resource_acls`. Each `uri` must be unique within this MCP Server.
+	//
+	// **Requires a minimum runtime version of `2.5`**.
+	Resources []AIGatewayMCPResource            `json:"resources,omitempty"`
+	Access    *AIGatewayMCPServerListenerAccess `json:"access,omitempty"`
+	// Rate limits applied to requests to this MCP Server, matched by MCP method or tool name.
+	// Each AI Gateway node counts and enforces the limits independently.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	RateLimiting *AIGatewayMCPServerRateLimiting `json:"rate_limiting,omitempty"`
 	// The display name for the MCP Server.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Whether the MCP Server is enabled.
@@ -44,9 +53,28 @@ type AIGatewayMCPServerPassthroughListenerResponse struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVaultOutput `json:"token_vault,omitempty"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -84,6 +112,20 @@ func (a *AIGatewayMCPServerPassthroughListenerResponse) GetTools() []AIGatewayMC
 	return a.Tools
 }
 
+func (a *AIGatewayMCPServerPassthroughListenerResponse) GetPrompts() []AIGatewayMCPPrompt {
+	if a == nil {
+		return nil
+	}
+	return a.Prompts
+}
+
+func (a *AIGatewayMCPServerPassthroughListenerResponse) GetResources() []AIGatewayMCPResource {
+	if a == nil {
+		return nil
+	}
+	return a.Resources
+}
+
 func (a *AIGatewayMCPServerPassthroughListenerResponse) GetAccess() *AIGatewayMCPServerListenerAccess {
 	if a == nil {
 		return nil
@@ -103,6 +145,13 @@ func (a *AIGatewayMCPServerPassthroughListenerResponse) GetAccessOauthAccessToke
 		return v.AIGatewayMCPServerListenerOauth
 	}
 	return nil
+}
+
+func (a *AIGatewayMCPServerPassthroughListenerResponse) GetRateLimiting() *AIGatewayMCPServerRateLimiting {
+	if a == nil {
+		return nil
+	}
+	return a.RateLimiting
 }
 
 func (a *AIGatewayMCPServerPassthroughListenerResponse) GetDisplayName() string {
@@ -145,6 +194,20 @@ func (a *AIGatewayMCPServerPassthroughListenerResponse) GetManagedBy() map[strin
 		return nil
 	}
 	return a.ManagedBy
+}
+
+func (a *AIGatewayMCPServerPassthroughListenerResponse) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayMCPServerPassthroughListenerResponse) GetTokenVault() *AIGatewayTokenVaultOutput {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
 }
 
 func (a *AIGatewayMCPServerPassthroughListenerResponse) GetID() string {

@@ -120,7 +120,8 @@ func (r *EventGatewayStaticKeyResource) Schema(ctx context.Context, req resource
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
 			"value": schema.StringAttribute{
-				Required: true,
+				Required:  true,
+				Sensitive: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
@@ -175,6 +176,8 @@ func (r *EventGatewayStaticKeyResource) Create(ctx context.Context, req resource
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateEventGatewayStaticKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -183,7 +186,7 @@ func (r *EventGatewayStaticKeyResource) Create(ctx context.Context, req resource
 	}
 	res, err := r.client.EventGatewayStaticKeys.CreateEventGatewayStaticKey(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -235,6 +238,8 @@ func (r *EventGatewayStaticKeyResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetEventGatewayStaticKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -243,7 +248,7 @@ func (r *EventGatewayStaticKeyResource) Read(ctx context.Context, req resource.R
 	}
 	res, err := r.client.EventGatewayStaticKeys.GetEventGatewayStaticKey(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -313,6 +318,8 @@ func (r *EventGatewayStaticKeyResource) Delete(ctx context.Context, req resource
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteEventGatewayStaticKeyRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -321,7 +328,7 @@ func (r *EventGatewayStaticKeyResource) Delete(ctx context.Context, req resource
 	}
 	res, err := r.client.EventGatewayStaticKeys.DeleteEventGatewayStaticKey(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

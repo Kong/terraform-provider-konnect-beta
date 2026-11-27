@@ -3,6 +3,6 @@
 package types
 
 type AIGatewayModelProviderConfigAuthBasic struct {
-	Headers []Headers `tfsdk:"headers"`
-	Params  []Params  `tfsdk:"params"`
+	Headers []AIGatewayModelProviderConfigAuthBasicHeaders `tfsdk:"headers"`
+	Params  []Params                                       `tfsdk:"params"`
 }

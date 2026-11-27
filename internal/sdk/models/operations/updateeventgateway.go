@@ -45,7 +45,9 @@ type UpdateEventGatewayResponse struct {
 	// Not Found
 	NotFoundError *shared.NotFoundError
 	// Internal
-	BaseError *shared.BaseError
+	InternalError *shared.InternalError
+	// Service not available
+	NotAvailableError *shared.NotAvailableError
 }
 
 func (u *UpdateEventGatewayResponse) GetContentType() string {
@@ -104,9 +106,16 @@ func (u *UpdateEventGatewayResponse) GetNotFoundError() *shared.NotFoundError {
 	return u.NotFoundError
 }
 
-func (u *UpdateEventGatewayResponse) GetBaseError() *shared.BaseError {
+func (u *UpdateEventGatewayResponse) GetInternalError() *shared.InternalError {
 	if u == nil {
 		return nil
 	}
-	return u.BaseError
+	return u.InternalError
+}
+
+func (u *UpdateEventGatewayResponse) GetNotAvailableError() *shared.NotAvailableError {
+	if u == nil {
+		return nil
+	}
+	return u.NotAvailableError
 }

@@ -7,9 +7,11 @@ import (
 )
 
 type AIGatewayMCPServerListenerConsumer struct {
-	Acls              *AIGatewayACLS                               `tfsdk:"acls"`
-	AuthStrategies    []types.String                               `tfsdk:"auth_strategies"`
-	DefaultToolAcls   *AIGatewayACLS                               `tfsdk:"default_tool_acls"`
-	IdentityProviders []types.String                               `tfsdk:"identity_providers"`
-	Metadata          *AIGatewayMCPServerProtectedResourceMetadata `tfsdk:"metadata"`
+	Acls                *AIGatewayACLS                               `tfsdk:"acls"`
+	AuthStrategies      []types.String                               `tfsdk:"auth_strategies"`
+	DefaultPromptAcls   *AIGatewayACLS                               `tfsdk:"default_prompt_acls"`
+	DefaultResourceAcls *AIGatewayACLS                               `tfsdk:"default_resource_acls"`
+	DefaultToolAcls     *AIGatewayACLS                               `tfsdk:"default_tool_acls"`
+	IdentityProviders   []types.String                               `tfsdk:"identity_providers"`
+	Metadata            *AIGatewayMCPServerProtectedResourceMetadata `tfsdk:"metadata"`
 }

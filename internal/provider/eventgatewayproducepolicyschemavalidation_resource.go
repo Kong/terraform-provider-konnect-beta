@@ -82,6 +82,9 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 									`* ` + "`" + `reject` + "`" + ` - rejects the record batch.` + "\n" +
 									`* ` + "`" + `passthrough` + "`" + ` - passes the record silently to the backend cluster even though policy execution failed.` + "\n" +
 									`* ` + "`" + `mark` + "`" + ` - passes the record to the backend cluster but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`The header is stored with the record in the backend cluster, so every consumer of the topic sees it, including systems that never pass through the Event Gateway.` + "\n" +
+									`The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets, and a producer with access to the topic can trigger policy failures on purpose to expose it.` + "\n" +
+									`If you don't want to share this information, remove the header with a Modify Headers produce policy, or use a different failure mode.` + "\n" +
 									`` + "\n" +
 									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
 									`possible known values include one of ["reject", "passthrough", "mark"]`,
@@ -130,7 +133,147 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 						Description: `The configuration of the produce schema validation policy when using a schema registry.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("inline_schema"),
 								path.MatchRelative().AtParent().AtName("json"),
+							}...),
+						},
+					},
+					"inline_schema": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"failure_mode": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `Describes how to handle a failure in a policy applied to produced records.` + "\n" +
+									`* ` + "`" + `reject` + "`" + ` - rejects the record batch.` + "\n" +
+									`* ` + "`" + `passthrough` + "`" + ` - passes the record silently to the backend cluster even though policy execution failed.` + "\n" +
+									`* ` + "`" + `mark` + "`" + ` - passes the record to the backend cluster but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`The header is stored with the record in the backend cluster, so every consumer of the topic sees it, including systems that never pass through the Event Gateway.` + "\n" +
+									`The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets, and a producer with access to the topic can trigger policy failures on purpose to expose it.` + "\n" +
+									`If you don't want to share this information, remove the header with a Modify Headers produce policy, or use a different failure mode.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+									`possible known values include one of ["reject", "passthrough", "mark"]`,
+							},
+							"key": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"avro": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"schema": schema.StringAttribute{
+												Required:    true,
+												Description: `A schema that applies according to ` + "`" + `schema_type` + "`" + `.`,
+											},
+										},
+										MarkdownDescription: `The configuration of an inline schema when using Avro.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("json"),
+											}...),
+										},
+									},
+									"json": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"schema": schema.StringAttribute{
+												Required:    true,
+												Description: `A schema that applies according to ` + "`" + `schema_type` + "`" + `.`,
+											},
+										},
+										MarkdownDescription: `The configuration of an inline schema when using JSON.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("avro"),
+											}...),
+										},
+									},
+								},
+								MarkdownDescription: `Defines the schema for a record key or value, inline.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+							},
+							"key_validation_action": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `Defines a behavior when record key is not valid.` + "\n" +
+									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
+									`* mark - marks a record with kong/server header and client ID value` + "\n" +
+									`  to help to identify the clients violating schema.` + "\n" +
+									`possible known values include one of ["reject", "mark"]`,
+							},
+							"validate_key": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record key.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+							},
+							"validate_value": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record value.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+							},
+							"value": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"avro": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"schema": schema.StringAttribute{
+												Required:    true,
+												Description: `A schema that applies according to ` + "`" + `schema_type` + "`" + `.`,
+											},
+										},
+										MarkdownDescription: `The configuration of an inline schema when using Avro.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("json"),
+											}...),
+										},
+									},
+									"json": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"schema": schema.StringAttribute{
+												Required:    true,
+												Description: `A schema that applies according to ` + "`" + `schema_type` + "`" + `.`,
+											},
+										},
+										MarkdownDescription: `The configuration of an inline schema when using JSON.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("avro"),
+											}...),
+										},
+									},
+								},
+								MarkdownDescription: `Defines the schema for a record key or value, inline.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+							},
+							"value_validation_action": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `Defines a behavior when record value is not valid.` + "\n" +
+									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
+									`* mark - marks a record with kong/server header and client ID value` + "\n" +
+									`  to help to identify the clients violating schema.` + "\n" +
+									`possible known values include one of ["reject", "mark"]`,
+							},
+						},
+						MarkdownDescription: `The configuration of the produce schema validation policy when using an inline schema.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("json"),
+								path.MatchRelative().AtParent().AtName("confluent_schema_registry"),
 							}...),
 						},
 					},
@@ -143,6 +286,9 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 									`* ` + "`" + `reject` + "`" + ` - rejects the record batch.` + "\n" +
 									`* ` + "`" + `passthrough` + "`" + ` - passes the record silently to the backend cluster even though policy execution failed.` + "\n" +
 									`* ` + "`" + `mark` + "`" + ` - passes the record to the backend cluster but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`The header is stored with the record in the backend cluster, so every consumer of the topic sees it, including systems that never pass through the Event Gateway.` + "\n" +
+									`The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets, and a producer with access to the topic can trigger policy failures on purpose to expose it.` + "\n" +
+									`If you don't want to share this information, remove the header with a Modify Headers produce policy, or use a different failure mode.` + "\n" +
 									`` + "\n" +
 									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
 									`possible known values include one of ["reject", "passthrough", "mark"]`,
@@ -191,6 +337,7 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 						Description: `The configuration of the produce schema validation policy when using JSON parsing without schema.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("inline_schema"),
 								path.MatchRelative().AtParent().AtName("confluent_schema_registry"),
 							}...),
 						},
@@ -225,7 +372,10 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 				Description: `The UUID of your Gateway.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The unique identifier of the policy.`,
 			},
 			"labels": schema.MapAttribute{
@@ -309,7 +459,7 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Create(ctx context.C
 	}
 	res, err := r.client.EventGatewayVirtualClusterProducePolicies.CreateEventGatewayVirtualClusterProducePolicySchemaValidation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -369,7 +519,7 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Read(ctx context.Con
 	}
 	res, err := r.client.EventGatewayVirtualClusterProducePolicies.GetEventGatewayVirtualClusterProducePolicySchemaValidation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -423,7 +573,7 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Update(ctx context.C
 	}
 	res, err := r.client.EventGatewayVirtualClusterProducePolicies.UpdateEventGatewayVirtualClusterProducePolicySchemaValidation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -483,7 +633,7 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Delete(ctx context.C
 	}
 	res, err := r.client.EventGatewayVirtualClusterProducePolicies.DeleteEventGatewayVirtualClusterProducePolicySchemaValidation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

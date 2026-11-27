@@ -6,7 +6,13 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         allow = [
           "..."
         ]
+        allow_when = [
+          "..."
+        ]
         deny = [
+          "..."
+        ]
+        deny_when = [
           "..."
         ]
       }
@@ -22,24 +28,73 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
     ]
     config = {
       balancer = {
-        lowest_latency = {
+        priority = {
           connect_timeout = 60000
           fail_timeout    = 10000
           failover_criteria = [
-            "http_429"
+            "http_503"
           ]
-          latency_strategy = "tpot"
-          max_fails        = 0
-          read_timeout     = 60000
-          retries          = 5
-          slots            = 10000
-          write_timeout    = 60000
+          max_fails    = 0
+          read_timeout = 60000
+          retries      = 5
+          session_affinity = {
+            enabled = true
+            storage = {
+              redis = {
+                cloud_authentication = {
+                  gcp = {
+                    service_account_json = "...my_service_account_json..."
+                  }
+                }
+                cluster = {
+                  max_redirections = 5
+                  nodes = [
+                    {
+                      ip   = "127.0.0.1"
+                      port = 6379
+                    }
+                  ]
+                }
+                connect_timeout       = 2000
+                connection_is_proxied = false
+                database              = 0
+                host                  = "127.0.0.1"
+                keepalive = {
+                  backlog   = 989403147
+                  pool_size = 256
+                }
+                password     = "...my_password..."
+                port         = 6379
+                read_timeout = 2000
+                send_timeout = 2000
+                sentinel = {
+                  master = "...my_master..."
+                  nodes = [
+                    {
+                      host = "127.0.0.1"
+                      port = 6379
+                    }
+                  ]
+                  password = "...my_password..."
+                  role     = "slave"
+                  username = "...my_username..."
+                }
+                server_name = "...my_server_name..."
+                ssl         = true
+                ssl_verify  = true
+                username    = "...my_username..."
+              }
+            }
+            ttl = 21600
+          }
+          slots         = 10000
+          write_timeout = 60000
         }
       }
       logging = {
         payloads = false
       }
-      max_request_body_size = 8388608
+      max_request_body_size = 3
       proxy = {
         auth = {
           password = "...my_password..."
@@ -92,6 +147,12 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         ]
       }
     }
+    datastores = [
+      {
+        name    = "shared-redis"
+        purpose = "semantic-balancer"
+      }
+    ]
     display_name = "My GPT 5 model"
     enabled      = true
     formats = [
@@ -113,36 +174,55 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          xai = {
-            cache_read_cost  = 4.42
-            cache_write_cost = 3.9
+          ollama = {
+            cache_read_cost = 6.36
+            cache_read_cost_list = [
+              {
+                cost  = 3.01
+                modal = "video"
+              }
+            ]
+            cache_write_cost = 7.25
             cache_write_cost_list = [
               {
-                cost = 7.32
+                cost = 0.01
                 ttl  = "...my_ttl..."
               }
             ]
             context_window_factor = [
               {
                 above         = "...my_above..."
-                input_factor  = 1.42
-                output_factor = 1.31
+                input_factor  = 3.5
+                output_factor = 1.2
               }
             ]
-            embeddings_dimensions = 1556463673
-            input_cost            = 3.7
-            max_tokens            = 1227329724
-            output_cost           = 6.56
+            embeddings_dimensions = 1163998112
+            input_cost            = 3.53
+            input_cost_list = [
+              {
+                cost  = 2.6
+                modal = "video"
+              }
+            ]
+            max_tokens  = 2030002915
+            output_cost = 7.78
+            output_cost_list = [
+              {
+                cost  = 4.83
+                modal = "image"
+              }
+            ]
             service_tier_factor = [
               {
-                factor = 8.57
+                factor = 0.08
                 tier   = "...my_tier..."
               }
             ]
-            temperature  = 3.27
-            top_k        = 483136424
-            top_p        = 2.83
-            upstream_url = "https://baggy-trash.biz/"
+            temperature       = 3.02
+            top_k             = 164
+            top_p             = 0.35
+            upstream_base_url = "https://waterlogged-luck.com"
+            upstream_url      = "https://brave-calculus.biz"
           }
         }
         name                 = "gpt-5-model"
@@ -159,7 +239,13 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         allow = [
           "..."
         ]
+        allow_when = [
+          "..."
+        ]
         deny = [
+          "..."
+        ]
+        deny_when = [
           "..."
         ]
       }
@@ -175,54 +261,75 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
     ]
     config = {
       balancer = {
-        semantic = {
+        priority = {
           connect_timeout = 60000
-          embeddings = {
-            allow_auth_override = false
-            config = {
-              ollama = {
-                upstream_url = "...my_upstream_url..."
-              }
-            }
-            name     = "...my_name..."
-            provider = "azure-ai-se"
-          }
-          fail_timeout = 10000
+          fail_timeout    = 10000
           failover_criteria = [
-            "http_502"
+            "http_408"
           ]
           max_fails    = 0
           read_timeout = 60000
           retries      = 5
-          slots        = 10000
-          vectordb = {
-            pgvector = {
-              database        = "kong-pgvector"
-              dimensions      = 6
-              distance_metric = "euclidean"
-              host            = "127.0.0.1"
-              password        = "...my_password..."
-              port            = 5432
-              ssl = {
-                cert     = "...my_cert..."
-                cert_key = "...my_cert_key..."
-                enabled  = true
-                required = true
-                verify   = true
-                version  = "tlsv1_2"
+          session_affinity = {
+            enabled = true
+            storage = {
+              redis = {
+                cloud_authentication = {
+                  azure = {
+                    client_id     = "...my_client_id..."
+                    client_secret = "...my_client_secret..."
+                    tenant_id     = "...my_tenant_id..."
+                  }
+                }
+                cluster = {
+                  max_redirections = 5
+                  nodes = [
+                    {
+                      ip   = "127.0.0.1"
+                      port = 6379
+                    }
+                  ]
+                }
+                connect_timeout       = 2000
+                connection_is_proxied = false
+                database              = 0
+                host                  = "127.0.0.1"
+                keepalive = {
+                  backlog   = 1242809940
+                  pool_size = 256
+                }
+                password     = "...my_password..."
+                port         = 6379
+                read_timeout = 2000
+                send_timeout = 2000
+                sentinel = {
+                  master = "...my_master..."
+                  nodes = [
+                    {
+                      host = "127.0.0.1"
+                      port = 6379
+                    }
+                  ]
+                  password = "...my_password..."
+                  role     = "master"
+                  username = "...my_username..."
+                }
+                server_name = "...my_server_name..."
+                ssl         = true
+                ssl_verify  = true
+                username    = "...my_username..."
               }
-              threshold = 3.66
-              timeout   = 5000
-              user      = "postgres"
             }
+            ttl = 21600
           }
+          slots         = 10000
           write_timeout = 60000
         }
       }
       logging = {
         payloads = false
       }
-      max_request_body_size = 8388608
+      max_request_body_size = 4
       model = {
         name_header = true
       }
@@ -278,6 +385,12 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
         ]
       }
     }
+    datastores = [
+      {
+        name    = "shared-redis"
+        purpose = "semantic-balancer"
+      }
+    ]
     display_name = "My GPT 5 model"
     enabled      = true
     formats = [
@@ -299,37 +412,11 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
       {
         allow_auth_override = false
         config = {
-          databricks = {
-            cache_read_cost  = 8.45
-            cache_write_cost = 3.62
-            cache_write_cost_list = [
-              {
-                cost = 3.12
-                ttl  = "...my_ttl..."
-              }
-            ]
-            context_window_factor = [
-              {
-                above         = "...my_above..."
-                input_factor  = 4.94
-                output_factor = 9.43
-              }
-            ]
-            embeddings_dimensions = 1316728274
-            input_cost            = 9.06
-            max_tokens            = 1585442569
-            output_cost           = 7.78
-            service_tier_factor = [
-              {
-                factor = 6.01
-                tier   = "...my_tier..."
-              }
-            ]
-            temperature           = 3.33
-            top_k                 = 896181225
-            top_p                 = 7.55
-            upstream_url          = "https://distant-antelope.com"
-            workspace_instance_id = "...my_workspace_instance_id..."
+          typesafe = {
+            input_cost        = 4.69
+            output_cost       = 7.9
+            upstream_base_url = "https://noteworthy-almighty.info"
+            upstream_url      = "https://equatorial-pants.com/"
           }
         }
         name                 = "gpt-5-model"

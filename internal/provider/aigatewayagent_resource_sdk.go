@@ -30,9 +30,25 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 				for _, v := range resp.Access.Acls.Allow {
 					r.Access.Acls.Allow = append(r.Access.Acls.Allow, types.StringValue(v))
 				}
+				if resp.Access.Acls.AllowWhen != nil {
+					r.Access.Acls.AllowWhen = make([]types.String, 0, len(resp.Access.Acls.AllowWhen))
+					for _, v := range resp.Access.Acls.AllowWhen {
+						r.Access.Acls.AllowWhen = append(r.Access.Acls.AllowWhen, types.StringValue(v))
+					}
+				} else {
+					r.Access.Acls.AllowWhen = nil
+				}
 				r.Access.Acls.Deny = make([]types.String, 0, len(resp.Access.Acls.Deny))
 				for _, v := range resp.Access.Acls.Deny {
 					r.Access.Acls.Deny = append(r.Access.Acls.Deny, types.StringValue(v))
+				}
+				if resp.Access.Acls.DenyWhen != nil {
+					r.Access.Acls.DenyWhen = make([]types.String, 0, len(resp.Access.Acls.DenyWhen))
+					for _, v := range resp.Access.Acls.DenyWhen {
+						r.Access.Acls.DenyWhen = append(r.Access.Acls.DenyWhen, types.StringValue(v))
+					}
+				} else {
+					r.Access.Acls.DenyWhen = nil
 				}
 			}
 			r.Access.AuthStrategies = make([]types.String, 0, len(resp.Access.AuthStrategies))
@@ -46,6 +62,30 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 		}
 		configPriorData := r.Config
 		r.Config = &tfTypes.CreateAIGatewayAgentRequestConfig{}
+		if resp.Config.Balancer != nil {
+			r.Config.Balancer = &tfTypes.CreateAIGatewayAgentRequestBalancer{}
+			if resp.Config.Balancer.AIGatewayAgentBalancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+				r.Config.Balancer.ConsistentHashing = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerConsistentHashingConfig{}
+				r.Config.Balancer.ConsistentHashing.HashOnHeader = types.StringValue(resp.Config.Balancer.AIGatewayAgentBalancerAIGatewayUpstreamBalancerConsistentHashingConfig.HashOnHeader)
+			}
+			if resp.Config.Balancer.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+				r.Config.Balancer.LeastConnections = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+			}
+			if resp.Config.Balancer.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+				r.Config.Balancer.LowestLatency = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+			}
+			if resp.Config.Balancer.AIGatewayAgentBalancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+				r.Config.Balancer.RoundRobin = &tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+			}
+		}
+		r.Config.CaCertificates = make([]types.String, 0, len(resp.Config.CaCertificates))
+		for _, v := range resp.Config.CaCertificates {
+			r.Config.CaCertificates = append(r.Config.CaCertificates, types.StringValue(v))
+		}
+		r.Config.Certificates = make([]types.String, 0, len(resp.Config.Certificates))
+		for _, v := range resp.Config.Certificates {
+			r.Config.Certificates = append(r.Config.Certificates, types.StringValue(v))
+		}
 		if resp.Config.Logging == nil {
 			r.Config.Logging = nil
 		} else {
@@ -54,6 +94,12 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 			r.Config.Logging.Payloads = types.BoolPointerValue(resp.Config.Logging.Payloads)
 		}
 		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
+		r.Config.Path = types.StringPointerValue(resp.Config.Path)
+		if resp.Config.Protocol != nil {
+			r.Config.Protocol = types.StringValue(string(*resp.Config.Protocol))
+		} else {
+			r.Config.Protocol = types.StringNull()
+		}
 		if resp.Config.Proxy == nil {
 			r.Config.Proxy = nil
 		} else {
@@ -134,6 +180,21 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 				r.Config.Route.Tags = append(r.Config.Route.Tags, types.StringValue(v))
 			}
 		}
+		if resp.Config.Targets != nil {
+			r.Config.Targets = []tfTypes.AIGatewayUpstreamTarget{}
+
+			for _, targetsItem := range resp.Config.Targets {
+				var targets tfTypes.AIGatewayUpstreamTarget
+
+				targets.Address = types.StringValue(targetsItem.Address)
+				targets.Failover = types.BoolPointerValue(targetsItem.Failover)
+				targets.Weight = types.Int64PointerValue(targetsItem.Weight)
+
+				r.Config.Targets = append(r.Config.Targets, targets)
+			}
+		} else {
+			r.Config.Targets = nil
+		}
 		if resp.Config.Upstream == nil {
 			r.Config.Upstream = nil
 		} else {
@@ -163,7 +224,7 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 				}
 			}
 		}
-		r.Config.URL = types.StringValue(resp.Config.URL)
+		r.Config.URL = types.StringPointerValue(resp.Config.URL)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.DisplayName = types.StringValue(resp.DisplayName)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -304,9 +365,25 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 			for denyIndex := range r.Access.Acls.Deny {
 				deny = append(deny, r.Access.Acls.Deny[denyIndex].ValueString())
 			}
+			var allowWhen []string
+			if r.Access.Acls.AllowWhen != nil {
+				allowWhen = make([]string, 0, len(r.Access.Acls.AllowWhen))
+				for allowWhenIndex := range r.Access.Acls.AllowWhen {
+					allowWhen = append(allowWhen, r.Access.Acls.AllowWhen[allowWhenIndex].ValueString())
+				}
+			}
+			var denyWhen []string
+			if r.Access.Acls.DenyWhen != nil {
+				denyWhen = make([]string, 0, len(r.Access.Acls.DenyWhen))
+				for denyWhenIndex := range r.Access.Acls.DenyWhen {
+					denyWhen = append(denyWhen, r.Access.Acls.DenyWhen[denyWhenIndex].ValueString())
+				}
+			}
 			acls = &shared.AIGatewayACLS{
-				Allow: allow,
-				Deny:  deny,
+				Allow:     allow,
+				Deny:      deny,
+				AllowWhen: allowWhen,
+				DenyWhen:  denyWhen,
 			}
 		}
 		identityProviders := make([]string, 0, len(r.Access.IdentityProviders))
@@ -323,9 +400,94 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 			AuthStrategies:    authStrategies,
 		}
 	}
-	var url string
-	url = r.Config.URL.ValueString()
+	url := new(string)
+	if !r.Config.URL.IsUnknown() && !r.Config.URL.IsNull() {
+		*url = r.Config.URL.ValueString()
+	} else {
+		url = nil
+	}
+	var targets []shared.AIGatewayUpstreamTarget
+	if r.Config.Targets != nil {
+		targets = make([]shared.AIGatewayUpstreamTarget, 0, len(r.Config.Targets))
+		for targetsIndex := range r.Config.Targets {
+			var address string
+			address = r.Config.Targets[targetsIndex].Address.ValueString()
 
+			failover := new(bool)
+			if !r.Config.Targets[targetsIndex].Failover.IsUnknown() && !r.Config.Targets[targetsIndex].Failover.IsNull() {
+				*failover = r.Config.Targets[targetsIndex].Failover.ValueBool()
+			} else {
+				failover = nil
+			}
+			weight := new(int64)
+			if !r.Config.Targets[targetsIndex].Weight.IsUnknown() && !r.Config.Targets[targetsIndex].Weight.IsNull() {
+				*weight = r.Config.Targets[targetsIndex].Weight.ValueInt64()
+			} else {
+				weight = nil
+			}
+			targets = append(targets, shared.AIGatewayUpstreamTarget{
+				Address:  address,
+				Failover: failover,
+				Weight:   weight,
+			})
+		}
+	}
+	var balancer *shared.CreateAIGatewayAgentRequestBalancer
+	if r.Config.Balancer != nil {
+		var createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig *shared.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+		if r.Config.Balancer.ConsistentHashing != nil {
+			var hashOnHeader string
+			hashOnHeader = r.Config.Balancer.ConsistentHashing.HashOnHeader.ValueString()
+
+			createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig = &shared.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig{
+				HashOnHeader: hashOnHeader,
+			}
+		}
+		if createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+			balancer = &shared.CreateAIGatewayAgentRequestBalancer{
+				CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig: createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig,
+			}
+		}
+		var createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig *shared.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+		if r.Config.Balancer.LeastConnections != nil {
+			createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig = &shared.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+		}
+		if createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+			balancer = &shared.CreateAIGatewayAgentRequestBalancer{
+				CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig: createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig,
+			}
+		}
+		var createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig *shared.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+		if r.Config.Balancer.LowestLatency != nil {
+			createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig = &shared.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig{}
+		}
+		if createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+			balancer = &shared.CreateAIGatewayAgentRequestBalancer{
+				CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig: createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig,
+			}
+		}
+		var createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig *shared.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig
+		if r.Config.Balancer.RoundRobin != nil {
+			createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig = &shared.CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig{}
+		}
+		if createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+			balancer = &shared.CreateAIGatewayAgentRequestBalancer{
+				CreateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig: createAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig,
+			}
+		}
+	}
+	protocol := new(shared.CreateAIGatewayAgentRequestProtocol)
+	if !r.Config.Protocol.IsUnknown() && !r.Config.Protocol.IsNull() {
+		*protocol = shared.CreateAIGatewayAgentRequestProtocol(r.Config.Protocol.ValueString())
+	} else {
+		protocol = nil
+	}
+	path := new(string)
+	if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
+		*path = r.Config.Path.ValueString()
+	} else {
+		path = nil
+	}
 	var upstream *shared.AIGatewayUpstreamConfig
 	if r.Config.Upstream != nil {
 		var auth *shared.AIGatewayUpstreamConfigAuth
@@ -577,13 +739,27 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 			MaxPayloadSize: maxPayloadSize,
 		}
 	}
+	certificates := make([]string, 0, len(r.Config.Certificates))
+	for certificatesIndex := range r.Config.Certificates {
+		certificates = append(certificates, r.Config.Certificates[certificatesIndex].ValueString())
+	}
+	caCertificates := make([]string, 0, len(r.Config.CaCertificates))
+	for caCertificatesIndex := range r.Config.CaCertificates {
+		caCertificates = append(caCertificates, r.Config.CaCertificates[caCertificatesIndex].ValueString())
+	}
 	config := shared.CreateAIGatewayAgentRequestConfig{
 		URL:                url,
+		Targets:            targets,
+		Balancer:           balancer,
+		Protocol:           protocol,
+		Path:               path,
 		Upstream:           upstream,
 		Route:              route,
 		Proxy:              proxy,
 		MaxRequestBodySize: maxRequestBodySize,
 		Logging:            logging,
+		Certificates:       certificates,
+		CaCertificates:     caCertificates,
 	}
 	labels := make(map[string]string)
 	for labelsKey := range r.Labels {
@@ -646,9 +822,25 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 			for denyIndex := range r.Access.Acls.Deny {
 				deny = append(deny, r.Access.Acls.Deny[denyIndex].ValueString())
 			}
+			var allowWhen []string
+			if r.Access.Acls.AllowWhen != nil {
+				allowWhen = make([]string, 0, len(r.Access.Acls.AllowWhen))
+				for allowWhenIndex := range r.Access.Acls.AllowWhen {
+					allowWhen = append(allowWhen, r.Access.Acls.AllowWhen[allowWhenIndex].ValueString())
+				}
+			}
+			var denyWhen []string
+			if r.Access.Acls.DenyWhen != nil {
+				denyWhen = make([]string, 0, len(r.Access.Acls.DenyWhen))
+				for denyWhenIndex := range r.Access.Acls.DenyWhen {
+					denyWhen = append(denyWhen, r.Access.Acls.DenyWhen[denyWhenIndex].ValueString())
+				}
+			}
 			acls = &shared.AIGatewayACLS{
-				Allow: allow,
-				Deny:  deny,
+				Allow:     allow,
+				Deny:      deny,
+				AllowWhen: allowWhen,
+				DenyWhen:  denyWhen,
 			}
 		}
 		identityProviders := make([]string, 0, len(r.Access.IdentityProviders))
@@ -665,9 +857,94 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 			AuthStrategies:    authStrategies,
 		}
 	}
-	var url string
-	url = r.Config.URL.ValueString()
+	url := new(string)
+	if !r.Config.URL.IsUnknown() && !r.Config.URL.IsNull() {
+		*url = r.Config.URL.ValueString()
+	} else {
+		url = nil
+	}
+	var targets []shared.AIGatewayUpstreamTarget
+	if r.Config.Targets != nil {
+		targets = make([]shared.AIGatewayUpstreamTarget, 0, len(r.Config.Targets))
+		for targetsIndex := range r.Config.Targets {
+			var address string
+			address = r.Config.Targets[targetsIndex].Address.ValueString()
 
+			failover := new(bool)
+			if !r.Config.Targets[targetsIndex].Failover.IsUnknown() && !r.Config.Targets[targetsIndex].Failover.IsNull() {
+				*failover = r.Config.Targets[targetsIndex].Failover.ValueBool()
+			} else {
+				failover = nil
+			}
+			weight := new(int64)
+			if !r.Config.Targets[targetsIndex].Weight.IsUnknown() && !r.Config.Targets[targetsIndex].Weight.IsNull() {
+				*weight = r.Config.Targets[targetsIndex].Weight.ValueInt64()
+			} else {
+				weight = nil
+			}
+			targets = append(targets, shared.AIGatewayUpstreamTarget{
+				Address:  address,
+				Failover: failover,
+				Weight:   weight,
+			})
+		}
+	}
+	var balancer *shared.UpdateAIGatewayAgentRequestBalancer
+	if r.Config.Balancer != nil {
+		var updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig *shared.UpdateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+		if r.Config.Balancer.ConsistentHashing != nil {
+			var hashOnHeader string
+			hashOnHeader = r.Config.Balancer.ConsistentHashing.HashOnHeader.ValueString()
+
+			updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig = &shared.UpdateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig{
+				HashOnHeader: hashOnHeader,
+			}
+		}
+		if updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+			balancer = &shared.UpdateAIGatewayAgentRequestBalancer{
+				UpdateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig: updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerConsistentHashingConfig,
+			}
+		}
+		var updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig *shared.UpdateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+		if r.Config.Balancer.LeastConnections != nil {
+			updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig = &shared.UpdateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig{}
+		}
+		if updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+			balancer = &shared.UpdateAIGatewayAgentRequestBalancer{
+				UpdateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig: updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig,
+			}
+		}
+		var updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig *shared.UpdateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+		if r.Config.Balancer.LowestLatency != nil {
+			updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig = &shared.UpdateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig{}
+		}
+		if updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+			balancer = &shared.UpdateAIGatewayAgentRequestBalancer{
+				UpdateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig: updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerLowestLatencyConfig,
+			}
+		}
+		var updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig *shared.UpdateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig
+		if r.Config.Balancer.RoundRobin != nil {
+			updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig = &shared.UpdateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig{}
+		}
+		if updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+			balancer = &shared.UpdateAIGatewayAgentRequestBalancer{
+				UpdateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig: updateAIGatewayAgentRequestBalancerAIGatewayUpstreamBalancerRoundRobinConfig,
+			}
+		}
+	}
+	protocol := new(shared.UpdateAIGatewayAgentRequestProtocol)
+	if !r.Config.Protocol.IsUnknown() && !r.Config.Protocol.IsNull() {
+		*protocol = shared.UpdateAIGatewayAgentRequestProtocol(r.Config.Protocol.ValueString())
+	} else {
+		protocol = nil
+	}
+	path := new(string)
+	if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
+		*path = r.Config.Path.ValueString()
+	} else {
+		path = nil
+	}
 	var upstream *shared.AIGatewayUpstreamConfig
 	if r.Config.Upstream != nil {
 		var auth *shared.AIGatewayUpstreamConfigAuth
@@ -919,13 +1196,27 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 			MaxPayloadSize: maxPayloadSize,
 		}
 	}
+	certificates := make([]string, 0, len(r.Config.Certificates))
+	for certificatesIndex := range r.Config.Certificates {
+		certificates = append(certificates, r.Config.Certificates[certificatesIndex].ValueString())
+	}
+	caCertificates := make([]string, 0, len(r.Config.CaCertificates))
+	for caCertificatesIndex := range r.Config.CaCertificates {
+		caCertificates = append(caCertificates, r.Config.CaCertificates[caCertificatesIndex].ValueString())
+	}
 	config := shared.UpdateAIGatewayAgentRequestConfig{
 		URL:                url,
+		Targets:            targets,
+		Balancer:           balancer,
+		Protocol:           protocol,
+		Path:               path,
 		Upstream:           upstream,
 		Route:              route,
 		Proxy:              proxy,
 		MaxRequestBodySize: maxRequestBodySize,
 		Logging:            logging,
+		Certificates:       certificates,
+		CaCertificates:     caCertificates,
 	}
 	labels := make(map[string]string)
 	for labelsKey := range r.Labels {

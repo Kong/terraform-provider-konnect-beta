@@ -19,8 +19,7 @@ const (
 	AIGatewayMCPServerTypeUpstreamServer      AIGatewayMCPServerType = "upstream-server"
 )
 
-// AIGatewayMCPServer - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayMCPServer - MCP Server created successfully.
 type AIGatewayMCPServer struct {
 	AIGatewayMCPServerConversionOnlyResponse      *AIGatewayMCPServerConversionOnlyResponse      `queryParam:"inline" union:"member"`
 	AIGatewayMCPServerConversionListenerResponse  *AIGatewayMCPServerConversionListenerResponse  `queryParam:"inline" union:"member"`
@@ -76,7 +75,14 @@ func CreateAIGatewayMCPServerUpstreamServer(upstreamServer AIGatewayMCPServerUps
 	}
 }
 
-func (u *AIGatewayMCPServer) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayMCPServer) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayMCPServer{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

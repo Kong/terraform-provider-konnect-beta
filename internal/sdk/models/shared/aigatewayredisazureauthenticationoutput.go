@@ -6,21 +6,18 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayRedisAzureAuthenticationOutput - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Azure specific configs for connecting to a Cloud Provider's redis instance.
+// AIGatewayRedisAzureAuthenticationOutput - Azure specific configs for connecting to a Cloud Provider's redis instance.
 type AIGatewayRedisAzureAuthenticationOutput struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"azure" json:"type"`
 	// Azure Client ID.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	ClientID *string `default:"null" json:"client_id"`
+	ClientID *string `json:"client_id,omitempty"`
 	// Azure Tenant ID.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	TenantID *string `default:"null" json:"tenant_id"`
+	TenantID *string `json:"tenant_id,omitempty"`
 }
 
 func (a AIGatewayRedisAzureAuthenticationOutput) MarshalJSON() ([]byte, error) {

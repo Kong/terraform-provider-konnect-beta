@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"errors"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 	"time"
 )
@@ -44,150 +42,6 @@ func (a *APIVersionResponseValidationMessages) GetMessage() string {
 	return a.Message
 }
 
-type APIVersionResponseAPISpecProviderType string
-
-const (
-	APIVersionResponseAPISpecProviderTypeRawProvider                      APIVersionResponseAPISpecProviderType = "RawProvider"
-	APIVersionResponseAPISpecProviderTypeURLProvider                      APIVersionResponseAPISpecProviderType = "UrlProvider"
-	APIVersionResponseAPISpecProviderTypeIntegrationProvider              APIVersionResponseAPISpecProviderType = "IntegrationProvider"
-	APIVersionResponseAPISpecProviderTypeResourceBoundIntegrationProvider APIVersionResponseAPISpecProviderType = "ResourceBoundIntegrationProvider"
-)
-
-// APIVersionResponseAPISpecProvider - The provider used to supply the spec content. In write requests, provide
-// this instead of or alongside content. If omitted on writes, the server
-// infers type raw from spec.content.
-type APIVersionResponseAPISpecProvider struct {
-	RawProvider                      *RawProvider                      `queryParam:"inline" union:"member"`
-	URLProvider                      *URLProvider                      `queryParam:"inline" union:"member"`
-	IntegrationProvider              *IntegrationProvider              `queryParam:"inline" union:"member"`
-	ResourceBoundIntegrationProvider *ResourceBoundIntegrationProvider `queryParam:"inline" union:"member"`
-
-	Type APIVersionResponseAPISpecProviderType
-}
-
-func CreateAPIVersionResponseAPISpecProviderRawProvider(rawProvider RawProvider) APIVersionResponseAPISpecProvider {
-	typ := APIVersionResponseAPISpecProviderTypeRawProvider
-
-	return APIVersionResponseAPISpecProvider{
-		RawProvider: &rawProvider,
-		Type:        typ,
-	}
-}
-
-func CreateAPIVersionResponseAPISpecProviderURLProvider(urlProvider URLProvider) APIVersionResponseAPISpecProvider {
-	typ := APIVersionResponseAPISpecProviderTypeURLProvider
-
-	return APIVersionResponseAPISpecProvider{
-		URLProvider: &urlProvider,
-		Type:        typ,
-	}
-}
-
-func CreateAPIVersionResponseAPISpecProviderIntegrationProvider(integrationProvider IntegrationProvider) APIVersionResponseAPISpecProvider {
-	typ := APIVersionResponseAPISpecProviderTypeIntegrationProvider
-
-	return APIVersionResponseAPISpecProvider{
-		IntegrationProvider: &integrationProvider,
-		Type:                typ,
-	}
-}
-
-func CreateAPIVersionResponseAPISpecProviderResourceBoundIntegrationProvider(resourceBoundIntegrationProvider ResourceBoundIntegrationProvider) APIVersionResponseAPISpecProvider {
-	typ := APIVersionResponseAPISpecProviderTypeResourceBoundIntegrationProvider
-
-	return APIVersionResponseAPISpecProvider{
-		ResourceBoundIntegrationProvider: &resourceBoundIntegrationProvider,
-		Type:                             typ,
-	}
-}
-
-func (u *APIVersionResponseAPISpecProvider) UnmarshalJSON(data []byte) error {
-
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var rawProvider RawProvider = RawProvider{}
-	if err := utils.UnmarshalJSON(data, &rawProvider, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APIVersionResponseAPISpecProviderTypeRawProvider,
-			Value: &rawProvider,
-		})
-	}
-
-	var urlProvider URLProvider = URLProvider{}
-	if err := utils.UnmarshalJSON(data, &urlProvider, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APIVersionResponseAPISpecProviderTypeURLProvider,
-			Value: &urlProvider,
-		})
-	}
-
-	var integrationProvider IntegrationProvider = IntegrationProvider{}
-	if err := utils.UnmarshalJSON(data, &integrationProvider, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APIVersionResponseAPISpecProviderTypeIntegrationProvider,
-			Value: &integrationProvider,
-		})
-	}
-
-	var resourceBoundIntegrationProvider ResourceBoundIntegrationProvider = ResourceBoundIntegrationProvider{}
-	if err := utils.UnmarshalJSON(data, &resourceBoundIntegrationProvider, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APIVersionResponseAPISpecProviderTypeResourceBoundIntegrationProvider,
-			Value: &resourceBoundIntegrationProvider,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIVersionResponseAPISpecProvider", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestUnionCandidate(candidates, data)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIVersionResponseAPISpecProvider", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(APIVersionResponseAPISpecProviderType)
-	switch best.Type {
-	case APIVersionResponseAPISpecProviderTypeRawProvider:
-		u.RawProvider = best.Value.(*RawProvider)
-		return nil
-	case APIVersionResponseAPISpecProviderTypeURLProvider:
-		u.URLProvider = best.Value.(*URLProvider)
-		return nil
-	case APIVersionResponseAPISpecProviderTypeIntegrationProvider:
-		u.IntegrationProvider = best.Value.(*IntegrationProvider)
-		return nil
-	case APIVersionResponseAPISpecProviderTypeResourceBoundIntegrationProvider:
-		u.ResourceBoundIntegrationProvider = best.Value.(*ResourceBoundIntegrationProvider)
-		return nil
-	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIVersionResponseAPISpecProvider", string(data))
-}
-
-func (u APIVersionResponseAPISpecProvider) MarshalJSON() ([]byte, error) {
-	if u.RawProvider != nil {
-		return utils.MarshalJSON(u.RawProvider, "", true)
-	}
-
-	if u.URLProvider != nil {
-		return utils.MarshalJSON(u.URLProvider, "", true)
-	}
-
-	if u.IntegrationProvider != nil {
-		return utils.MarshalJSON(u.IntegrationProvider, "", true)
-	}
-
-	if u.ResourceBoundIntegrationProvider != nil {
-		return utils.MarshalJSON(u.ResourceBoundIntegrationProvider, "", true)
-	}
-
-	return nil, errors.New("could not marshal union type APIVersionResponseAPISpecProvider: all fields are null")
-}
-
 type APIVersionResponseSpec struct {
 	// The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
 	//
@@ -197,11 +51,6 @@ type APIVersionResponseSpec struct {
 	Type *APIVersionResponseAPISpecType `json:"type,omitempty"`
 	// The errors that occurred while parsing the API version spec.
 	ValidationMessages []APIVersionResponseValidationMessages `json:"validation_messages,omitempty"`
-	// The provider used to supply the spec content. In write requests, provide
-	// this instead of or alongside content. If omitted on writes, the server
-	// infers type raw from spec.content.
-	//
-	Provider *APIVersionResponseAPISpecProvider `json:"provider,omitempty"`
 }
 
 func (a APIVersionResponseSpec) MarshalJSON() ([]byte, error) {
@@ -234,13 +83,6 @@ func (a *APIVersionResponseSpec) GetValidationMessages() []APIVersionResponseVal
 		return nil
 	}
 	return a.ValidationMessages
-}
-
-func (a *APIVersionResponseSpec) GetProvider() *APIVersionResponseAPISpecProvider {
-	if a == nil {
-		return nil
-	}
-	return a.Provider
 }
 
 // APIVersionResponse - API version (OpenAPI or AsyncAPI)

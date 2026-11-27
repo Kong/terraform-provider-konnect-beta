@@ -20,13 +20,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/boolplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -97,17 +98,24 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
 											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
+										MarkdownDescription: `Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
 											`top-level gate: a caller's consumer group must pass this check before any MCP protocol` + "\n" +
 											`operation (` + "`" + `initialize` + "`" + `, ` + "`" + `tools/list` + "`" + `, ` + "`" + `tools/call` + "`" + `) is allowed, and before any tool-level` + "\n" +
 											`` + "`" + `default_tool_acls` + "`" + ` or per-tool ` + "`" + `access.acls` + "`" + ` check is evaluated.`,
@@ -122,6 +130,85 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											listvalidator.SizeAtMost(1),
 										},
 									},
+									"default_prompt_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-prompt access control rules for allowing or denying consumer groups access to` + "\n" +
+											`prompts. Evaluated only for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check` + "\n" +
+											`above. Applies to every prompt exposed by this MCP Server unless a specific prompt` + "\n" +
+											`overrides it via that prompt's own ` + "`" + `access.acls` + "`" + `. Prompts a caller is denied are omitted` + "\n" +
+											`from ` + "`" + `prompts/list` + "`" + ` and rejected on ` + "`" + `prompts/get` + "`" + `. When unset, prompts are governed only` + "\n" +
+											`by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"default_resource_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-resource access control rules for allowing or denying consumer groups access` + "\n" +
+											`to resources and resource templates. Evaluated only for callers that already passed the` + "\n" +
+											`server-level ` + "`" + `acls` + "`" + ` check above. Applies to every resource exposed by this MCP Server` + "\n" +
+											`unless a specific resource overrides it via that resource's own ` + "`" + `access.acls` + "`" + `. Resources a` + "\n" +
+											`caller is denied are omitted from ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` and` + "\n" +
+											`rejected on ` + "`" + `resources/read` + "`" + ` and ` + "`" + `resources/subscribe` + "`" + `. When unset, resources are governed` + "\n" +
+											`only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -132,17 +219,28 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
 											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Default per-tool access control rules for allowing or denying consumer groups access to` + "\n" +
+										MarkdownDescription: `Default per-tool access control rules for allowing or denying consumer groups access to` + "\n" +
 											`tools. Evaluated only for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above.` + "\n" +
 											`Applies to every tool exposed by this MCP Server unless a specific tool overrides it via` + "\n" +
 											`that tool's own ` + "`" + `access.acls` + "`" + `.`,
@@ -190,10 +288,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `OAuth 2.0 Protected Resource Metadata advertised for this MCP server.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+								MarkdownDescription: `Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
 									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
@@ -212,6 +307,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"acls": schema.SingleNestedAttribute{
@@ -224,17 +320,24 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
 											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +
+										MarkdownDescription: `Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +
 											`value of the configured ` + "`" + `access_token_claim_field` + "`" + `. This is the top-level gate: a caller` + "\n" +
 											`must pass this check before any MCP protocol operation (` + "`" + `initialize` + "`" + `, ` + "`" + `tools/list` + "`" + `,` + "\n" +
 											`` + "`" + `tools/call` + "`" + `) is allowed, and before any tool-level ` + "`" + `default_tool_acls` + "`" + ` or per-tool` + "\n" +
@@ -250,6 +353,86 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											listvalidator.SizeAtMost(1),
 										},
 									},
+									"default_prompt_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-prompt access control rules for allowing or denying callers access to prompts,` + "\n" +
+											`evaluated against the value of the configured ` + "`" + `access_token_claim_field` + "`" + `. Evaluated only` + "\n" +
+											`for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above. Applies to every` + "\n" +
+											`prompt exposed by this MCP Server unless a specific prompt overrides it via that prompt's` + "\n" +
+											`own ` + "`" + `access.acls` + "`" + `. Prompts a caller is denied are omitted from ` + "`" + `prompts/list` + "`" + ` and rejected` + "\n" +
+											`on ` + "`" + `prompts/get` + "`" + `. When unset, prompts are governed only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"default_resource_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-resource access control rules for allowing or denying callers access to` + "\n" +
+											`resources and resource templates, evaluated against the value of the configured` + "\n" +
+											`` + "`" + `access_token_claim_field` + "`" + `. Evaluated only for callers that already passed the` + "\n" +
+											`server-level ` + "`" + `acls` + "`" + ` check above. Applies to every resource exposed by this MCP Server` + "\n" +
+											`unless a specific resource overrides it via that resource's own ` + "`" + `access.acls` + "`" + `. Resources a` + "\n" +
+											`caller is denied are omitted from ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` and` + "\n" +
+											`rejected on ` + "`" + `resources/read` + "`" + ` and ` + "`" + `resources/subscribe` + "`" + `. When unset, resources are governed` + "\n" +
+											`only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -260,17 +443,28 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
 											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Default per-tool access control rules for allowing or denying callers access to tools,` + "\n" +
+										MarkdownDescription: `Default per-tool access control rules for allowing or denying callers access to tools,` + "\n" +
 											`evaluated against the value of the configured ` + "`" + `access_token_claim_field` + "`" + `. Evaluated only` + "\n" +
 											`for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above. Applies to every tool` + "\n" +
 											`exposed by this MCP Server unless a specific tool overrides it via that tool's own` + "\n" +
@@ -319,10 +513,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `OAuth 2.0 Protected Resource Metadata advertised for this MCP server.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+								MarkdownDescription: `Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
 									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
@@ -331,13 +522,219 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.`,
 					},
 					"config": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"allowed_versions": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								MarkdownDescription: `The MCP protocol revisions this server accepts. Leave unset to accept every revision Kong` + "\n" +
+									`implements, which is the default. When set, ` + "`" + `server/discover` + "`" + ` advertises exactly this` + "\n" +
+									`list and a request declaring anything else is rejected. Listing only per-request` + "\n" +
+									`revisions refuses handshake clients.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
+							},
+							"balancer": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"consistent_hashing": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"hash_on_header": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The request header whose value selects the target. Requests without the header all hash to the same target. Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
+												},
+											},
+										},
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"least_connections": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"lowest_latency": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"round_robin": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+											}...),
+										},
+									},
+								},
+								MarkdownDescription: `Load balancing configuration for ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+							},
+							"ca_certificates": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								MarkdownDescription: `CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by` + "\n" +
+									`name. Each entry must be the ` + "`" + `name` + "`" + ` of an existing AI CA Certificate on the same AI Gateway.` + "\n" +
+									`` + "\n" +
+									`The CA certificates build the trust store (` + "`" + `ca_certificates` + "`" + `) of the Kong Gateway Service` + "\n" +
+									`generated for this MCP Server, which proxies requests to the upstream MCP server.` + "\n" +
+									`` + "\n" +
+									`If unset, the default trust store is used to verify the upstream's TLS certificate.`,
+							},
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"discover": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										Description: `A cache hint Kong emits on a cacheable operation it serves.`,
+									},
+									"prompts_list": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										MarkdownDescription: `Cache hint emitted on ` + "`" + `prompts/list` + "`" + ` results. ` + "`" + `cache_scope: public` + "`" + ` is rejected when` + "\n" +
+											`` + "`" + `default_prompt_acls` + "`" + ` or a prompt's own ` + "`" + `access.acls` + "`" + ` filters the list per subject.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"resources_list": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										MarkdownDescription: `Cache hint emitted on ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` results.` + "\n" +
+											`` + "`" + `cache_scope: public` + "`" + ` is rejected when ` + "`" + `default_resource_acls` + "`" + ` or a resource's own` + "\n" +
+											`` + "`" + `access.acls` + "`" + ` filters either list per subject.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"tools_list": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										Description: `A cache hint Kong emits on a cacheable operation it serves.`,
+									},
+								},
+								MarkdownDescription: `Cache hints Kong emits on the cacheable operations it serves. Only clients on a protocol` + "\n" +
+									`revision that defines them receive them.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+							},
+							"certificates": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								MarkdownDescription: `Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,` + "\n" +
+									`referenced by name. Each entry must be the ` + "`" + `name` + "`" + ` of an existing AI Certificate on the same` + "\n" +
+									`AI Gateway.` + "\n" +
+									`` + "\n" +
+									`The certificates are applied to the Kong Gateway Service generated for this MCP Server, which` + "\n" +
+									`proxies requests to the upstream MCP server. The generated Service presents a single client` + "\n" +
+									`certificate (` + "`" + `client_certificate` + "`" + `) during the TLS handshake with the upstream, so at most one` + "\n" +
+									`certificate may be configured.` + "\n" +
+									`` + "\n" +
+									`If unset, no client certificate is presented to the upstream.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtMost(1),
+								},
+							},
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -355,10 +752,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Default: false`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Configuration for AI Gateway logging.`,
+								Description: `Configuration for AI Gateway logging.`,
 							},
 							"max_request_body_size": schema.Int64Attribute{
 								Computed:    true,
@@ -368,6 +762,22 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Validators: []validator.Int64{
 									int64validator.Between(0, 2147483646),
 								},
+							},
+							"path": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The path prefix of requests sent to the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.String{
+									stringvalidator.RegexMatches(regexp.MustCompile(`^/`), "must match pattern "+regexp.MustCompile(`^/`).String()),
+								},
+							},
+							"protocol": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The protocol used to reach the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `. If unset, the gateway uses ` + "`" + `https` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.` + "\n" +
+									`possible known values include one of ["http", "https"]`,
 							},
 							"route": schema.SingleNestedAttribute{
 								Computed: true,
@@ -383,6 +793,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										},
 									},
 									"hosts": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `A list of domain names that match this route. Note that the hosts value is case sensitive.`,
@@ -458,12 +869,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `An optional set of strings associated with the route for grouping and filtering.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
+								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -476,107 +888,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Whether to forward the client request headers to the upstream server when calling the tools. Default: true`,
 									},
 									"session": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"client": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`secrets`: types.ListType{
-														ElemType: types.StringType,
-													},
-												},
-											},
-											"managed": types.BoolType,
-											"redis": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`cloud_authentication`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`aws`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`access_key_id`:     types.StringType,
-																	`assume_role_arn`:   types.StringType,
-																	`cache_name`:        types.StringType,
-																	`is_serverless`:     types.BoolType,
-																	`region`:            types.StringType,
-																	`role_session_name`: types.StringType,
-																	`secret_access_key`: types.StringType,
-																},
-															},
-															`azure`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`client_id`:     types.StringType,
-																	`client_secret`: types.StringType,
-																	`tenant_id`:     types.StringType,
-																},
-															},
-															`gcp`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`service_account_json`: types.StringType,
-																},
-															},
-														},
-													},
-													`cluster`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`max_redirections`: types.Int64Type,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														},
-													},
-													`connect_timeout`:       types.Int64Type,
-													`connection_is_proxied`: types.BoolType,
-													`database`:              types.Int64Type,
-													`host`:                  types.StringType,
-													`keepalive`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`backlog`:   types.Int64Type,
-															`pool_size`: types.Int64Type,
-														},
-													},
-													`password`:     types.StringType,
-													`port`:         types.StringType,
-													`read_timeout`: types.Int64Type,
-													`send_timeout`: types.Int64Type,
-													`sentinel`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`master`: types.StringType,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															`password`: types.StringType,
-															`role`:     types.StringType,
-															`username`: types.StringType,
-														},
-													},
-													`server_name`: types.StringType,
-													`ssl`:         types.BoolType,
-													`ssl_verify`:  types.BoolType,
-													`username`:    types.StringType,
-												},
-											},
-											"session_ttl": types.Int64Type,
-											"strategy":    types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"client": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"secrets": types.ListType{
-														ElemType: types.StringType,
-													},
-												})),
 												Attributes: map[string]schema.Attribute{
 													"secrets": schema.ListAttribute{
 														Optional:    true,
@@ -644,10 +959,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
 																},
-																MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																	`This feature is currently in beta and is subject to change.` + "\n" +
-																	`` + "\n" +
-																	`AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -674,10 +986,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
 																},
-																MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																	`This feature is currently in beta and is subject to change.` + "\n" +
-																	`` + "\n" +
-																	`Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("aws"),
@@ -694,10 +1003,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
 																},
-																MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																	`This feature is currently in beta and is subject to change.` + "\n" +
-																	`` + "\n" +
-																	`GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("aws"),
@@ -709,19 +1015,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
 													},
 													"cluster": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
-														Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-															"max_redirections": types.Int64Type,
-															"nodes": types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														})),
 														Attributes: map[string]schema.Attribute{
 															"max_redirections": schema.Int64Attribute{
 																Computed:    true,
@@ -797,12 +1091,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`Default: "127.0.0.1"`,
 													},
 													"keepalive": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
-														Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-															"backlog":   types.Int64Type,
-															"pool_size": types.Int64Type,
-														})),
 														Attributes: map[string]schema.Attribute{
 															"backlog": schema.Int64Attribute{
 																Optional:    true,
@@ -855,22 +1144,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														},
 													},
 													"sentinel": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
-														Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-															"master": types.StringType,
-															"nodes": types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															"password": types.StringType,
-															"role":     types.StringType,
-															"username": types.StringType,
-														})),
 														Attributes: map[string]schema.Attribute{
 															"master": schema.StringAttribute{
 																Optional:    true,
@@ -946,10 +1220,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 													},
 												},
-												MarkdownDescription: `**Pre-release Feature**` + "\n" +
-													`This feature is currently in beta and is subject to change.` + "\n" +
-													`` + "\n" +
-													`Config for connecting to a Cloud Provider's Redis instance.`,
+												Description: `Config for connecting to a Cloud Provider's Redis instance.`,
 											},
 											"session_ttl": schema.Int64Attribute{
 												Computed:    true,
@@ -979,10 +1250,48 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
+								Description: `Server-side configuration for the MCP Server.`,
+							},
+							"targets": schema.ListNestedAttribute{
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"address": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the ` + "`" + `port` + "`" + ` value will be overridden by the value from the DNS record. Each address must be unique within the agent. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
+											},
+										},
+										"failover": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     booldefault.StaticBool(false),
+											Description: `Whether to use this target only as backup or not. A failover target receives traffic only when all other targets are unhealthy, or when a request has failed on all of them. The gateway checks the health of each target with active and passive health checks. Failover targets are not supported with the ` + "`" + `consistent-hashing` + "`" + ` algorithm, and at least one target must not be a failover target. Default: false`,
+										},
+										"weight": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     int64default.StaticInt64(100),
+											Description: `The weight this target gets within the upstream loadbalancer (` + "`" + `0` + "`" + `-` + "`" + `65535` + "`" + `). If the hostname resolves to an SRV record, the ` + "`" + `weight` + "`" + ` value will be overridden by the value from the DNS record. Default: 100`,
+											Validators: []validator.Int64{
+												int64validator.Between(0, 65535),
+											},
+										},
+									},
+								},
+								MarkdownDescription: `List of targets the upstream load balances requests across.` + "\n" +
+									`Replaces ` + "`" + `url` + "`" + `: set exactly one of ` + "`" + `url` + "`" + ` or ` + "`" + `targets` + "`" + `.` + "\n" +
 									`` + "\n" +
-									`Server-side configuration for the MCP Server.`,
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 							"upstream": schema.SingleNestedAttribute{
 								Computed: true,
@@ -1030,39 +1339,24 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`If not specified, the default AWS STS endpoint will be used.`,
 													},
 												},
-												MarkdownDescription: `**Pre-release Feature**` + "\n" +
-													`This feature is currently in beta and is subject to change.` + "\n" +
-													`` + "\n" +
-													`AWS IAM (SigV4) authentication for the upstream service.`,
+												Description: `AWS IAM (SigV4) authentication for the upstream service.`,
 											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Authentication to use when proxying to the upstream service.`,
+										Description: `Authentication to use when proxying to the upstream service.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Configuration applied when proxying to the upstream service, including authentication.`,
+								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`Routing, logging, and server configuration for the MCP Server.` + "\n" +
-							`Not Null`,
+						Description: `Server-side configuration specific to modes where Kong answers as the MCP server. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -1073,6 +1367,36 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
 					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
@@ -1112,20 +1436,18 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.` + "\n" +
-							`Not Null`,
+						Computed:    true,
+						Optional:    true,
+						Description: `A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
 					"policies": schema.ListAttribute{
@@ -1133,6 +1455,529 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `List of policy references.`,
+					},
+					"rate_limiting": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"limits": schema.ListNestedAttribute{
+								Computed: true,
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"limit": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The number of requests allowed per window. Not Null`,
+											Validators: []validator.Int64{
+												speakeasy_int64validators.NotNull(),
+												int64validator.Between(1, 2147483646),
+											},
+										},
+										"method": schema.StringAttribute{
+											Optional:    true,
+											Description: `The MCP method this limit applies to.`,
+											Validators: []validator.String{
+												stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._/-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._/-]+$`).String()),
+											},
+										},
+										"tool": schema.StringAttribute{
+											Optional:    true,
+											Description: `The name of the tool this limit applies to.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 128),
+												stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._/-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._/-]+$`).String()),
+											},
+										},
+										"window_size": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The window size in seconds, one of a second, a minute, an hour, or a day. possible known values include one of [1, 60, 3600, 86400]; Not Null`,
+											Validators: []validator.Int64{
+												speakeasy_int64validators.NotNull(),
+											},
+										},
+									},
+								},
+								MarkdownDescription: `The rate limits to enforce. Each entry targets exactly one of ` + "`" + `method` + "`" + ` or ` + "`" + `tool` + "`" + `. Two` + "\n" +
+									`entries cannot share the same target and ` + "`" + `window_size` + "`" + `.` + "\n" +
+									`Not Null`,
+								Validators: []validator.List{
+									speakeasy_listvalidators.NotNull(),
+									listvalidator.SizeAtLeast(1),
+								},
+							},
+						},
+						MarkdownDescription: `Rate limits applied to requests to this MCP Server, matched by MCP method or tool name.` + "\n" +
+							`Each AI Gateway node counts and enforces the limits independently.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 					},
 					"tools": schema.ListNestedAttribute{
 						Computed: true,
@@ -1156,24 +2001,32 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are permitted access.`,
 												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
 												"deny": schema.ListAttribute{
 													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are denied access.`,
 												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
 											},
-											MarkdownDescription: `**Pre-release Feature**` + "\n" +
-												`This feature is currently in beta and is subject to change.` + "\n" +
-												`` + "\n" +
-												`Access control rules for allowing or denying consumer groups access to this tool.` + "\n" +
+											MarkdownDescription: `Access control rules for allowing or denying consumer groups access to this tool.` + "\n" +
 												`When configured, these will override the default access control rules defined on the MCP Server.`,
 										},
 									},
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`Access-control rules for a tool.`,
+									Description: `Access-control rules for a tool.`,
 								},
 								"annotations": schema.SingleNestedAttribute{
 									Computed: true,
@@ -1200,8 +2053,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											Description: `Human-readable title for the tool`,
 										},
 									},
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.`,
 								},
 								"description": schema.StringAttribute{
 									Computed:    true,
@@ -1212,14 +2063,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									},
 								},
 								"headers": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.` + "\n" +
-										`Parsed as JSON.`,
+									CustomType:  jsontypes.NormalizedType{},
+									Computed:    true,
+									Optional:    true,
+									Description: `The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required. Parsed as JSON.`,
 								},
 								"host": schema.StringAttribute{
 									Optional:    true,
@@ -1239,6 +2086,8 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									Description: `The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(1, 128),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]+$`).String()),
 									},
 								},
 								"parameters": schema.ListNestedAttribute{
@@ -1267,6 +2116,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												Description: `The name of the parameter. Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
 												},
 											},
 											"required": schema.BoolAttribute{
@@ -1283,8 +2133,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											},
 										},
 									},
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.`,
 								},
 								"path": schema.StringAttribute{
 									Optional: true,
@@ -1296,34 +2144,22 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										`path from API configuration.`,
 								},
 								"query": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.` + "\n" +
-										`Parsed as JSON.`,
+									CustomType:  jsontypes.NormalizedType{},
+									Computed:    true,
+									Optional:    true,
+									Description: `The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required. Parsed as JSON.`,
 								},
 								"request_body": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that ` + "`" + `$ref` + "`" + ` is not supported.` + "\n" +
-										`Parsed as JSON.`,
+									CustomType:  jsontypes.NormalizedType{},
+									Computed:    true,
+									Optional:    true,
+									Description: `The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that ` + "`" + `$ref` + "`" + ` is not supported. Parsed as JSON.`,
 								},
 								"responses": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details. Only one non-error (status code < 400) response is supported. Note that ` + "`" + `$ref` + "`" + ` is not supported.` + "\n" +
-										`Parsed as JSON.`,
+									CustomType:  jsontypes.NormalizedType{},
+									Computed:    true,
+									Optional:    true,
+									Description: `The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details. Only one non-error (status code < 400) response is supported. Note that ` + "`" + `$ref` + "`" + ` is not supported. Parsed as JSON.`,
 								},
 								"scheme": schema.StringAttribute{
 									Computed:    true,
@@ -1349,8 +2185,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("conversion_only"),
@@ -1367,6 +2201,95 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"balancer": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"consistent_hashing": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"hash_on_header": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The request header whose value selects the target. Requests without the header all hash to the same target. Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
+												},
+											},
+										},
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"least_connections": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"lowest_latency": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"round_robin": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+											}...),
+										},
+									},
+								},
+								MarkdownDescription: `Load balancing configuration for ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+							},
+							"ca_certificates": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								MarkdownDescription: `CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by` + "\n" +
+									`name. Each entry must be the ` + "`" + `name` + "`" + ` of an existing AI CA Certificate on the same AI Gateway.` + "\n" +
+									`` + "\n" +
+									`The CA certificates build the trust store (` + "`" + `ca_certificates` + "`" + `) of the Kong Gateway Service` + "\n" +
+									`generated for this MCP Server, which proxies requests to the upstream MCP server.` + "\n" +
+									`` + "\n" +
+									`If unset, the default trust store is used to verify the upstream's TLS certificate.`,
+							},
+							"certificates": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								MarkdownDescription: `Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,` + "\n" +
+									`referenced by name. Each entry must be the ` + "`" + `name` + "`" + ` of an existing AI Certificate on the same` + "\n" +
+									`AI Gateway.` + "\n" +
+									`` + "\n" +
+									`The certificates are applied to the Kong Gateway Service generated for this MCP Server, which` + "\n" +
+									`proxies requests to the upstream MCP server. The generated Service presents a single client` + "\n" +
+									`certificate (` + "`" + `client_certificate` + "`" + `) during the TLS handshake with the upstream, so at most one` + "\n" +
+									`certificate may be configured.` + "\n" +
+									`` + "\n" +
+									`If unset, no client certificate is presented to the upstream.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtMost(1),
+								},
+							},
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -1384,16 +2307,29 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Default: false`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Configuration for AI Gateway logging.`,
+								Description: `Configuration for AI Gateway logging.`,
 							},
 							"max_request_body_size": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(8388608),
 								Description: `Maximum size of request body to parse. Set to 0 for unlimited. Default: 8388608`,
+							},
+							"path": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The path prefix of requests sent to the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.String{
+									stringvalidator.RegexMatches(regexp.MustCompile(`^/`), "must match pattern "+regexp.MustCompile(`^/`).String()),
+								},
+							},
+							"protocol": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The protocol used to reach the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `. If unset, the gateway uses ` + "`" + `https` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.` + "\n" +
+									`possible known values include one of ["http", "https"]`,
 							},
 							"route": schema.SingleNestedAttribute{
 								Computed: true,
@@ -1409,6 +2345,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										},
 									},
 									"hosts": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `A list of domain names that match this route. Note that the hosts value is case sensitive.`,
@@ -1484,12 +2421,50 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `An optional set of strings associated with the route for grouping and filtering.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
+								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
 									`incoming requests.`,
+							},
+							"targets": schema.ListNestedAttribute{
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"address": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the ` + "`" + `port` + "`" + ` value will be overridden by the value from the DNS record. Each address must be unique within the agent. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
+											},
+										},
+										"failover": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     booldefault.StaticBool(false),
+											Description: `Whether to use this target only as backup or not. A failover target receives traffic only when all other targets are unhealthy, or when a request has failed on all of them. The gateway checks the health of each target with active and passive health checks. Failover targets are not supported with the ` + "`" + `consistent-hashing` + "`" + ` algorithm, and at least one target must not be a failover target. Default: false`,
+										},
+										"weight": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     int64default.StaticInt64(100),
+											Description: `The weight this target gets within the upstream loadbalancer (` + "`" + `0` + "`" + `-` + "`" + `65535` + "`" + `). If the hostname resolves to an SRV record, the ` + "`" + `weight` + "`" + ` value will be overridden by the value from the DNS record. Default: 100`,
+											Validators: []validator.Int64{
+												int64validator.Between(0, 65535),
+											},
+										},
+									},
+								},
+								MarkdownDescription: `List of targets the upstream load balances requests across.` + "\n" +
+									`Replaces ` + "`" + `url` + "`" + `: set exactly one of ` + "`" + `url` + "`" + ` or ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 							"upstream": schema.SingleNestedAttribute{
 								Computed: true,
@@ -1537,39 +2512,24 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`If not specified, the default AWS STS endpoint will be used.`,
 													},
 												},
-												MarkdownDescription: `**Pre-release Feature**` + "\n" +
-													`This feature is currently in beta and is subject to change.` + "\n" +
-													`` + "\n" +
-													`AWS IAM (SigV4) authentication for the upstream service.`,
+												Description: `AWS IAM (SigV4) authentication for the upstream service.`,
 											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Authentication to use when proxying to the upstream service.`,
+										Description: `Authentication to use when proxying to the upstream service.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Configuration applied when proxying to the upstream service, including authentication.`,
+								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`Routing, logging, and request body size limits for the MCP Server.` + "\n" +
-							`Not Null`,
+						Description: `Routing, logging, and request body size limits for the MCP Server. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -1580,6 +2540,36 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
 					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
@@ -1619,20 +2609,18 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.` + "\n" +
-							`Not Null`,
+						Computed:    true,
+						Optional:    true,
+						Description: `A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
 					"policies": schema.ListAttribute{
@@ -1640,6 +2628,470 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `List of policy references.`,
+					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 					},
 					"tools": schema.ListNestedAttribute{
 						Computed: true,
@@ -1663,24 +3115,32 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are permitted access.`,
 												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
 												"deny": schema.ListAttribute{
 													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are denied access.`,
 												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
 											},
-											MarkdownDescription: `**Pre-release Feature**` + "\n" +
-												`This feature is currently in beta and is subject to change.` + "\n" +
-												`` + "\n" +
-												`Access control rules for allowing or denying consumer groups access to this tool.` + "\n" +
+											MarkdownDescription: `Access control rules for allowing or denying consumer groups access to this tool.` + "\n" +
 												`When configured, these will override the default access control rules defined on the MCP Server.`,
 										},
 									},
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`Access-control rules for a tool.`,
+									Description: `Access-control rules for a tool.`,
 								},
 								"annotations": schema.SingleNestedAttribute{
 									Computed: true,
@@ -1707,8 +3167,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											Description: `Human-readable title for the tool`,
 										},
 									},
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.`,
 								},
 								"description": schema.StringAttribute{
 									Computed:    true,
@@ -1719,14 +3177,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									},
 								},
 								"headers": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.` + "\n" +
-										`Parsed as JSON.`,
+									CustomType:  jsontypes.NormalizedType{},
+									Computed:    true,
+									Optional:    true,
+									Description: `The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required. Parsed as JSON.`,
 								},
 								"host": schema.StringAttribute{
 									Optional:    true,
@@ -1746,6 +3200,8 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									Description: `The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(1, 128),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]+$`).String()),
 									},
 								},
 								"parameters": schema.ListNestedAttribute{
@@ -1774,6 +3230,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												Description: `The name of the parameter. Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
 												},
 											},
 											"required": schema.BoolAttribute{
@@ -1790,8 +3247,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											},
 										},
 									},
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.`,
 								},
 								"path": schema.StringAttribute{
 									Optional: true,
@@ -1803,34 +3258,22 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										`path from API configuration.`,
 								},
 								"query": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.` + "\n" +
-										`Parsed as JSON.`,
+									CustomType:  jsontypes.NormalizedType{},
+									Computed:    true,
+									Optional:    true,
+									Description: `The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required. Parsed as JSON.`,
 								},
 								"request_body": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that ` + "`" + `$ref` + "`" + ` is not supported.` + "\n" +
-										`Parsed as JSON.`,
+									CustomType:  jsontypes.NormalizedType{},
+									Computed:    true,
+									Optional:    true,
+									Description: `The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that ` + "`" + `$ref` + "`" + ` is not supported. Parsed as JSON.`,
 								},
 								"responses": schema.StringAttribute{
-									CustomType: jsontypes.NormalizedType{},
-									Computed:   true,
-									Optional:   true,
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details. Only one non-error (status code < 400) response is supported. Note that ` + "`" + `$ref` + "`" + ` is not supported.` + "\n" +
-										`Parsed as JSON.`,
+									CustomType:  jsontypes.NormalizedType{},
+									Computed:    true,
+									Optional:    true,
+									Description: `The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}}'. See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details. Only one non-error (status code < 400) response is supported. Note that ` + "`" + `$ref` + "`" + ` is not supported. Parsed as JSON.`,
 								},
 								"scheme": schema.StringAttribute{
 									Computed:    true,
@@ -1853,8 +3296,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("conversion_listener"),
@@ -1916,17 +3357,24 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
 											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
+										MarkdownDescription: `Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
 											`top-level gate: a caller's consumer group must pass this check before any MCP protocol` + "\n" +
 											`operation (` + "`" + `initialize` + "`" + `, ` + "`" + `tools/list` + "`" + `, ` + "`" + `tools/call` + "`" + `) is allowed, and before any tool-level` + "\n" +
 											`` + "`" + `default_tool_acls` + "`" + ` or per-tool ` + "`" + `access.acls` + "`" + ` check is evaluated.`,
@@ -1941,6 +3389,85 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											listvalidator.SizeAtMost(1),
 										},
 									},
+									"default_prompt_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-prompt access control rules for allowing or denying consumer groups access to` + "\n" +
+											`prompts. Evaluated only for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check` + "\n" +
+											`above. Applies to every prompt exposed by this MCP Server unless a specific prompt` + "\n" +
+											`overrides it via that prompt's own ` + "`" + `access.acls` + "`" + `. Prompts a caller is denied are omitted` + "\n" +
+											`from ` + "`" + `prompts/list` + "`" + ` and rejected on ` + "`" + `prompts/get` + "`" + `. When unset, prompts are governed only` + "\n" +
+											`by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"default_resource_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-resource access control rules for allowing or denying consumer groups access` + "\n" +
+											`to resources and resource templates. Evaluated only for callers that already passed the` + "\n" +
+											`server-level ` + "`" + `acls` + "`" + ` check above. Applies to every resource exposed by this MCP Server` + "\n" +
+											`unless a specific resource overrides it via that resource's own ` + "`" + `access.acls` + "`" + `. Resources a` + "\n" +
+											`caller is denied are omitted from ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` and` + "\n" +
+											`rejected on ` + "`" + `resources/read` + "`" + ` and ` + "`" + `resources/subscribe` + "`" + `. When unset, resources are governed` + "\n" +
+											`only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -1951,17 +3478,28 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
 											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Default per-tool access control rules for allowing or denying consumer groups access to` + "\n" +
+										MarkdownDescription: `Default per-tool access control rules for allowing or denying consumer groups access to` + "\n" +
 											`tools. Evaluated only for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above.` + "\n" +
 											`Applies to every tool exposed by this MCP Server unless a specific tool overrides it via` + "\n" +
 											`that tool's own ` + "`" + `access.acls` + "`" + `.`,
@@ -2009,10 +3547,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `OAuth 2.0 Protected Resource Metadata advertised for this MCP server.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+								MarkdownDescription: `Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
 									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
@@ -2031,6 +3566,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"acls": schema.SingleNestedAttribute{
@@ -2043,17 +3579,24 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
 											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +
+										MarkdownDescription: `Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +
 											`value of the configured ` + "`" + `access_token_claim_field` + "`" + `. This is the top-level gate: a caller` + "\n" +
 											`must pass this check before any MCP protocol operation (` + "`" + `initialize` + "`" + `, ` + "`" + `tools/list` + "`" + `,` + "\n" +
 											`` + "`" + `tools/call` + "`" + `) is allowed, and before any tool-level ` + "`" + `default_tool_acls` + "`" + ` or per-tool` + "\n" +
@@ -2069,6 +3612,86 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											listvalidator.SizeAtMost(1),
 										},
 									},
+									"default_prompt_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-prompt access control rules for allowing or denying callers access to prompts,` + "\n" +
+											`evaluated against the value of the configured ` + "`" + `access_token_claim_field` + "`" + `. Evaluated only` + "\n" +
+											`for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above. Applies to every` + "\n" +
+											`prompt exposed by this MCP Server unless a specific prompt overrides it via that prompt's` + "\n" +
+											`own ` + "`" + `access.acls` + "`" + `. Prompts a caller is denied are omitted from ` + "`" + `prompts/list` + "`" + ` and rejected` + "\n" +
+											`on ` + "`" + `prompts/get` + "`" + `. When unset, prompts are governed only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"default_resource_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-resource access control rules for allowing or denying callers access to` + "\n" +
+											`resources and resource templates, evaluated against the value of the configured` + "\n" +
+											`` + "`" + `access_token_claim_field` + "`" + `. Evaluated only for callers that already passed the` + "\n" +
+											`server-level ` + "`" + `acls` + "`" + ` check above. Applies to every resource exposed by this MCP Server` + "\n" +
+											`unless a specific resource overrides it via that resource's own ` + "`" + `access.acls` + "`" + `. Resources a` + "\n" +
+											`caller is denied are omitted from ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` and` + "\n" +
+											`rejected on ` + "`" + `resources/read` + "`" + ` and ` + "`" + `resources/subscribe` + "`" + `. When unset, resources are governed` + "\n" +
+											`only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -2079,17 +3702,28 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
 											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Default per-tool access control rules for allowing or denying callers access to tools,` + "\n" +
+										MarkdownDescription: `Default per-tool access control rules for allowing or denying callers access to tools,` + "\n" +
 											`evaluated against the value of the configured ` + "`" + `access_token_claim_field` + "`" + `. Evaluated only` + "\n" +
 											`for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above. Applies to every tool` + "\n" +
 											`exposed by this MCP Server unless a specific tool overrides it via that tool's own` + "\n" +
@@ -2138,10 +3772,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `OAuth 2.0 Protected Resource Metadata advertised for this MCP server.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+								MarkdownDescription: `Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
 									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
@@ -2150,13 +3781,130 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.`,
 					},
 					"config": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"allowed_versions": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								MarkdownDescription: `The MCP protocol revisions this server accepts. Leave unset to accept every revision Kong` + "\n" +
+									`implements, which is the default. When set, ` + "`" + `server/discover` + "`" + ` advertises exactly this` + "\n" +
+									`list and a request declaring anything else is rejected. Listing only per-request` + "\n" +
+									`revisions refuses handshake clients.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
+							},
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"discover": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										Description: `A cache hint Kong emits on a cacheable operation it serves.`,
+									},
+									"prompts_list": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										MarkdownDescription: `Cache hint emitted on ` + "`" + `prompts/list` + "`" + ` results. ` + "`" + `cache_scope: public` + "`" + ` is rejected when` + "\n" +
+											`` + "`" + `default_prompt_acls` + "`" + ` or a prompt's own ` + "`" + `access.acls` + "`" + ` filters the list per subject.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"resources_list": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										MarkdownDescription: `Cache hint emitted on ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` results.` + "\n" +
+											`` + "`" + `cache_scope: public` + "`" + ` is rejected when ` + "`" + `default_resource_acls` + "`" + ` or a resource's own` + "\n" +
+											`` + "`" + `access.acls` + "`" + ` filters either list per subject.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"tools_list": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cache_scope": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`private`),
+												MarkdownDescription: `Whether the result may be cached across authorization contexts. ` + "`" + `public` + "`" + ` is rejected when` + "\n" +
+													`the server's tool list is filtered per subject by ` + "`" + `default_tool_acls` + "`" + ` or a tool's own` + "\n" +
+													`` + "`" + `access.acls` + "`" + `.` + "\n" +
+													`possible known values include one of ["public", "private"]; Default: "private"`,
+											},
+											"ttl_ms": schema.Int64Attribute{
+												Optional:    true,
+												Description: `How long a client may treat the result as fresh, in milliseconds.`,
+												Validators: []validator.Int64{
+													int64validator.AtLeast(0),
+												},
+											},
+										},
+										Description: `A cache hint Kong emits on a cacheable operation it serves.`,
+									},
+								},
+								MarkdownDescription: `Cache hints Kong emits on the cacheable operations it serves. Only clients on a protocol` + "\n" +
+									`revision that defines them receive them.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+							},
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -2174,10 +3922,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Default: false`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Configuration for AI Gateway logging.`,
+								Description: `Configuration for AI Gateway logging.`,
 							},
 							"max_request_body_size": schema.Int64Attribute{
 								Computed:    true,
@@ -2202,6 +3947,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										},
 									},
 									"hosts": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `A list of domain names that match this route. Note that the hosts value is case sensitive.`,
@@ -2277,12 +4023,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `An optional set of strings associated with the route for grouping and filtering.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
+								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -2295,107 +4042,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Whether to forward the client request headers to the upstream server when calling the tools. Default: true`,
 									},
 									"session": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"client": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`secrets`: types.ListType{
-														ElemType: types.StringType,
-													},
-												},
-											},
-											"managed": types.BoolType,
-											"redis": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`cloud_authentication`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`aws`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`access_key_id`:     types.StringType,
-																	`assume_role_arn`:   types.StringType,
-																	`cache_name`:        types.StringType,
-																	`is_serverless`:     types.BoolType,
-																	`region`:            types.StringType,
-																	`role_session_name`: types.StringType,
-																	`secret_access_key`: types.StringType,
-																},
-															},
-															`azure`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`client_id`:     types.StringType,
-																	`client_secret`: types.StringType,
-																	`tenant_id`:     types.StringType,
-																},
-															},
-															`gcp`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`service_account_json`: types.StringType,
-																},
-															},
-														},
-													},
-													`cluster`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`max_redirections`: types.Int64Type,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														},
-													},
-													`connect_timeout`:       types.Int64Type,
-													`connection_is_proxied`: types.BoolType,
-													`database`:              types.Int64Type,
-													`host`:                  types.StringType,
-													`keepalive`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`backlog`:   types.Int64Type,
-															`pool_size`: types.Int64Type,
-														},
-													},
-													`password`:     types.StringType,
-													`port`:         types.StringType,
-													`read_timeout`: types.Int64Type,
-													`send_timeout`: types.Int64Type,
-													`sentinel`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`master`: types.StringType,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															`password`: types.StringType,
-															`role`:     types.StringType,
-															`username`: types.StringType,
-														},
-													},
-													`server_name`: types.StringType,
-													`ssl`:         types.BoolType,
-													`ssl_verify`:  types.BoolType,
-													`username`:    types.StringType,
-												},
-											},
-											"session_ttl": types.Int64Type,
-											"strategy":    types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"client": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"secrets": types.ListType{
-														ElemType: types.StringType,
-													},
-												})),
 												Attributes: map[string]schema.Attribute{
 													"secrets": schema.ListAttribute{
 														Optional:    true,
@@ -2463,10 +4113,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
 																},
-																MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																	`This feature is currently in beta and is subject to change.` + "\n" +
-																	`` + "\n" +
-																	`AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -2493,10 +4140,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
 																},
-																MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																	`This feature is currently in beta and is subject to change.` + "\n" +
-																	`` + "\n" +
-																	`Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("aws"),
@@ -2513,10 +4157,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
 																},
-																MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																	`This feature is currently in beta and is subject to change.` + "\n" +
-																	`` + "\n" +
-																	`GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("aws"),
@@ -2528,19 +4169,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
 													},
 													"cluster": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
-														Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-															"max_redirections": types.Int64Type,
-															"nodes": types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														})),
 														Attributes: map[string]schema.Attribute{
 															"max_redirections": schema.Int64Attribute{
 																Computed:    true,
@@ -2616,12 +4245,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`Default: "127.0.0.1"`,
 													},
 													"keepalive": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
-														Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-															"backlog":   types.Int64Type,
-															"pool_size": types.Int64Type,
-														})),
 														Attributes: map[string]schema.Attribute{
 															"backlog": schema.Int64Attribute{
 																Optional:    true,
@@ -2674,22 +4298,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														},
 													},
 													"sentinel": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
-														Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-															"master": types.StringType,
-															"nodes": types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															"password": types.StringType,
-															"role":     types.StringType,
-															"username": types.StringType,
-														})),
 														Attributes: map[string]schema.Attribute{
 															"master": schema.StringAttribute{
 																Optional:    true,
@@ -2765,10 +4374,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 													},
 												},
-												MarkdownDescription: `**Pre-release Feature**` + "\n" +
-													`This feature is currently in beta and is subject to change.` + "\n" +
-													`` + "\n" +
-													`Config for connecting to a Cloud Provider's Redis instance.`,
+												Description: `Config for connecting to a Cloud Provider's Redis instance.`,
 											},
 											"session_ttl": schema.Int64Attribute{
 												Computed:    true,
@@ -2798,17 +4404,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Server-side configuration for the MCP Server.`,
+								Description: `Server-side configuration for the MCP Server.`,
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`Routing, logging, and server configuration for the MCP Server.` + "\n" +
-							`Not Null`,
+						Description: `Server-side configuration specific to modes where Kong answers as the MCP server. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -2819,6 +4418,36 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
 					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
@@ -2858,20 +4487,18 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.` + "\n" +
-							`Not Null`,
+						Computed:    true,
+						Optional:    true,
+						Description: `A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
 					"policies": schema.ListAttribute{
@@ -2894,6 +4521,470 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							listvalidator.SizeAtLeast(1),
 						},
 					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -2902,8 +4993,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("conversion_listener"),
@@ -2918,10 +5007,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("conversion_only"), FieldPath: path.Root("conversion_only").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("conversion_listener"), FieldPath: path.Root("conversion_listener").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("listener"), FieldPath: path.Root("listener").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("passthrough_listener"), FieldPath: path.Root("passthrough_listener").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("upstream_server"), FieldPath: path.Root("upstream_server").AtName("name")}}),
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.`,
+				Description: `A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.`,
 			},
 			"passthrough_listener": schema.SingleNestedAttribute{
 				Optional: true,
@@ -2943,17 +5029,24 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
 											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
+										MarkdownDescription: `Server-level access control rules for allowing or denying consumer groups. This is the` + "\n" +
 											`top-level gate: a caller's consumer group must pass this check before any MCP protocol` + "\n" +
 											`operation (` + "`" + `initialize` + "`" + `, ` + "`" + `tools/list` + "`" + `, ` + "`" + `tools/call` + "`" + `) is allowed, and before any tool-level` + "\n" +
 											`` + "`" + `default_tool_acls` + "`" + ` or per-tool ` + "`" + `access.acls` + "`" + ` check is evaluated.`,
@@ -2968,6 +5061,85 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											listvalidator.SizeAtMost(1),
 										},
 									},
+									"default_prompt_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-prompt access control rules for allowing or denying consumer groups access to` + "\n" +
+											`prompts. Evaluated only for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check` + "\n" +
+											`above. Applies to every prompt exposed by this MCP Server unless a specific prompt` + "\n" +
+											`overrides it via that prompt's own ` + "`" + `access.acls` + "`" + `. Prompts a caller is denied are omitted` + "\n" +
+											`from ` + "`" + `prompts/list` + "`" + ` and rejected on ` + "`" + `prompts/get` + "`" + `. When unset, prompts are governed only` + "\n" +
+											`by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"default_resource_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-resource access control rules for allowing or denying consumer groups access` + "\n" +
+											`to resources and resource templates. Evaluated only for callers that already passed the` + "\n" +
+											`server-level ` + "`" + `acls` + "`" + ` check above. Applies to every resource exposed by this MCP Server` + "\n" +
+											`unless a specific resource overrides it via that resource's own ` + "`" + `access.acls` + "`" + `. Resources a` + "\n" +
+											`caller is denied are omitted from ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` and` + "\n" +
+											`rejected on ` + "`" + `resources/read` + "`" + ` and ` + "`" + `resources/subscribe` + "`" + `. When unset, resources are governed` + "\n" +
+											`only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -2978,17 +5150,28 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
 											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Default per-tool access control rules for allowing or denying consumer groups access to` + "\n" +
+										MarkdownDescription: `Default per-tool access control rules for allowing or denying consumer groups access to` + "\n" +
 											`tools. Evaluated only for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above.` + "\n" +
 											`Applies to every tool exposed by this MCP Server unless a specific tool overrides it via` + "\n" +
 											`that tool's own ` + "`" + `access.acls` + "`" + `.`,
@@ -3036,10 +5219,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `OAuth 2.0 Protected Resource Metadata advertised for this MCP server.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+								MarkdownDescription: `Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
 									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
@@ -3058,6 +5238,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"acls": schema.SingleNestedAttribute{
@@ -3070,17 +5251,24 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
 											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.`,
+											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +
+										MarkdownDescription: `Server-level access control rules for allowing or denying callers, evaluated against the` + "\n" +
 											`value of the configured ` + "`" + `access_token_claim_field` + "`" + `. This is the top-level gate: a caller` + "\n" +
 											`must pass this check before any MCP protocol operation (` + "`" + `initialize` + "`" + `, ` + "`" + `tools/list` + "`" + `,` + "\n" +
 											`` + "`" + `tools/call` + "`" + `) is allowed, and before any tool-level ` + "`" + `default_tool_acls` + "`" + ` or per-tool` + "\n" +
@@ -3096,6 +5284,86 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											listvalidator.SizeAtMost(1),
 										},
 									},
+									"default_prompt_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-prompt access control rules for allowing or denying callers access to prompts,` + "\n" +
+											`evaluated against the value of the configured ` + "`" + `access_token_claim_field` + "`" + `. Evaluated only` + "\n" +
+											`for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above. Applies to every` + "\n" +
+											`prompt exposed by this MCP Server unless a specific prompt overrides it via that prompt's` + "\n" +
+											`own ` + "`" + `access.acls` + "`" + `. Prompts a caller is denied are omitted from ` + "`" + `prompts/list` + "`" + ` and rejected` + "\n" +
+											`on ` + "`" + `prompts/get` + "`" + `. When unset, prompts are governed only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
+									"default_resource_acls": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"allow": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are permitted access.`,
+											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"deny": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `List of consumer groups that are denied access.`,
+											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+										},
+										MarkdownDescription: `Default per-resource access control rules for allowing or denying callers access to` + "\n" +
+											`resources and resource templates, evaluated against the value of the configured` + "\n" +
+											`` + "`" + `access_token_claim_field` + "`" + `. Evaluated only for callers that already passed the` + "\n" +
+											`server-level ` + "`" + `acls` + "`" + ` check above. Applies to every resource exposed by this MCP Server` + "\n" +
+											`unless a specific resource overrides it via that resource's own ` + "`" + `access.acls` + "`" + `. Resources a` + "\n" +
+											`caller is denied are omitted from ` + "`" + `resources/list` + "`" + ` and ` + "`" + `resources/templates/list` + "`" + ` and` + "\n" +
+											`rejected on ` + "`" + `resources/read` + "`" + ` and ` + "`" + `resources/subscribe` + "`" + `. When unset, resources are governed` + "\n" +
+											`only by the server-level ` + "`" + `acls` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+									},
 									"default_tool_acls": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -3106,17 +5374,28 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are permitted access.`,
 											},
+											"allow_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 											"deny": schema.ListAttribute{
 												Computed:    true,
 												Optional:    true,
 												ElementType: types.StringType,
 												Description: `List of consumer groups that are denied access.`,
 											},
+											"deny_when": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Default per-tool access control rules for allowing or denying callers access to tools,` + "\n" +
+										MarkdownDescription: `Default per-tool access control rules for allowing or denying callers access to tools,` + "\n" +
 											`evaluated against the value of the configured ` + "`" + `access_token_claim_field` + "`" + `. Evaluated only` + "\n" +
 											`for callers that already passed the server-level ` + "`" + `acls` + "`" + ` check above. Applies to every tool` + "\n" +
 											`exposed by this MCP Server unless a specific tool overrides it via that tool's own` + "\n" +
@@ -3165,10 +5444,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `OAuth 2.0 Protected Resource Metadata advertised for this MCP server.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
+								MarkdownDescription: `Auth strategy and OAuth 2.0 Protected Resource Metadata configuration` + "\n" +
 									`for granting access to an MCP server.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
@@ -3177,13 +5453,100 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.`,
 					},
 					"config": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"balancer": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"consistent_hashing": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"hash_on_header": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The request header whose value selects the target. Requests without the header all hash to the same target. Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
+												},
+											},
+										},
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"least_connections": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"lowest_latency": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"round_robin": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+											}...),
+										},
+									},
+								},
+								MarkdownDescription: `Load balancing configuration for ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+							},
+							"ca_certificates": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								MarkdownDescription: `CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by` + "\n" +
+									`name. Each entry must be the ` + "`" + `name` + "`" + ` of an existing AI CA Certificate on the same AI Gateway.` + "\n" +
+									`` + "\n" +
+									`The CA certificates build the trust store (` + "`" + `ca_certificates` + "`" + `) of the Kong Gateway Service` + "\n" +
+									`generated for this MCP Server, which proxies requests to the upstream MCP server.` + "\n" +
+									`` + "\n" +
+									`If unset, the default trust store is used to verify the upstream's TLS certificate.`,
+							},
+							"certificates": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								MarkdownDescription: `Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,` + "\n" +
+									`referenced by name. Each entry must be the ` + "`" + `name` + "`" + ` of an existing AI Certificate on the same` + "\n" +
+									`AI Gateway.` + "\n" +
+									`` + "\n" +
+									`The certificates are applied to the Kong Gateway Service generated for this MCP Server, which` + "\n" +
+									`proxies requests to the upstream MCP server. The generated Service presents a single client` + "\n" +
+									`certificate (` + "`" + `client_certificate` + "`" + `) during the TLS handshake with the upstream, so at most one` + "\n" +
+									`certificate may be configured.` + "\n" +
+									`` + "\n" +
+									`If unset, no client certificate is presented to the upstream.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtMost(1),
+								},
+							},
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -3201,10 +5564,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Default: false`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Configuration for AI Gateway logging.`,
+								Description: `Configuration for AI Gateway logging.`,
 							},
 							"max_request_body_size": schema.Int64Attribute{
 								Computed:    true,
@@ -3215,7 +5575,24 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									int64validator.Between(0, 2147483646),
 								},
 							},
+							"path": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The path prefix of requests sent to the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.String{
+									stringvalidator.RegexMatches(regexp.MustCompile(`^/`), "must match pattern "+regexp.MustCompile(`^/`).String()),
+								},
+							},
+							"protocol": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The protocol used to reach the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `. If unset, the gateway uses ` + "`" + `https` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.` + "\n" +
+									`possible known values include one of ["http", "https"]`,
+							},
 							"proxy": schema.SingleNestedAttribute{
+								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"auth": schema.SingleNestedAttribute{
@@ -3298,6 +5675,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										},
 									},
 									"hosts": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `A list of domain names that match this route. Note that the hosts value is case sensitive.`,
@@ -3373,15 +5751,15 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `An optional set of strings associated with the route for grouping and filtering.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
+								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"forward_client_headers": schema.BoolAttribute{
@@ -3391,107 +5769,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Whether to forward the client request headers to the upstream server when calling the tools. Default: true`,
 									},
 									"session": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"client": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`secrets`: types.ListType{
-														ElemType: types.StringType,
-													},
-												},
-											},
-											"managed": types.BoolType,
-											"redis": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`cloud_authentication`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`aws`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`access_key_id`:     types.StringType,
-																	`assume_role_arn`:   types.StringType,
-																	`cache_name`:        types.StringType,
-																	`is_serverless`:     types.BoolType,
-																	`region`:            types.StringType,
-																	`role_session_name`: types.StringType,
-																	`secret_access_key`: types.StringType,
-																},
-															},
-															`azure`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`client_id`:     types.StringType,
-																	`client_secret`: types.StringType,
-																	`tenant_id`:     types.StringType,
-																},
-															},
-															`gcp`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`service_account_json`: types.StringType,
-																},
-															},
-														},
-													},
-													`cluster`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`max_redirections`: types.Int64Type,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														},
-													},
-													`connect_timeout`:       types.Int64Type,
-													`connection_is_proxied`: types.BoolType,
-													`database`:              types.Int64Type,
-													`host`:                  types.StringType,
-													`keepalive`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`backlog`:   types.Int64Type,
-															`pool_size`: types.Int64Type,
-														},
-													},
-													`password`:     types.StringType,
-													`port`:         types.StringType,
-													`read_timeout`: types.Int64Type,
-													`send_timeout`: types.Int64Type,
-													`sentinel`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`master`: types.StringType,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															`password`: types.StringType,
-															`role`:     types.StringType,
-															`username`: types.StringType,
-														},
-													},
-													`server_name`: types.StringType,
-													`ssl`:         types.BoolType,
-													`ssl_verify`:  types.BoolType,
-													`username`:    types.StringType,
-												},
-											},
-											"session_ttl": types.Int64Type,
-											"strategy":    types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"client": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"secrets": types.ListType{
-														ElemType: types.StringType,
-													},
-												})),
 												Attributes: map[string]schema.Attribute{
 													"secrets": schema.ListAttribute{
 														Optional:    true,
@@ -3559,10 +5840,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
 																},
-																MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																	`This feature is currently in beta and is subject to change.` + "\n" +
-																	`` + "\n" +
-																	`AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -3589,10 +5867,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
 																},
-																MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																	`This feature is currently in beta and is subject to change.` + "\n" +
-																	`` + "\n" +
-																	`Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("aws"),
@@ -3609,10 +5884,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
 																},
-																MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																	`This feature is currently in beta and is subject to change.` + "\n" +
-																	`` + "\n" +
-																	`GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("aws"),
@@ -3624,19 +5896,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
 													},
 													"cluster": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
-														Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-															"max_redirections": types.Int64Type,
-															"nodes": types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														})),
 														Attributes: map[string]schema.Attribute{
 															"max_redirections": schema.Int64Attribute{
 																Computed:    true,
@@ -3712,12 +5972,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`Default: "127.0.0.1"`,
 													},
 													"keepalive": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
-														Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-															"backlog":   types.Int64Type,
-															"pool_size": types.Int64Type,
-														})),
 														Attributes: map[string]schema.Attribute{
 															"backlog": schema.Int64Attribute{
 																Optional:    true,
@@ -3770,22 +6025,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														},
 													},
 													"sentinel": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
-														Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-															"master": types.StringType,
-															"nodes": types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															"password": types.StringType,
-															"role":     types.StringType,
-															"username": types.StringType,
-														})),
 														Attributes: map[string]schema.Attribute{
 															"master": schema.StringAttribute{
 																Optional:    true,
@@ -3861,10 +6101,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 													},
 												},
-												MarkdownDescription: `**Pre-release Feature**` + "\n" +
-													`This feature is currently in beta and is subject to change.` + "\n" +
-													`` + "\n" +
-													`Config for connecting to a Cloud Provider's Redis instance.`,
+												Description: `Config for connecting to a Cloud Provider's Redis instance.`,
 											},
 											"session_ttl": schema.Int64Attribute{
 												Computed:    true,
@@ -3894,10 +6131,48 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
+								Description: `Server-side configuration for the MCP Server.`,
+							},
+							"targets": schema.ListNestedAttribute{
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"address": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the ` + "`" + `port` + "`" + ` value will be overridden by the value from the DNS record. Each address must be unique within the agent. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
+											},
+										},
+										"failover": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     booldefault.StaticBool(false),
+											Description: `Whether to use this target only as backup or not. A failover target receives traffic only when all other targets are unhealthy, or when a request has failed on all of them. The gateway checks the health of each target with active and passive health checks. Failover targets are not supported with the ` + "`" + `consistent-hashing` + "`" + ` algorithm, and at least one target must not be a failover target. Default: false`,
+										},
+										"weight": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     int64default.StaticInt64(100),
+											Description: `The weight this target gets within the upstream loadbalancer (` + "`" + `0` + "`" + `-` + "`" + `65535` + "`" + `). If the hostname resolves to an SRV record, the ` + "`" + `weight` + "`" + ` value will be overridden by the value from the DNS record. Default: 100`,
+											Validators: []validator.Int64{
+												int64validator.Between(0, 65535),
+											},
+										},
+									},
+								},
+								MarkdownDescription: `List of targets the upstream load balances requests across.` + "\n" +
+									`Replaces ` + "`" + `url` + "`" + `: set exactly one of ` + "`" + `url` + "`" + ` or ` + "`" + `targets` + "`" + `.` + "\n" +
 									`` + "\n" +
-									`Server-side configuration for the MCP Server.`,
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 							"upstream": schema.SingleNestedAttribute{
 								Computed: true,
@@ -3945,39 +6220,24 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`If not specified, the default AWS STS endpoint will be used.`,
 													},
 												},
-												MarkdownDescription: `**Pre-release Feature**` + "\n" +
-													`This feature is currently in beta and is subject to change.` + "\n" +
-													`` + "\n" +
-													`AWS IAM (SigV4) authentication for the upstream service.`,
+												Description: `AWS IAM (SigV4) authentication for the upstream service.`,
 											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Authentication to use when proxying to the upstream service.`,
+										Description: `Authentication to use when proxying to the upstream service.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Configuration applied when proxying to the upstream service, including authentication.`,
+								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`Routing, logging, and server configuration for the MCP Server.` + "\n" +
-							`Not Null`,
+						Description: `Routing, logging, and server configuration for the MCP Server. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -3988,6 +6248,36 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
 					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
@@ -4027,20 +6317,18 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.` + "\n" +
-							`Not Null`,
+						Computed:    true,
+						Optional:    true,
+						Description: `A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
 					"policies": schema.ListAttribute{
@@ -4048,6 +6336,677 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `List of policy references.`,
+					},
+					"prompts": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"access": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"acls": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"allow": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are permitted access.`,
+												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+												"deny": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are denied access.`,
+												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+											},
+											MarkdownDescription: `Access control rules for allowing or denying callers access to this prompt (` + "`" + `prompts/get` + "`" + `),` + "\n" +
+												`and whether it is listed to them (` + "`" + `prompts/list` + "`" + `). When configured, these override the` + "\n" +
+												`MCP Server's ` + "`" + `default_prompt_acls` + "`" + ` for this prompt.`,
+										},
+									},
+									Description: `Access-control rules for a prompt. Not Null`,
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+								},
+								"name": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The MCP prompt name. Matches the prompt advertised by the remote MCP Server under the same` + "\n" +
+										`name. Unique within an MCP Server.` + "\n" +
+										`Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(1, 128),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `Per-prompt access-control overrides for prompts advertised by the remote MCP Server.` + "\n" +
+							`Each entry is matched to a remote prompt by ` + "`" + `name` + "`" + `; only its access-control rules are` + "\n" +
+							`applied. Prompts without an entry are governed by ` + "`" + `access.default_prompt_acls` + "`" + `. Each` + "\n" +
+							`` + "`" + `name` + "`" + ` must be unique within this MCP Server.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+					},
+					"rate_limiting": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"limits": schema.ListNestedAttribute{
+								Computed: true,
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"limit": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The number of requests allowed per window. Not Null`,
+											Validators: []validator.Int64{
+												speakeasy_int64validators.NotNull(),
+												int64validator.Between(1, 2147483646),
+											},
+										},
+										"method": schema.StringAttribute{
+											Optional:    true,
+											Description: `The MCP method this limit applies to.`,
+											Validators: []validator.String{
+												stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._/-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._/-]+$`).String()),
+											},
+										},
+										"tool": schema.StringAttribute{
+											Optional:    true,
+											Description: `The name of the tool this limit applies to.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 128),
+												stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._/-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._/-]+$`).String()),
+											},
+										},
+										"window_size": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The window size in seconds, one of a second, a minute, an hour, or a day. possible known values include one of [1, 60, 3600, 86400]; Not Null`,
+											Validators: []validator.Int64{
+												speakeasy_int64validators.NotNull(),
+											},
+										},
+									},
+								},
+								MarkdownDescription: `The rate limits to enforce. Each entry targets exactly one of ` + "`" + `method` + "`" + ` or ` + "`" + `tool` + "`" + `. Two` + "\n" +
+									`entries cannot share the same target and ` + "`" + `window_size` + "`" + `.` + "\n" +
+									`Not Null`,
+								Validators: []validator.List{
+									speakeasy_listvalidators.NotNull(),
+									listvalidator.SizeAtLeast(1),
+								},
+							},
+						},
+						MarkdownDescription: `Rate limits applied to requests to this MCP Server, matched by MCP method or tool name.` + "\n" +
+							`Each AI Gateway node counts and enforces the limits independently.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+					},
+					"resources": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"access": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"acls": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"allow": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are permitted access.`,
+												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+												"deny": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are denied access.`,
+												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+											},
+											MarkdownDescription: `Access control rules for allowing or denying callers access to this resource` + "\n" +
+												`(` + "`" + `resources/read` + "`" + `, ` + "`" + `resources/subscribe` + "`" + `), and whether it is listed to them` + "\n" +
+												`(` + "`" + `resources/list` + "`" + `, ` + "`" + `resources/templates/list` + "`" + `). When configured, these override the` + "\n" +
+												`MCP Server's ` + "`" + `default_resource_acls` + "`" + ` for this resource.`,
+										},
+									},
+									Description: `Access-control rules for a resource or resource template. Not Null`,
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+								},
+								"uri": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The MCP resource URI. Matches the resource advertised by the remote MCP Server under the` + "\n" +
+										`same ` + "`" + `uri` + "`" + `, or the resource template advertised under the same ` + "`" + `uriTemplate` + "`" + `. A URI` + "\n" +
+										`template (RFC 6570) also matches every concrete resource URI it expands to, so one entry` + "\n" +
+										`can govern a whole template. Unique within an MCP Server.` + "\n" +
+										`Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(1, 2048),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `Per-resource access-control overrides for resources and resource templates advertised` + "\n" +
+							`by the remote MCP Server. Each entry is matched to a remote resource by ` + "`" + `uri` + "`" + `; only its` + "\n" +
+							`access-control rules are applied. Resources without an entry are governed by` + "\n" +
+							`` + "`" + `access.default_resource_acls` + "`" + `. Each ` + "`" + `uri` + "`" + ` must be unique within this MCP Server.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 					},
 					"tools": schema.ListNestedAttribute{
 						Computed: true,
@@ -4071,25 +7030,32 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are permitted access.`,
 												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
 												"deny": schema.ListAttribute{
 													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are denied access.`,
 												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
 											},
-											MarkdownDescription: `**Pre-release Feature**` + "\n" +
-												`This feature is currently in beta and is subject to change.` + "\n" +
-												`` + "\n" +
-												`Access control rules for allowing or denying consumer groups access to this tool.` + "\n" +
+											MarkdownDescription: `Access control rules for allowing or denying consumer groups access to this tool.` + "\n" +
 												`When configured, these will override the default access control rules defined on the MCP Server.`,
 										},
 									},
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`Access-control rules for a tool.` + "\n" +
-										`Not Null`,
+									Description: `Access-control rules for a tool. Not Null`,
 									Validators: []validator.Object{
 										speakeasy_objectvalidators.NotNull(),
 									},
@@ -4100,6 +7066,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									Description: `Tool identifier used to match remote MCP Server tools for ACL enforcement. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthAtLeast(1),
 									},
 								},
 							},
@@ -4115,8 +7082,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("conversion_listener"),
@@ -4140,6 +7105,95 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"balancer": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"consistent_hashing": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"hash_on_header": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The request header whose value selects the target. Requests without the header all hash to the same target. Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
+												},
+											},
+										},
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"least_connections": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"lowest_latency": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("round_robin"),
+											}...),
+										},
+									},
+									"round_robin": schema.SingleNestedAttribute{
+										Optional: true,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("consistent_hashing"),
+												path.MatchRelative().AtParent().AtName("least_connections"),
+												path.MatchRelative().AtParent().AtName("lowest_latency"),
+											}...),
+										},
+									},
+								},
+								MarkdownDescription: `Load balancing configuration for ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+							},
+							"ca_certificates": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								MarkdownDescription: `CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by` + "\n" +
+									`name. Each entry must be the ` + "`" + `name` + "`" + ` of an existing AI CA Certificate on the same AI Gateway.` + "\n" +
+									`` + "\n" +
+									`The CA certificates build the trust store (` + "`" + `ca_certificates` + "`" + `) of the Kong Gateway Service` + "\n" +
+									`generated for this MCP Server, which proxies requests to the upstream MCP server.` + "\n" +
+									`` + "\n" +
+									`If unset, the default trust store is used to verify the upstream's TLS certificate.`,
+							},
+							"certificates": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								MarkdownDescription: `Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,` + "\n" +
+									`referenced by name. Each entry must be the ` + "`" + `name` + "`" + ` of an existing AI Certificate on the same` + "\n" +
+									`AI Gateway.` + "\n" +
+									`` + "\n" +
+									`The certificates are applied to the Kong Gateway Service generated for this MCP Server, which` + "\n" +
+									`proxies requests to the upstream MCP server. The generated Service presents a single client` + "\n" +
+									`certificate (` + "`" + `client_certificate` + "`" + `) during the TLS handshake with the upstream, so at most one` + "\n" +
+									`certificate may be configured.` + "\n" +
+									`` + "\n" +
+									`If unset, no client certificate is presented to the upstream.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtMost(1),
+								},
+							},
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -4157,10 +7211,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `Default: false`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Configuration for AI Gateway logging.`,
+								Description: `Configuration for AI Gateway logging.`,
 							},
 							"max_request_body_size": schema.Int64Attribute{
 								Computed:    true,
@@ -4170,6 +7221,22 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 								Validators: []validator.Int64{
 									int64validator.Between(0, 2147483646),
 								},
+							},
+							"path": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The path prefix of requests sent to the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.String{
+									stringvalidator.RegexMatches(regexp.MustCompile(`^/`), "must match pattern "+regexp.MustCompile(`^/`).String()),
+								},
+							},
+							"protocol": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `The protocol used to reach the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `. If unset, the gateway uses ` + "`" + `https` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.` + "\n" +
+									`possible known values include one of ["http", "https"]`,
 							},
 							"route": schema.SingleNestedAttribute{
 								Computed: true,
@@ -4185,6 +7252,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										},
 									},
 									"hosts": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `A list of domain names that match this route. Note that the hosts value is case sensitive.`,
@@ -4260,12 +7328,13 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 										Description: `An optional set of strings associated with the route for grouping and filtering.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
+								MarkdownDescription: `Route configuration for an MCP Server that terminates its own listener. At least one` + "\n" +
 									`of ` + "`" + `hosts` + "`" + `, ` + "`" + `paths` + "`" + `, ` + "`" + `methods` + "`" + `, or ` + "`" + `headers` + "`" + ` must be set so the route can match` + "\n" +
-									`incoming requests.`,
+									`incoming requests.` + "\n" +
+									`Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
 							},
 							"server": schema.SingleNestedAttribute{
 								Computed: true,
@@ -4287,107 +7356,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											`Default: false`,
 									},
 									"session": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"client": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`secrets`: types.ListType{
-														ElemType: types.StringType,
-													},
-												},
-											},
-											"managed": types.BoolType,
-											"redis": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`cloud_authentication`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`aws`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`access_key_id`:     types.StringType,
-																	`assume_role_arn`:   types.StringType,
-																	`cache_name`:        types.StringType,
-																	`is_serverless`:     types.BoolType,
-																	`region`:            types.StringType,
-																	`role_session_name`: types.StringType,
-																	`secret_access_key`: types.StringType,
-																},
-															},
-															`azure`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`client_id`:     types.StringType,
-																	`client_secret`: types.StringType,
-																	`tenant_id`:     types.StringType,
-																},
-															},
-															`gcp`: types.ObjectType{
-																AttrTypes: map[string]attr.Type{
-																	`service_account_json`: types.StringType,
-																},
-															},
-														},
-													},
-													`cluster`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`max_redirections`: types.Int64Type,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														},
-													},
-													`connect_timeout`:       types.Int64Type,
-													`connection_is_proxied`: types.BoolType,
-													`database`:              types.Int64Type,
-													`host`:                  types.StringType,
-													`keepalive`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`backlog`:   types.Int64Type,
-															`pool_size`: types.Int64Type,
-														},
-													},
-													`password`:     types.StringType,
-													`port`:         types.StringType,
-													`read_timeout`: types.Int64Type,
-													`send_timeout`: types.Int64Type,
-													`sentinel`: types.ObjectType{
-														AttrTypes: map[string]attr.Type{
-															`master`: types.StringType,
-															`nodes`: types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															`password`: types.StringType,
-															`role`:     types.StringType,
-															`username`: types.StringType,
-														},
-													},
-													`server_name`: types.StringType,
-													`ssl`:         types.BoolType,
-													`ssl_verify`:  types.BoolType,
-													`username`:    types.StringType,
-												},
-											},
-											"session_ttl": types.Int64Type,
-											"strategy":    types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"client": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"secrets": types.ListType{
-														ElemType: types.StringType,
-													},
-												})),
 												Attributes: map[string]schema.Attribute{
 													"secrets": schema.ListAttribute{
 														Optional:    true,
@@ -4455,10 +7427,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
 																},
-																MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																	`This feature is currently in beta and is subject to change.` + "\n" +
-																	`` + "\n" +
-																	`AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+																Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("azure"),
@@ -4485,10 +7454,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
 																},
-																MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																	`This feature is currently in beta and is subject to change.` + "\n" +
-																	`` + "\n" +
-																	`Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+																Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("aws"),
@@ -4505,10 +7471,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 																			`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 																	},
 																},
-																MarkdownDescription: `**Pre-release Feature**` + "\n" +
-																	`This feature is currently in beta and is subject to change.` + "\n" +
-																	`` + "\n" +
-																	`GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+																Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
 																Validators: []validator.Object{
 																	objectvalidator.ConflictsWith(path.Expressions{
 																		path.MatchRelative().AtParent().AtName("aws"),
@@ -4520,19 +7483,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
 													},
 													"cluster": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
-														Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-															"max_redirections": types.Int64Type,
-															"nodes": types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`ip`:   types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-														})),
 														Attributes: map[string]schema.Attribute{
 															"max_redirections": schema.Int64Attribute{
 																Computed:    true,
@@ -4608,12 +7559,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`Default: "127.0.0.1"`,
 													},
 													"keepalive": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
-														Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-															"backlog":   types.Int64Type,
-															"pool_size": types.Int64Type,
-														})),
 														Attributes: map[string]schema.Attribute{
 															"backlog": schema.Int64Attribute{
 																Optional:    true,
@@ -4666,22 +7612,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 														},
 													},
 													"sentinel": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
-														Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-															"master": types.StringType,
-															"nodes": types.ListType{
-																ElemType: types.ObjectType{
-																	AttrTypes: map[string]attr.Type{
-																		`host`: types.StringType,
-																		`port`: types.Int64Type,
-																	},
-																},
-															},
-															"password": types.StringType,
-															"role":     types.StringType,
-															"username": types.StringType,
-														})),
 														Attributes: map[string]schema.Attribute{
 															"master": schema.StringAttribute{
 																Optional:    true,
@@ -4757,10 +7688,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 													},
 												},
-												MarkdownDescription: `**Pre-release Feature**` + "\n" +
-													`This feature is currently in beta and is subject to change.` + "\n" +
-													`` + "\n" +
-													`Config for connecting to a Cloud Provider's Redis instance.`,
+												Description: `Config for connecting to a Cloud Provider's Redis instance.`,
 											},
 											"session_ttl": schema.Int64Attribute{
 												Computed:    true,
@@ -4812,6 +7740,7 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.UTF8LengthAtLeast(1),
 														},
 													},
 													"client_secret": schema.StringAttribute{
@@ -4838,11 +7767,10 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`Not Null`,
 														Validators: []validator.String{
 															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.UTF8LengthAtLeast(1),
 														},
 													},
 												},
-												MarkdownDescription: `**Pre-release Feature**` + "\n" +
-													`This feature is currently in beta and is subject to change.`,
 												Validators: []validator.Object{
 													objectvalidator.ConflictsWith(path.Expressions{
 														path.MatchRelative().AtParent().AtName("jwt"),
@@ -4872,8 +7800,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
 													},
 												},
-												MarkdownDescription: `**Pre-release Feature**` + "\n" +
-													`This feature is currently in beta and is subject to change.`,
 												Validators: []validator.Object{
 													objectvalidator.ConflictsWith(path.Expressions{
 														path.MatchRelative().AtParent().AtName("credentials"),
@@ -4881,13 +7807,60 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 												},
 											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
+										Description: `Configuration for an Upstream Server's MCP Server Tools' Authentication.`,
+									},
+									"upstream_protocol_version": schema.StringAttribute{
+										Optional: true,
+										MarkdownDescription: `The MCP protocol revision Kong speaks to the upstream MCP server. Leave unset to` + "\n" +
+											`negotiate a handshake revision with an ` + "`" + `initialize` + "`" + ` exchange, which is the default. Set a` + "\n" +
+											`per-request revision to reach an upstream that answers no handshake and mints no session.` + "\n" +
 											`` + "\n" +
-											`Configuration for an Upstream Server's MCP Server Tools' Authentication.`,
+											`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.` + "\n" +
+											`possible known values include one of ["2026-07-28", "2025-11-25", "2025-06-18", "2025-03-26"]`,
 									},
 								},
 								Description: `Server-side configuration specific to ` + "`" + `upstream-server` + "`" + ` mode.`,
+							},
+							"targets": schema.ListNestedAttribute{
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"address": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the ` + "`" + `port` + "`" + ` value will be overridden by the value from the DNS record. Each address must be unique within the agent. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthAtLeast(1),
+											},
+										},
+										"failover": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     booldefault.StaticBool(false),
+											Description: `Whether to use this target only as backup or not. A failover target receives traffic only when all other targets are unhealthy, or when a request has failed on all of them. The gateway checks the health of each target with active and passive health checks. Failover targets are not supported with the ` + "`" + `consistent-hashing` + "`" + ` algorithm, and at least one target must not be a failover target. Default: false`,
+										},
+										"weight": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     int64default.StaticInt64(100),
+											Description: `The weight this target gets within the upstream loadbalancer (` + "`" + `0` + "`" + `-` + "`" + `65535` + "`" + `). If the hostname resolves to an SRV record, the ` + "`" + `weight` + "`" + ` value will be overridden by the value from the DNS record. Default: 100`,
+											Validators: []validator.Int64{
+												int64validator.Between(0, 65535),
+											},
+										},
+									},
+								},
+								MarkdownDescription: `List of targets the upstream load balances requests across.` + "\n" +
+									`Replaces ` + "`" + `url` + "`" + `: set exactly one of ` + "`" + `url` + "`" + ` or ` + "`" + `targets` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 							"tools_cache_ttl_seconds": schema.Int64Attribute{
 								Computed: true,
@@ -4946,39 +7919,24 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 															`If not specified, the default AWS STS endpoint will be used.`,
 													},
 												},
-												MarkdownDescription: `**Pre-release Feature**` + "\n" +
-													`This feature is currently in beta and is subject to change.` + "\n" +
-													`` + "\n" +
-													`AWS IAM (SigV4) authentication for the upstream service.`,
+												Description: `AWS IAM (SigV4) authentication for the upstream service.`,
 											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`Authentication to use when proxying to the upstream service.`,
+										Description: `Authentication to use when proxying to the upstream service.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Configuration applied when proxying to the upstream service, including authentication.`,
+								Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 							},
 							"url": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream service using a URL.` + "\n" +
-									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}` + "\n" +
-									`Not Null`,
+									`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`Routing, logging, and server configuration for the MCP Server.` + "\n" +
-							`Not Null`,
+						Description: `Routing, logging, and server configuration for the MCP Server. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -4989,6 +7947,36 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
 					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
@@ -5028,20 +8016,18 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation.` + "\n" +
-							`Not Null`,
+						Computed:    true,
+						Optional:    true,
+						Description: `A user-defined unique identifier for this MCP server, used as a stable human-readable reference. This value is immutable after creation. Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
 					"policies": schema.ListAttribute{
@@ -5049,6 +8035,612 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `List of policy references.`,
+					},
+					"prompts": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"access": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"acls": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"allow": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are permitted access.`,
+												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+												"deny": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are denied access.`,
+												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+											},
+											MarkdownDescription: `Access control rules for allowing or denying callers access to this prompt (` + "`" + `prompts/get` + "`" + `),` + "\n" +
+												`and whether it is listed to them (` + "`" + `prompts/list` + "`" + `). When configured, these override the` + "\n" +
+												`MCP Server's ` + "`" + `default_prompt_acls` + "`" + ` for this prompt.`,
+										},
+									},
+									Description: `Access-control rules for a prompt. Not Null`,
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+								},
+								"name": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The MCP prompt name. Matches the prompt advertised by the remote MCP Server under the same` + "\n" +
+										`name. Unique within an MCP Server.` + "\n" +
+										`Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(1, 128),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `List of prompts exposed by this MCP Server.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+					},
+					"resources": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"access": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"acls": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"allow": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are permitted access.`,
+												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+												"deny": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `List of consumer groups that are denied access.`,
+												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+											},
+											MarkdownDescription: `Access control rules for allowing or denying callers access to this resource` + "\n" +
+												`(` + "`" + `resources/read` + "`" + `, ` + "`" + `resources/subscribe` + "`" + `), and whether it is listed to them` + "\n" +
+												`(` + "`" + `resources/list` + "`" + `, ` + "`" + `resources/templates/list` + "`" + `). When configured, these override the` + "\n" +
+												`MCP Server's ` + "`" + `default_resource_acls` + "`" + ` for this resource.`,
+										},
+									},
+									Description: `Access-control rules for a resource or resource template. Not Null`,
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+								},
+								"uri": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The MCP resource URI. Matches the resource advertised by the remote MCP Server under the` + "\n" +
+										`same ` + "`" + `uri` + "`" + `, or the resource template advertised under the same ` + "`" + `uriTemplate` + "`" + `. A URI` + "\n" +
+										`template (RFC 6570) also matches every concrete resource URI it expands to, so one entry` + "\n" +
+										`can govern a whole template. Unique within an MCP Server.` + "\n" +
+										`Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(1, 2048),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `List of resources exposed by this MCP Server.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.5` + "`" + `**.`,
+					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"aws": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"access_key_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Access Key ID to be used for authentication.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"assume_role_arn": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"cache_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the AWS Elasticache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"is_serverless": schema.BoolAttribute{
+																Computed:    true,
+																Optional:    true,
+																Default:     booldefault.StaticBool(true),
+																Description: `This flag specifies whether the cluster is serverless. Default: true`,
+															},
+															"region": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The region of the AWS ElastiCache cluster.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"role_session_name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The session name for the temporary credentials when assuming the IAM role.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"secret_access_key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `AWS Secret Access Key.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `AWS specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("azure"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"azure": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"client_secret": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Client Secret.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+															"tenant_id": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Azure Tenant ID.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `Azure specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("gcp"),
+															}...),
+														},
+													},
+													"gcp": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"service_account_json": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `GCP Service Account JSON.` + "\n" +
+																	`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+															},
+														},
+														Description: `GCP specific configs for connecting to a Cloud Provider's redis instance.`,
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("aws"),
+																path.MatchRelative().AtParent().AtName("azure"),
+															}...),
+														},
+													},
+												},
+												Description: `Auth related config for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"max_redirections": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(5),
+														Description: `Maximum retry attempts for redirection. Default: 5`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"ip": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+												},
+												Description: `Cluster configuration for the Redis connection.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"host": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`127.0.0.1`),
+												MarkdownDescription: `A string representing a host name, such as example.com.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "127.0.0.1"`,
+											},
+											"keepalive": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"backlog": schema.Int64Attribute{
+														Optional:    true,
+														Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `pool_size` + "`" + `.`,
+														Validators: []validator.Int64{
+															int64validator.Between(0, 2147483646),
+														},
+													},
+													"pool_size": schema.Int64Attribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     int64default.StaticInt64(256),
+														Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `pool_size` + "`" + ` nor ` + "`" + `backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `pool_size` + "`" + ` isn't specified but ` + "`" + `backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+														Validators: []validator.Int64{
+															int64validator.Between(1, 2147483646),
+														},
+													},
+												},
+												Description: `Keepalive configuration for the Redis connection.`,
+											},
+											"password": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"port": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  stringdefault.StaticString(`6379`),
+												MarkdownDescription: `An integer representing a port number between 0 and 65535, inclusive.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).` + "\n" +
+													`Default: "6379"`,
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"master": schema.StringAttribute{
+														Optional:    true,
+														Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+													},
+													"nodes": schema.ListNestedAttribute{
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"host": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     stringdefault.StaticString(`127.0.0.1`),
+																	Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+																},
+																"port": schema.Int64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(6379),
+																	Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+																	Validators: []validator.Int64{
+																		int64validator.Between(0, 65535),
+																	},
+																},
+															},
+														},
+														Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+														Validators: []validator.List{
+															listvalidator.SizeAtLeast(1),
+														},
+													},
+													"password": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+													"role": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+													},
+													"username": schema.StringAttribute{
+														Optional: true,
+														MarkdownDescription: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.` + "\n" +
+															`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+													},
+												},
+												Description: `Configuration for Redis Sentinel.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `A string representing an SNI (server name indication) value for TLS.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, uses SSL to connect to Redis. Default: true`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+											},
+											"username": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.` + "\n" +
+													`This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).`,
+											},
+										},
+										Description: `Config for connecting to a Cloud Provider's Redis instance.`,
+									},
+								},
+								MarkdownDescription: `Optional best-effort cache for exchanged credentials, shared across the cluster. Losing it` + "\n" +
+									`only costs a re-exchange. Credentials are encrypted with the keys held by the Token Vault` + "\n" +
+									`Datastore before being cached.`,
+							},
+							"credential": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"inbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+									"outbound": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"location": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether the credential travels in a header, the request body, or the query string. Defaults to ` + "`" + `header` + "`" + `. possible known values include one of ["header", "body", "query"]`,
+											},
+											"name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `Name of the header, query parameter, or body field carrying the credential. Defaults to` + "\n" +
+													`` + "`" + `Authorization` + "`" + ` for a header, ` + "`" + `access_token` + "`" + ` otherwise.`,
+											},
+											"prefix": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `String prepended verbatim to the credential value. Defaults to ` + "`" + `Bearer ` + "`" + ` (with its trailing` + "\n" +
+													`space) for a header, and to no prefix otherwise. Set it to an empty string when the provider` + "\n" +
+													`expects the raw credential.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(0),
+												},
+											},
+										},
+									},
+								},
+								MarkdownDescription: `Where the caller's subject token is read from, and where the credential the Token Vault returns` + "\n" +
+									`is placed on the upstream request.` + "\n" +
+									`` + "\n" +
+									`Both placements default to ` + "`" + `Authorization: Bearer <credential>` + "`" + ` in a header, though an` + "\n" +
+									`` + "`" + `outbound` + "`" + ` placement left unset honours whatever the provider advertises instead. Set them for` + "\n" +
+									`providers that take the credential elsewhere, such as an ` + "`" + `x-api-key` + "`" + ` header carrying the raw` + "\n" +
+									`credential.`,
+							},
+							"provider": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Name of the upstream credential provider registered in the Token Vault directory. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
+								},
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+							"subject_token_type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `The kind of bearer token the caller presents, which the Token Vault exchanges for the` + "\n" +
+									`upstream credential. Omit it unless the request shape makes the token type ambiguous: it is` + "\n" +
+									`otherwise resolved from the request, and failing that from the token's shape (a JWS is an` + "\n" +
+									`` + "`" + `access_token` + "`" + `, anything else an ` + "`" + `api_key` + "`" + `).` + "\n" +
+									`possible known values include one of ["access_token", "api_key"]`,
+							},
+						},
+						MarkdownDescription: `Resolves an upstream credential per request via Kong's Token Vault instead of sending a static` + "\n" +
+							`credential. The directory credentials live in, and the keys that encrypt them, come from the` + "\n" +
+							`` + "`" + `token-vault` + "`" + ` Datastore this entity references, and are returned read-only in ` + "`" + `storage` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Callers must enroll with the configured Token Vault provider before the credential can be` + "\n" +
+							`resolved. Until enrollment completes, an MCP Server serves virtual ` + "`" + `authenticate` + "`" + ` and` + "\n" +
+							`` + "`" + `check_authentication_status` + "`" + ` tools that guide the caller through the enrollment flow.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 					},
 					"tools": schema.ListNestedAttribute{
 						Computed: true,
@@ -5072,24 +8664,32 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are permitted access.`,
 												},
+												"allow_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
 												"deny": schema.ListAttribute{
 													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `List of consumer groups that are denied access.`,
 												},
+												"deny_when": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
 											},
-											MarkdownDescription: `**Pre-release Feature**` + "\n" +
-												`This feature is currently in beta and is subject to change.` + "\n" +
-												`` + "\n" +
-												`Access control rules for allowing or denying consumer groups access to this tool.` + "\n" +
+											MarkdownDescription: `Access control rules for allowing or denying consumer groups access to this tool.` + "\n" +
 												`When configured, these will override the default access control rules defined on the MCP Server.`,
 										},
 									},
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.` + "\n" +
-										`` + "\n" +
-										`Access-control rules for a tool.`,
+									Description: `Access-control rules for a tool.`,
 								},
 								"annotations": schema.SingleNestedAttribute{
 									Computed: true,
@@ -5116,8 +8716,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 											Description: `Human-readable title for the tool`,
 										},
 									},
-									MarkdownDescription: `**Pre-release Feature**` + "\n" +
-										`This feature is currently in beta and is subject to change.`,
 								},
 								"description": schema.StringAttribute{
 									Optional:    true,
@@ -5136,6 +8734,8 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 									Description: `The MCP tool name. In upstream-server mode, it also matches the remote MCP Server tool whose metadata this entry overrides. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(1, 128),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]+$`).String()),
 									},
 								},
 								"output_schema": schema.StringAttribute{
@@ -5157,8 +8757,6 @@ func (r *AIGatewayMCPServerResource) Schema(ctx context.Context, req resource.Sc
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("conversion_listener"),
@@ -5218,7 +8816,7 @@ func (r *AIGatewayMCPServerResource) Create(ctx context.Context, req resource.Cr
 	}
 	res, err := r.client.AIGatewayMCPServers.CreateAiGatewayMcpServer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -5285,7 +8883,7 @@ func (r *AIGatewayMCPServerResource) Read(ctx context.Context, req resource.Read
 	}
 	res, err := r.client.AIGatewayMCPServers.GetAiGatewayMcpServer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -5339,7 +8937,7 @@ func (r *AIGatewayMCPServerResource) Update(ctx context.Context, req resource.Up
 	}
 	res, err := r.client.AIGatewayMCPServers.UpdateAiGatewayMcpServer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -5399,7 +8997,7 @@ func (r *AIGatewayMCPServerResource) Delete(ctx context.Context, req resource.De
 	}
 	res, err := r.client.AIGatewayMCPServers.DeleteAiGatewayMcpServer(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

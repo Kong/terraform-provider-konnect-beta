@@ -7,16 +7,18 @@ import (
 )
 
 type AIGatewayMCPServerListener struct {
-	Access      *AIGatewayMCPServerListenerAccess   `tfsdk:"access"`
-	Config      *AIGatewayMCPServerNoUpstreamConfig `tfsdk:"config"`
-	CreatedAt   types.String                        `tfsdk:"created_at"`
-	DisplayName types.String                        `tfsdk:"display_name"`
-	Enabled     types.Bool                          `tfsdk:"enabled"`
-	ID          types.String                        `tfsdk:"id"`
-	Labels      map[string]types.String             `tfsdk:"labels"`
-	ManagedBy   map[string]types.String             `tfsdk:"managed_by"`
-	Name        types.String                        `tfsdk:"name"`
-	Policies    []types.String                      `tfsdk:"policies"`
-	Sources     []types.String                      `tfsdk:"sources"`
-	UpdatedAt   types.String                        `tfsdk:"updated_at"`
+	Access      *AIGatewayMCPServerListenerAccess                               `tfsdk:"access"`
+	Config      *AIGatewayMCPServerListenerAIGatewayMCPServerKongListenerConfig `tfsdk:"config"`
+	CreatedAt   types.String                                                    `tfsdk:"created_at"`
+	Datastores  []AIGatewayDatastoreRef                                         `tfsdk:"datastores"`
+	DisplayName types.String                                                    `tfsdk:"display_name"`
+	Enabled     types.Bool                                                      `tfsdk:"enabled"`
+	ID          types.String                                                    `tfsdk:"id"`
+	Labels      map[string]types.String                                         `tfsdk:"labels"`
+	ManagedBy   map[string]types.String                                         `tfsdk:"managed_by"`
+	Name        types.String                                                    `tfsdk:"name"`
+	Policies    []types.String                                                  `tfsdk:"policies"`
+	Sources     []types.String                                                  `tfsdk:"sources"`
+	TokenVault  *AIGatewayTokenVault                                            `tfsdk:"token_vault"`
+	UpdatedAt   types.String                                                    `tfsdk:"updated_at"`
 }

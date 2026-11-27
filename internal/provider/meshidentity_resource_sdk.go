@@ -46,7 +46,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 		if resp.Spec.Provider == nil {
 			r.Spec.Provider = nil
 		} else {
-			r.Spec.Provider = &tfTypes.MeshIdentityItemProvider{}
+			r.Spec.Provider = &tfTypes.Provider{}
 			if resp.Spec.Provider.Bundled == nil {
 				r.Spec.Provider.Bundled = nil
 			} else {
@@ -68,7 +68,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 						if resp.Spec.Provider.Bundled.Ca.Certificate.EnvVar == nil {
 							r.Spec.Provider.Bundled.Ca.Certificate.EnvVar = nil
 						} else {
-							r.Spec.Provider.Bundled.Ca.Certificate.EnvVar = &tfTypes.EventGatewayACLOperation{}
+							r.Spec.Provider.Bundled.Ca.Certificate.EnvVar = &tfTypes.AIGatewayDatastoreRef{}
 							r.Spec.Provider.Bundled.Ca.Certificate.EnvVar.Name = types.StringValue(resp.Spec.Provider.Bundled.Ca.Certificate.EnvVar.Name)
 						}
 						if resp.Spec.Provider.Bundled.Ca.Certificate.File == nil {
@@ -86,7 +86,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 						if resp.Spec.Provider.Bundled.Ca.Certificate.SecretRef == nil {
 							r.Spec.Provider.Bundled.Ca.Certificate.SecretRef = nil
 						} else {
-							r.Spec.Provider.Bundled.Ca.Certificate.SecretRef = &tfTypes.SecretRef{}
+							r.Spec.Provider.Bundled.Ca.Certificate.SecretRef = &tfTypes.MeshExternalServiceItemSpecTLSSecretRef{}
 							r.Spec.Provider.Bundled.Ca.Certificate.SecretRef.Kind = types.StringValue(string(resp.Spec.Provider.Bundled.Ca.Certificate.SecretRef.Kind))
 							r.Spec.Provider.Bundled.Ca.Certificate.SecretRef.Name = types.StringValue(resp.Spec.Provider.Bundled.Ca.Certificate.SecretRef.Name)
 						}
@@ -99,7 +99,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 						if resp.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar == nil {
 							r.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar = nil
 						} else {
-							r.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar = &tfTypes.EventGatewayACLOperation{}
+							r.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar = &tfTypes.AIGatewayDatastoreRef{}
 							r.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar.Name = types.StringValue(resp.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar.Name)
 						}
 						if resp.Spec.Provider.Bundled.Ca.PrivateKey.File == nil {
@@ -117,7 +117,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 						if resp.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef == nil {
 							r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef = nil
 						} else {
-							r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef = &tfTypes.SecretRef{}
+							r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef = &tfTypes.MeshExternalServiceItemSpecTLSSecretRef{}
 							r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef.Kind = types.StringValue(string(resp.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef.Kind))
 							r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef.Name = types.StringValue(resp.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef.Name)
 						}
@@ -296,7 +296,7 @@ func (r *MeshIdentityResourceModel) ToSharedMeshIdentityItemInput(ctx context.Co
 	if !r.Labels.IsUnknown() && !r.Labels.IsNull() {
 		diags.Append(r.Labels.ElementsAs(ctx, &labels, true)...)
 	}
-	var provider *shared.MeshIdentityItemProvider
+	var provider *shared.Provider
 	if r.Spec.Provider != nil {
 		var bundled *shared.Bundled
 		if r.Spec.Provider.Bundled != nil {
@@ -334,22 +334,22 @@ func (r *MeshIdentityResourceModel) ToSharedMeshIdentityItemInput(ctx context.Co
 							Path: path,
 						}
 					}
-					var insecureInline *shared.InsecureInline
+					var insecureInline *shared.MeshIdentityItemInsecureInline
 					if r.Spec.Provider.Bundled.Ca.Certificate.InsecureInline != nil {
 						var value string
 						value = r.Spec.Provider.Bundled.Ca.Certificate.InsecureInline.Value.ValueString()
 
-						insecureInline = &shared.InsecureInline{
+						insecureInline = &shared.MeshIdentityItemInsecureInline{
 							Value: value,
 						}
 					}
-					var secretRef *shared.SecretRef
+					var secretRef *shared.MeshIdentityItemSecretRef
 					if r.Spec.Provider.Bundled.Ca.Certificate.SecretRef != nil {
 						kind := shared.MeshIdentityItemKind(r.Spec.Provider.Bundled.Ca.Certificate.SecretRef.Kind.ValueString())
 						var name2 string
 						name2 = r.Spec.Provider.Bundled.Ca.Certificate.SecretRef.Name.ValueString()
 
-						secretRef = &shared.SecretRef{
+						secretRef = &shared.MeshIdentityItemSecretRef{
 							Kind: kind,
 							Name: name2,
 						}
@@ -383,22 +383,22 @@ func (r *MeshIdentityResourceModel) ToSharedMeshIdentityItemInput(ctx context.Co
 							Path: path1,
 						}
 					}
-					var insecureInline1 *shared.MeshIdentityItemInsecureInline
+					var insecureInline1 *shared.MeshIdentityItemSpecInsecureInline
 					if r.Spec.Provider.Bundled.Ca.PrivateKey.InsecureInline != nil {
 						var value1 string
 						value1 = r.Spec.Provider.Bundled.Ca.PrivateKey.InsecureInline.Value.ValueString()
 
-						insecureInline1 = &shared.MeshIdentityItemInsecureInline{
+						insecureInline1 = &shared.MeshIdentityItemSpecInsecureInline{
 							Value: value1,
 						}
 					}
-					var secretRef1 *shared.MeshIdentityItemSecretRef
+					var secretRef1 *shared.MeshIdentityItemSpecSecretRef
 					if r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef != nil {
 						kind1 := shared.MeshIdentityItemSpecKind(r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef.Kind.ValueString())
 						var name4 string
 						name4 = r.Spec.Provider.Bundled.Ca.PrivateKey.SecretRef.Name.ValueString()
 
-						secretRef1 = &shared.MeshIdentityItemSecretRef{
+						secretRef1 = &shared.MeshIdentityItemSpecSecretRef{
 							Kind: kind1,
 							Name: name4,
 						}
@@ -482,7 +482,7 @@ func (r *MeshIdentityResourceModel) ToSharedMeshIdentityItemInput(ctx context.Co
 			}
 		}
 		typeVar3 := shared.MeshIdentityItemSpecType(r.Spec.Provider.Type.ValueString())
-		provider = &shared.MeshIdentityItemProvider{
+		provider = &shared.Provider{
 			Bundled:   bundled,
 			Extension: extension,
 			Spire:     spire,

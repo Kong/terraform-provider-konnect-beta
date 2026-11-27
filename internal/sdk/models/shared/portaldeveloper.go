@@ -19,8 +19,10 @@ type PortalDeveloper struct {
 	FullName  string    `json:"full_name"`
 	// The status of a developer in a portal. Approved developers can log in, create applications, and view and register for products they have access to. Pending, revoked, and rejected developers cannot login or view any non-public portal information, or create or modify applications or registrations.
 	Status DeveloperStatus `json:"status"`
-	// Developer-supplied responses to the portal's `developer_registration` form, captured at registration time. `null` when no responses were recorded (form not configured at registration time, or developer created via admin endpoint without `additional_data`). Keyed by field `name` (lowercase slug; letters, digits, underscores, or hyphens).
-	AdditionalData map[string]FormResponseEntry `json:"additional_data,omitempty"`
+	// The developer's answers to the portal's `developer_registration`
+	// form, captured when they registered.
+	//
+	AdditionalData any `json:"additional_data,omitempty"`
 }
 
 func (p PortalDeveloper) MarshalJSON() ([]byte, error) {
@@ -28,6 +30,11 @@ func (p PortalDeveloper) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PortalDeveloper) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".additional_data |= (if . == null then . else map_values(.value) end)"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
@@ -76,7 +83,7 @@ func (p *PortalDeveloper) GetStatus() DeveloperStatus {
 	return p.Status
 }
 
-func (p *PortalDeveloper) GetAdditionalData() map[string]FormResponseEntry {
+func (p *PortalDeveloper) GetAdditionalData() any {
 	if p == nil {
 		return nil
 	}

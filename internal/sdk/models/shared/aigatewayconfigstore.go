@@ -7,13 +7,26 @@ import (
 	"time"
 )
 
-// AIGatewayConfigStore - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayConfigStore - AI Gateway Config Store created successfully.
 type AIGatewayConfigStore struct {
 	// The display name of the Config Store.
 	DisplayName *string `json:"display_name,omitempty"`
 	// The name of the Config Store. This value is immutable after creation.
 	Name string `json:"name"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -45,6 +58,20 @@ func (a *AIGatewayConfigStore) GetName() string {
 		return ""
 	}
 	return a.Name
+}
+
+func (a *AIGatewayConfigStore) GetLabels() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Labels
+}
+
+func (a *AIGatewayConfigStore) GetManagedBy() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedBy
 }
 
 func (a *AIGatewayConfigStore) GetID() string {

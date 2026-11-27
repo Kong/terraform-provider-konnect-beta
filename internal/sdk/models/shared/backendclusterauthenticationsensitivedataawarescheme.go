@@ -63,7 +63,14 @@ func CreateBackendClusterAuthenticationSensitiveDataAwareSchemeSaslAwsIam(saslAw
 	}
 }
 
-func (u *BackendClusterAuthenticationSensitiveDataAwareScheme) UnmarshalJSON(data []byte) error {
+func (u *BackendClusterAuthenticationSensitiveDataAwareScheme) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = BackendClusterAuthenticationSensitiveDataAwareScheme{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

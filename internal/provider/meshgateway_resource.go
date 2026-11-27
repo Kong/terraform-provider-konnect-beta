@@ -400,7 +400,7 @@ func (r *MeshGatewayResource) Create(ctx context.Context, req resource.CreateReq
 	}
 	res, err := r.client.MeshGateway.PutMeshGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -440,7 +440,7 @@ func (r *MeshGatewayResource) Create(ctx context.Context, req resource.CreateReq
 	}
 	res1, err := r.client.MeshGateway.GetMeshGateway(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -500,7 +500,7 @@ func (r *MeshGatewayResource) Read(ctx context.Context, req resource.ReadRequest
 	}
 	res, err := r.client.MeshGateway.GetMeshGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -554,7 +554,7 @@ func (r *MeshGatewayResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 	res, err := r.client.MeshGateway.PutMeshGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -594,7 +594,7 @@ func (r *MeshGatewayResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 	res1, err := r.client.MeshGateway.GetMeshGateway(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -654,7 +654,7 @@ func (r *MeshGatewayResource) Delete(ctx context.Context, req resource.DeleteReq
 	}
 	res, err := r.client.MeshGateway.DeleteMeshGateway(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

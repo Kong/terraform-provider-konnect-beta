@@ -70,7 +70,7 @@ func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceItem(ctx context.
 			ports.Name = types.StringPointerValue(portsItem.Name)
 			ports.Port = types.Int32Value(int32(portsItem.Port))
 			if portsItem.TargetPort != nil {
-				ports.TargetPort = &tfTypes.MeshItemMode{}
+				ports.TargetPort = &tfTypes.Port{}
 				if portsItem.TargetPort.Integer != nil {
 					ports.TargetPort.Integer = types.Int64PointerValue(portsItem.TargetPort.Integer)
 				}
@@ -99,7 +99,7 @@ func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceItem(ctx context.
 			if resp.Spec.Selector.DataplaneRef == nil {
 				r.Spec.Selector.DataplaneRef = nil
 			} else {
-				r.Spec.Selector.DataplaneRef = &tfTypes.DataplaneRef{}
+				r.Spec.Selector.DataplaneRef = &tfTypes.EventGatewayParsedRecordTranscodeSchemaRefDestinationRecordHeader{}
 				r.Spec.Selector.DataplaneRef.Name = types.StringPointerValue(resp.Spec.Selector.DataplaneRef.Name)
 			}
 			if len(resp.Spec.Selector.DataplaneTags) > 0 {

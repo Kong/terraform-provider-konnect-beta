@@ -7,20 +7,32 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
+	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/listvalidators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
 )
@@ -41,15 +53,14 @@ type AIGatewayAuthStrategyResource struct {
 
 // AIGatewayAuthStrategyResourceModel describes the resource data model.
 type AIGatewayAuthStrategyResourceModel struct {
-	Config        jsontypes.Normalized                  `tfsdk:"config"`
-	CreatedAt     types.String                          `tfsdk:"created_at"`
-	DisplayName   types.String                          `tfsdk:"display_name"`
-	GatewayID     types.String                          `tfsdk:"gateway_id"`
-	ID            types.String                          `tfsdk:"id"`
-	KeyAuth       *tfTypes.AIGatewayAuthStrategyKeyAuth `queryParam:"inline" tfsdk:"key_auth"`
-	Name          types.String                          `tfsdk:"name"`
-	OpenidConnect *tfTypes.AIGatewayAuthStrategyKeyAuth `queryParam:"inline" tfsdk:"openid_connect"`
-	UpdatedAt     types.String                          `tfsdk:"updated_at"`
+	CreatedAt     types.String                                `tfsdk:"created_at"`
+	DisplayName   types.String                                `tfsdk:"display_name"`
+	GatewayID     types.String                                `tfsdk:"gateway_id"`
+	ID            types.String                                `tfsdk:"id"`
+	KeyAuth       *tfTypes.AIGatewayAuthStrategyKeyAuth       `queryParam:"inline" tfsdk:"key_auth"`
+	Name          types.String                                `tfsdk:"name"`
+	OpenidConnect *tfTypes.AIGatewayAuthStrategyOpenIDConnect `queryParam:"inline" tfsdk:"openid_connect"`
+	UpdatedAt     types.String                                `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayAuthStrategyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,17 +71,6 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AIGatewayAuthStrategy Resource",
 		Attributes: map[string]schema.Attribute{
-			"config": schema.StringAttribute{
-				CustomType: jsontypes.NormalizedType{},
-				Computed:   true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("config")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("config")}}),
-				},
-				MarkdownDescription: `Configuration for the key-auth auth strategy.` + "\n" +
-					`For advanced use cases, additional config properties can be sent in the request body.` + "\n" +
-					`See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties` + "\n" +
-					`Parsed as JSON.`,
-			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
@@ -99,14 +99,113 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 			"key_auth": schema.SingleNestedAttribute{
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
-					"config": schema.StringAttribute{
-						CustomType: jsontypes.NormalizedType{},
-						Computed:   true,
-						Optional:   true,
-						MarkdownDescription: `Configuration for the key-auth auth strategy.` + "\n" +
-							`For advanced use cases, additional config properties can be sent in the request body.` + "\n" +
-							`See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties` + "\n" +
-							`Parsed as JSON.`,
+					"config": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"anonymous": schema.StringAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
+								MarkdownDescription: `The read-only anonymous consumer value used when authentication fails.` + "\n" +
+									`AI Gateway always sets this value to ` + "`" + `anonymous` + "`" + `.`,
+							},
+							"hide_credentials": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin strips the credential from the request. Default: true`,
+							},
+							"identity_realms": schema.ListNestedAttribute{
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `A string representing a UUID (universally unique identifier).`,
+										},
+										"region": schema.StringAttribute{
+											Optional: true,
+										},
+										"scope": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     stringdefault.StaticString(`cp`),
+											Description: `possible known values include one of ["cp", "realm"]; Default: "cp"`,
+										},
+									},
+								},
+								Description: `A configuration of Konnect Identity Realms that indicate where to source a consumer from.`,
+							},
+							"key_in_body": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `If enabled, the plugin reads the request body. Supported MIME types: ` + "`" + `application/www-form-urlencoded` + "`" + `, ` + "`" + `application/json` + "`" + `, and ` + "`" + `multipart/form-data` + "`" + `. Default: false`,
+							},
+							"key_in_header": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `If enabled (default), the plugin reads the request header and tries to find the key in it. Default: true`,
+							},
+							"key_in_query": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it. Default: true`,
+							},
+							"key_names": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("apikey")})),
+								ElementType: types.StringType,
+								Description: `Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen. Default: ["apikey"]`,
+							},
+							"principals": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"directory": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`default`),
+										Description: `The Kong Identity directory instance to authenticate against. Default: "default"`,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`^[a-zA-Z0-9_-]+$`), "must match pattern "+regexp.MustCompile(`^[a-zA-Z0-9_-]+$`).String()),
+										},
+									},
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `When true, authenticate against Kong Identity instead of local credentials. Default: false`,
+									},
+									"error_on_miss": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(true),
+										Description: `When true (default), return 401 if no matching principal is found in Kong Identity. When false, allow the request to continue unauthenticated instead. Default: true`,
+									},
+								},
+							},
+							"realm": schema.StringAttribute{
+								Optional:    true,
+								Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value.`,
+							},
+							"run_on_preflight": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `A boolean value that indicates whether the plugin should run (and try to authenticate) on ` + "`" + `OPTIONS` + "`" + ` preflight requests. If set to ` + "`" + `false` + "`" + `, then ` + "`" + `OPTIONS` + "`" + ` requests are always allowed. Default: true`,
+							},
+						},
+						Description: `Configuration for the key-auth auth strategy.`,
 					},
 					"created_at": schema.StringAttribute{
 						Computed: true,
@@ -114,6 +213,36 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
 					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
@@ -147,20 +276,18 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation.` + "\n" +
-							`Not Null`,
+						Computed:    true,
+						Optional:    true,
+						Description: `A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation. Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -171,10 +298,7 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`Configuration for an auth strategy.`,
+				Description: `Configuration for an auth strategy.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("openid_connect"),
@@ -186,22 +310,2226 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("name")}}),
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation.`,
+				Description: `A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation.`,
 			},
 			"openid_connect": schema.SingleNestedAttribute{
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
-					"config": schema.StringAttribute{
-						CustomType: jsontypes.NormalizedType{},
-						Computed:   true,
-						Optional:   true,
-						MarkdownDescription: `Configuration for the OpenID Connect auth strategy.` + "\n" +
-							`For advanced use cases, additional config properties can be sent in the request body.` + "\n" +
-							`See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties` + "\n" +
-							`Parsed as JSON.`,
+					"config": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"anonymous": schema.StringAttribute{
+								Optional:    true,
+								Description: `An optional string (consumer UUID or username) value that functions as an “anonymous” consumer if authentication fails. If empty (default null), requests that fail authentication will return a ` + "`" + `4xx` + "`" + ` HTTP status code. This value must refer to the consumer ` + "`" + `id` + "`" + ` or ` + "`" + `username` + "`" + ` attribute, and **not** its ` + "`" + `custom_id` + "`" + `.`,
+							},
+							"audience": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The audience passed to the authorization endpoint.`,
+							},
+							"audience_claim": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("aud")})),
+								ElementType: types.StringType,
+								Description: `The claim that contains the audience. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["aud"]`,
+							},
+							"audience_required": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The audiences (` + "`" + `audience_claim` + "`" + ` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.`,
+							},
+							"auth_methods": schema.ListAttribute{
+								Computed: true,
+								Optional: true,
+								Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+									types.StringValue("authorization_code"),
+									types.StringValue("bearer"),
+									types.StringValue("client_credentials"),
+									types.StringValue("introspection"),
+									types.StringValue("kong_oauth2"),
+									types.StringValue("password"),
+									types.StringValue("refresh_token"),
+									types.StringValue("session"),
+									types.StringValue("userinfo"),
+								})),
+								ElementType: types.StringType,
+								Description: `Types of credentials/grants to enable. Default: ["authorization_code","bearer","client_credentials","introspection","kong_oauth2","password","refresh_token","session","userinfo"]`,
+							},
+							"authenticated_groups_claim": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The claim that contains authenticated groups. This setting can be used together with ACL plugin, but it also enables IdP managed groups with other applications and integrations. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+							},
+							"authorization_cookie_domain": schema.StringAttribute{
+								Optional:    true,
+								Description: `The authorization cookie Domain flag.`,
+							},
+							"authorization_cookie_http_only": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Forbids JavaScript from accessing the cookie, for example, through the ` + "`" + `Document.cookie` + "`" + ` property. Default: true`,
+							},
+							"authorization_cookie_name": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`authorization`),
+								Description: `The authorization cookie name. Default: "authorization"`,
+							},
+							"authorization_cookie_path": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`/`),
+								Description: `The authorization cookie Path flag. Default: "/"`,
+							},
+							"authorization_cookie_same_site": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`Default`),
+								Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. possible known values include one of ["Default", "Lax", "None", "Strict"]; Default: "Default"`,
+							},
+							"authorization_cookie_secure": schema.BoolAttribute{
+								Optional:    true,
+								Description: `Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.`,
+							},
+							"authorization_endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `The authorization endpoint. If set it overrides the value in ` + "`" + `authorization_endpoint` + "`" + ` returned by the discovery endpoint.`,
+							},
+							"authorization_query_args_client": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra query arguments passed from the client to the authorization endpoint.`,
+							},
+							"authorization_query_args_names": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra query argument names passed to the authorization endpoint.`,
+							},
+							"authorization_query_args_values": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra query argument values passed to the authorization endpoint.`,
+							},
+							"authorization_rolling_timeout": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(600),
+								Description: `Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling. Default: 600`,
+							},
+							"bearer_token_cookie_name": schema.StringAttribute{
+								Optional:    true,
+								Description: `The name of the cookie in which the bearer token is passed.`,
+							},
+							"bearer_token_header_name": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								Default:  stringdefault.StaticString(`authorization:bearer`),
+								MarkdownDescription: `The name of the HTTP header from which the bearer token is retrieved. The default value is ` + "`" + `authorization:bearer` + "`" + `, which reads the token from the ` + "`" + `Authorization: Bearer <token>` + "`" + ` header. Accepts plain header names such as ` + "`" + `x-my-token` + "`" + ` as well as Kong's special ` + "`" + `authorization:bearer` + "`" + ` notation. The ` + "`" + `access-token` + "`" + ` and ` + "`" + `x-access-token` + "`" + ` headers are also checked as a fallback for backward compatibility regardless of this setting.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.` + "\n" +
+									`Default: "authorization:bearer"`,
+							},
+							"bearer_token_param_type": schema.ListAttribute{
+								Computed: true,
+								Optional: true,
+								Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+									types.StringValue("body"),
+									types.StringValue("header"),
+									types.StringValue("query"),
+								})),
+								ElementType: types.StringType,
+								Description: `Where to look for the bearer token: - ` + "`" + `header` + "`" + `: search the ` + "`" + `Authorization` + "`" + `, ` + "`" + `access-token` + "`" + `, and ` + "`" + `x-access-token` + "`" + ` HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body - ` + "`" + `cookie` + "`" + `: search the HTTP request cookies specified with ` + "`" + `config.bearer_token_cookie_name` + "`" + `. Default: ["body","header","query"]`,
+							},
+							"by_username_ignore_case": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `If ` + "`" + `consumer_by` + "`" + ` is set to ` + "`" + `username` + "`" + `, specify whether ` + "`" + `username` + "`" + ` can match consumers case-insensitively. Default: false`,
+							},
+							"cache_introspection": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Cache the introspection endpoint requests. Default: true`,
+							},
+							"cache_token_exchange": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Cache the legacy token exchange endpoint requests. Default: true`,
+							},
+							"cache_tokens": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Cache the token endpoint requests. Default: true`,
+							},
+							"cache_tokens_salt": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `Salt used for generating the cache key that is used for caching the token endpoint requests. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"cache_ttl": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(3600),
+								Description: `The default cache ttl in seconds that is used in case the cached object does not specify the expiry. Default: 3600`,
+							},
+							"cache_ttl_max": schema.Float64Attribute{
+								Optional:    true,
+								Description: `The maximum cache ttl in seconds (enforced).`,
+							},
+							"cache_ttl_min": schema.Float64Attribute{
+								Optional:    true,
+								Description: `The minimum cache ttl in seconds (enforced).`,
+							},
+							"cache_ttl_neg": schema.Float64Attribute{
+								Optional:    true,
+								Description: `The negative cache ttl in seconds.`,
+							},
+							"cache_ttl_resurrect": schema.Float64Attribute{
+								Optional:    true,
+								Description: `The resurrection ttl in seconds.`,
+							},
+							"cache_user_info": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Cache the user info requests. Default: true`,
+							},
+							"claims_forbidden": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `If given, these claims are forbidden in the token payload.`,
+							},
+							"client_alg": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The algorithm to use for client_secret_jwt (only HS***) or private_key_jwt authentication.`,
+							},
+							"client_arg": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`client_id`),
+								Description: `The client to use for this request (the selection is made with a request parameter with the same name). Default: "client_id"`,
+							},
+							"client_auth": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The default OpenID Connect client authentication method is 'client_secret_basic' (using 'Authorization: Basic' header), 'client_secret_post' (credentials in body), 'client_secret_jwt' (signed client assertion in body), 'private_key_jwt' (private key-signed assertion), 'tls_client_auth' (client certificate), 'self_signed_tls_client_auth' (self-signed client certificate), and 'none' (no authentication).`,
+							},
+							"client_credentials_param_type": schema.ListAttribute{
+								Computed: true,
+								Optional: true,
+								Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+									types.StringValue("body"),
+									types.StringValue("header"),
+									types.StringValue("query"),
+								})),
+								ElementType: types.StringType,
+								Description: `Where to look for the client credentials: - ` + "`" + `header` + "`" + `: search the HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search from the HTTP request body. Default: ["body","header","query"]`,
+							},
+							"client_id": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The client id(s) that the plugin uses when it calls authenticated endpoints on the identity provider.`,
+							},
+							"client_jwk": schema.ListNestedAttribute{
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"alg": schema.StringAttribute{
+											Optional: true,
+										},
+										"crv": schema.StringAttribute{
+											Optional: true,
+										},
+										"d": schema.StringAttribute{
+											Optional: true,
+										},
+										"dp": schema.StringAttribute{
+											Optional: true,
+										},
+										"dq": schema.StringAttribute{
+											Optional: true,
+										},
+										"e": schema.StringAttribute{
+											Optional: true,
+										},
+										"issuer": schema.StringAttribute{
+											Optional: true,
+										},
+										"k": schema.StringAttribute{
+											Optional: true,
+										},
+										"key_ops": schema.ListAttribute{
+											Optional:    true,
+											ElementType: types.StringType,
+										},
+										"kid": schema.StringAttribute{
+											Optional: true,
+										},
+										"kty": schema.StringAttribute{
+											Optional: true,
+										},
+										"n": schema.StringAttribute{
+											Optional: true,
+										},
+										"oth": schema.StringAttribute{
+											Optional: true,
+										},
+										"p": schema.StringAttribute{
+											Optional: true,
+										},
+										"q": schema.StringAttribute{
+											Optional: true,
+										},
+										"qi": schema.StringAttribute{
+											Optional: true,
+										},
+										"r": schema.StringAttribute{
+											Optional: true,
+										},
+										"t": schema.StringAttribute{
+											Optional: true,
+										},
+										"use": schema.StringAttribute{
+											Optional: true,
+										},
+										"x": schema.StringAttribute{
+											Optional: true,
+										},
+										"x5c": schema.ListAttribute{
+											Optional:    true,
+											ElementType: types.StringType,
+										},
+										"x5t": schema.StringAttribute{
+											Optional: true,
+										},
+										"x5t_number_s256": schema.StringAttribute{
+											Optional: true,
+										},
+										"x5u": schema.StringAttribute{
+											Optional: true,
+										},
+										"y": schema.StringAttribute{
+											Optional: true,
+										},
+									},
+								},
+								Description: `The JWK used for the private_key_jwt authentication.`,
+							},
+							"client_secret": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The client secret.`,
+							},
+							"cluster_cache_redis": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"cloud_authentication": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"auth_provider": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
+											},
+											"aws_access_key_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `AWS Access Key ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_assume_role_arn": schema.StringAttribute{
+												Optional:    true,
+												Description: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.`,
+											},
+											"aws_cache_name": schema.StringAttribute{
+												Optional:    true,
+												Description: `The name of the AWS Elasticache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_is_serverless": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `This flag specifies whether the cluster is serverless when auth_provider is set to ` + "`" + `aws` + "`" + `. Default: true`,
+											},
+											"aws_region": schema.StringAttribute{
+												Optional:    true,
+												Description: `The region of the AWS ElastiCache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_role_session_name": schema.StringAttribute{
+												Optional:    true,
+												Description: `The session name for the temporary credentials when assuming the IAM role.`,
+											},
+											"aws_secret_access_key": schema.StringAttribute{
+												Optional:    true,
+												Description: `AWS Secret Access Key to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"azure_client_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Client ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"azure_client_secret": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Client Secret to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"azure_tenant_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Tenant ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"gcp_service_account_json": schema.StringAttribute{
+												Optional:    true,
+												Description: `GCP Service Account JSON to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `gcp` + "`" + `.`,
+											},
+										},
+										Description: `Cloud auth related configs for connecting to a Cloud Provider's Redis instance.`,
+									},
+									"cluster_max_redirections": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(5),
+										Description: `Maximum retry attempts for redirection. Default: 5`,
+									},
+									"cluster_nodes": schema.ListNestedAttribute{
+										Optional: true,
+										NestedObject: schema.NestedAttributeObject{
+											Validators: []validator.Object{
+												speakeasy_objectvalidators.NotNull(),
+											},
+											Attributes: map[string]schema.Attribute{
+												"ip": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Default:     stringdefault.StaticString(`127.0.0.1`),
+													Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+												},
+												"port": schema.Int64Attribute{
+													Computed:    true,
+													Optional:    true,
+													Default:     int64default.StaticInt64(6379),
+													Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 65535),
+													},
+												},
+											},
+										},
+										Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
+									},
+									"connect_timeout": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 2147483646),
+										},
+									},
+									"connection_is_proxied": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+									},
+									"database": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(0),
+										Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+									},
+									"host": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`127.0.0.1`),
+										Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+									},
+									"keepalive_backlog": schema.Int64Attribute{
+										Optional:    true,
+										Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 2147483646),
+										},
+									},
+									"keepalive_pool_size": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(256),
+										Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 2147483646),
+										},
+									},
+									"password": schema.StringAttribute{
+										Optional:    true,
+										Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
+									},
+									"port": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`6379`),
+										Description: `An integer representing a port number between 0 and 65535, inclusive. Default: "6379"`,
+									},
+									"read_timeout": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 2147483646),
+										},
+									},
+									"send_timeout": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 2147483646),
+										},
+									},
+									"sentinel_master": schema.StringAttribute{
+										Optional:    true,
+										Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+									},
+									"sentinel_nodes": schema.ListNestedAttribute{
+										Optional: true,
+										NestedObject: schema.NestedAttributeObject{
+											Validators: []validator.Object{
+												speakeasy_objectvalidators.NotNull(),
+											},
+											Attributes: map[string]schema.Attribute{
+												"host": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Default:     stringdefault.StaticString(`127.0.0.1`),
+													Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+												},
+												"port": schema.Int64Attribute{
+													Computed:    true,
+													Optional:    true,
+													Default:     int64default.StaticInt64(6379),
+													Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 65535),
+													},
+												},
+											},
+										},
+										Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
+									},
+									"sentinel_password": schema.StringAttribute{
+										Optional:    true,
+										Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
+									},
+									"sentinel_role": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+									},
+									"sentinel_username": schema.StringAttribute{
+										Optional:    true,
+										Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
+									},
+									"server_name": schema.StringAttribute{
+										Optional:    true,
+										Description: `A string representing an SNI (server name indication) value for TLS.`,
+									},
+									"ssl": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `If set to true, uses SSL to connect to Redis. Default: false`,
+									},
+									"ssl_verify": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(true),
+										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+									},
+									"username": schema.StringAttribute{
+										Optional:    true,
+										Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
+									},
+								},
+							},
+							"cluster_cache_strategy": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`off`),
+								Description: `The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared. possible known values include one of ["off", "redis"]; Default: "off"`,
+							},
+							"consumer_by": schema.ListAttribute{
+								Computed: true,
+								Optional: true,
+								Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+									types.StringValue("custom_id"),
+									types.StringValue("username"),
+								})),
+								ElementType: types.StringType,
+								Description: `Consumer fields used for mapping: - ` + "`" + `id` + "`" + `: try to find the matching Consumer by ` + "`" + `id` + "`" + ` - ` + "`" + `username` + "`" + `: try to find the matching Consumer by ` + "`" + `username` + "`" + ` - ` + "`" + `custom_id` + "`" + `: try to find the matching Consumer by ` + "`" + `custom_id` + "`" + `. Default: ["custom_id","username"]`,
+							},
+							"consumer_claims": schema.ListAttribute{
+								Optional: true,
+								ElementType: types.ListType{
+									ElemType: types.StringType,
+								},
+								Description: `The claims used for consumer mapping. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.`,
+							},
+							"consumer_groups_claim": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+							},
+							"consumer_groups_optional": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Do not terminate the request if consumer groups mapping fails. Default: false`,
+							},
+							"consumer_optional": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Do not terminate the request if consumer mapping fails. Default: false`,
+							},
+							"credential_claim": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("sub")})),
+								ElementType: types.StringType,
+								Description: `Claim path used to derive virtual credentials when consumer mapping is not used. Default: ["sub"]`,
+							},
+							"credential_claims": schema.ListAttribute{
+								Optional: true,
+								ElementType: types.ListType{
+									ElemType: types.StringType,
+								},
+								MarkdownDescription: `The claims used to derive a virtual credential, for example to be consumed by the rate-limiting plugin, when consumer mapping is not used. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+							},
+							"disable_session": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Disable issuing the session cookie with the specified grants.`,
+							},
+							"discovery_headers_names": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra header names passed to the discovery endpoint.`,
+							},
+							"discovery_headers_values": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra header values passed to the discovery endpoint.`,
+							},
+							"display_errors": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Display errors on failure responses. Default: false`,
+							},
+							"domains": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The allowed values for the ` + "`" + `hd` + "`" + ` claim.`,
+							},
+							"downstream_access_token_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The downstream access token header.`,
+							},
+							"downstream_access_token_jwk_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The downstream access token JWK header.`,
+							},
+							"downstream_headers": schema.ListNestedAttribute{
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"header": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The name of the header. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+											},
+										},
+										"path": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The path of the header value. Not Null`,
+											Validators: []validator.List{
+												speakeasy_listvalidators.NotNull(),
+												listvalidator.SizeAtLeast(1),
+											},
+										},
+									},
+								},
+								Description: `The downstream claim to header mappings.`,
+							},
+							"downstream_headers_claims": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The downstream header claims. Only top level claims are supported.`,
+							},
+							"downstream_headers_names": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The downstream header names for the claim values.`,
+							},
+							"downstream_id_token_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The downstream id token header.`,
+							},
+							"downstream_id_token_jwk_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The downstream id token JWK header.`,
+							},
+							"downstream_introspection_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The downstream introspection header.`,
+							},
+							"downstream_introspection_jwt_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The downstream introspection JWT header.`,
+							},
+							"downstream_refresh_token_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The downstream refresh token header.`,
+							},
+							"downstream_session_id_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The downstream session id header.`,
+							},
+							"downstream_user_info_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The downstream user info header.`,
+							},
+							"downstream_user_info_jwt_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The downstream user info JWT header (in case the user info returns a JWT response).`,
+							},
+							"dpop_proof_lifetime": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(300),
+								Description: `Specifies the lifetime in seconds of the DPoP proof. It determines how long the same proof can be used after creation. The creation time is determined by the nonce creation time if a nonce is used, and the iat claim otherwise. Default: 300`,
+							},
+							"dpop_use_nonce": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Specifies whether to challenge the client with a nonce value for DPoP proof. When enabled it will also be used to calculate the DPoP proof lifetime. Default: false`,
+							},
+							"enable_hs_signatures": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Enable shared secret, for example, HS256, signatures (when disabled they will not be accepted). Default: false`,
+							},
+							"end_session_endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `The end session endpoint. If set it overrides the value in ` + "`" + `end_session_endpoint` + "`" + ` returned by the discovery endpoint.`,
+							},
+							"expose_error_code": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Specifies whether to expose the error code header, as defined in RFC 6750. If an authorization request fails, this header is sent in the response. Set to ` + "`" + `false` + "`" + ` to disable. Default: true`,
+							},
+							"extra_jwks_uris": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `JWKS URIs whose public keys are trusted (in addition to the keys found with the discovery).`,
+							},
+							"forbidden_destroy_session": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Destroy any active session for the forbidden requests. Default: true`,
+							},
+							"forbidden_error_message": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`Forbidden`),
+								Description: `The error message for the forbidden requests (when not using the redirection). Default: "Forbidden"`,
+							},
+							"forbidden_redirect_uri": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Where to redirect the client on forbidden requests.`,
+							},
+							"groups_claim": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("groups")})),
+								ElementType: types.StringType,
+								Description: `The claim that contains the groups. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["groups"]`,
+							},
+							"groups_required": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The groups (` + "`" + `groups_claim` + "`" + ` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.`,
+							},
+							"hide_credentials": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication. Default: true`,
+							},
+							"http_proxy": schema.StringAttribute{
+								Optional:    true,
+								Description: `The HTTP proxy.`,
+							},
+							"http_proxy_authorization": schema.StringAttribute{
+								Optional:    true,
+								Description: `The HTTP proxy authorization.`,
+							},
+							"http_version": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The HTTP version used for the requests by this plugin: - ` + "`" + `1.1` + "`" + `: HTTP 1.1 (the default) - ` + "`" + `1.0` + "`" + `: HTTP 1.0.`,
+							},
+							"https_proxy": schema.StringAttribute{
+								Optional:    true,
+								Description: `The HTTPS proxy.`,
+							},
+							"https_proxy_authorization": schema.StringAttribute{
+								Optional:    true,
+								Description: `The HTTPS proxy authorization.`,
+							},
+							"id_token_param_name": schema.StringAttribute{
+								Optional:    true,
+								Description: `The name of the parameter used to pass the id token.`,
+							},
+							"id_token_param_type": schema.ListAttribute{
+								Computed: true,
+								Optional: true,
+								Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+									types.StringValue("body"),
+									types.StringValue("header"),
+									types.StringValue("query"),
+								})),
+								ElementType: types.StringType,
+								Description: `Where to look for the id token: - ` + "`" + `header` + "`" + `: search the HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body. Default: ["body","header","query"]`,
+							},
+							"ignore_signature": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
+								ElementType: types.StringType,
+								Description: `Skip the token signature verification on certain grants. This is insecure and logs a warning; use it only for providers that publish no verification key. Grants: - ` + "`" + `password` + "`" + `: OAuth password grant - ` + "`" + `client_credentials` + "`" + `: OAuth client credentials grant - ` + "`" + `authorization_code` + "`" + `: authorization code flow - ` + "`" + `refresh_token` + "`" + `: OAuth refresh token grant - ` + "`" + `session` + "`" + `: session cookie authentication - ` + "`" + `introspection` + "`" + `: OAuth introspection - ` + "`" + `userinfo` + "`" + `: OpenID Connect user info endpoint authentication. Default: []`,
+							},
+							"introspect_jwt_tokens": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Specifies whether to introspect the JWT access tokens (can be used to check for revocations). Default: false`,
+							},
+							"introspection_accept": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`application/json`),
+								Description: `The value of ` + "`" + `Accept` + "`" + ` header for introspection requests: - ` + "`" + `application/json` + "`" + `: introspection response as JSON - ` + "`" + `application/token-introspection+jwt` + "`" + `: introspection response as JWT (from the current IETF draft document) - ` + "`" + `application/jwt` + "`" + `: introspection response as JWT (from the obsolete IETF draft document). possible known values include one of ["application/json", "application/jwt", "application/token-introspection+jwt"]; Default: "application/json"`,
+							},
+							"introspection_check_active": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Check that the introspection response has an ` + "`" + `active` + "`" + ` claim with a value of ` + "`" + `true` + "`" + `. Default: true`,
+							},
+							"introspection_endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `The introspection endpoint. If set it overrides the value in ` + "`" + `introspection_endpoint` + "`" + ` returned by the discovery endpoint.`,
+							},
+							"introspection_endpoint_auth_method": schema.StringAttribute{
+								Optional:    true,
+								Description: `The introspection endpoint authentication method: : ` + "`" + `client_secret_basic` + "`" + `, ` + "`" + `client_secret_post` + "`" + `, ` + "`" + `client_secret_jwt` + "`" + `, ` + "`" + `private_key_jwt` + "`" + `, ` + "`" + `tls_client_auth` + "`" + `, ` + "`" + `self_signed_tls_client_auth` + "`" + `, or ` + "`" + `none` + "`" + `: do not authenticate. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]`,
+							},
+							"introspection_headers_client": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra headers passed from the client to the introspection endpoint.`,
+							},
+							"introspection_headers_names": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra header names passed to the introspection endpoint.`,
+							},
+							"introspection_headers_values": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra header values passed to the introspection endpoint.`,
+							},
+							"introspection_hint": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`access_token`),
+								Description: `Introspection hint parameter value passed to the introspection endpoint. Default: "access_token"`,
+							},
+							"introspection_post_args_client": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra post arguments passed from the client to the introspection endpoint.`,
+							},
+							"introspection_post_args_client_headers": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra post arguments passed from the client headers to the introspection endpoint.`,
+							},
+							"introspection_post_args_names": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra post argument names passed to the introspection endpoint.`,
+							},
+							"introspection_post_args_values": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra post argument values passed to the introspection endpoint.`,
+							},
+							"introspection_token_param_name": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`token`),
+								Description: `Designate token's parameter name for introspection. Default: "token"`,
+							},
+							"issuer": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The discovery endpoint (or the issuer identifier). When there is no discovery endpoint, please also configure ` + "`" + `config.using_pseudo_issuer=true` + "`" + `. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"issuers_allowed": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The issuers allowed to be present in the tokens (` + "`" + `iss` + "`" + ` claim).`,
+							},
+							"jwks_endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `Overrides the ` + "`" + `jwks_uri` + "`" + ` returned by discovery. Use when the IdP exposes a non-standard JWKS endpoint.`,
+							},
+							"jwt_session_claim": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`sid`),
+								Description: `The claim to match against the JWT session cookie. Default: "sid"`,
+							},
+							"jwt_session_cookie": schema.StringAttribute{
+								Optional:    true,
+								Description: `The name of the JWT session cookie.`,
+							},
+							"keepalive": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Use keepalive with the HTTP client. Default: true`,
+							},
+							"leeway": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(0),
+								Description: `Defines leeway time (in seconds) for ` + "`" + `auth_time` + "`" + `, ` + "`" + `exp` + "`" + `, ` + "`" + `iat` + "`" + `, and ` + "`" + `nbf` + "`" + ` claims. Default: 0`,
+								Validators: []validator.Float64{
+									float64validator.AtLeast(0),
+								},
+							},
+							"login_action": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`upstream`),
+								Description: `What to do after successful login: - ` + "`" + `upstream` + "`" + `: proxy request to upstream service - ` + "`" + `response` + "`" + `: terminate request with a response - ` + "`" + `redirect` + "`" + `: redirect to a different location. possible known values include one of ["redirect", "response", "upstream"]; Default: "upstream"`,
+							},
+							"login_methods": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("authorization_code")})),
+								ElementType: types.StringType,
+								Description: `Enable login functionality with specified grants. Default: ["authorization_code"]`,
+							},
+							"login_redirect_mode": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`fragment`),
+								Description: `Where to place ` + "`" + `login_tokens` + "`" + ` when using ` + "`" + `redirect` + "`" + ` ` + "`" + `login_action` + "`" + `: - ` + "`" + `query` + "`" + `: place tokens in query string - ` + "`" + `fragment` + "`" + `: place tokens in url fragment (not readable by servers). possible known values include one of ["fragment", "query"]; Default: "fragment"`,
+							},
+							"login_redirect_uri": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Where to redirect the client when ` + "`" + `login_action` + "`" + ` is set to ` + "`" + `redirect` + "`" + `.`,
+							},
+							"login_tokens": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("id_token")})),
+								ElementType: types.StringType,
+								Description: `What tokens to include in ` + "`" + `response` + "`" + ` body or ` + "`" + `redirect` + "`" + ` query string or fragment: - ` + "`" + `id_token` + "`" + `: include id token - ` + "`" + `access_token` + "`" + `: include access token - ` + "`" + `refresh_token` + "`" + `: include refresh token - ` + "`" + `tokens` + "`" + `: include the full token endpoint response - ` + "`" + `introspection` + "`" + `: include introspection response. Default: ["id_token"]`,
+							},
+							"logout_methods": schema.ListAttribute{
+								Computed: true,
+								Optional: true,
+								Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+									types.StringValue("DELETE"),
+									types.StringValue("POST"),
+								})),
+								ElementType: types.StringType,
+								Description: `The request methods that can activate the logout: - ` + "`" + `POST` + "`" + `: HTTP POST method - ` + "`" + `GET` + "`" + `: HTTP GET method - ` + "`" + `DELETE` + "`" + `: HTTP DELETE method. Default: ["DELETE","POST"]`,
+							},
+							"logout_post_arg": schema.StringAttribute{
+								Optional:    true,
+								Description: `The request body argument that activates the logout.`,
+							},
+							"logout_query_arg": schema.StringAttribute{
+								Optional:    true,
+								Description: `The request query argument that activates the logout.`,
+							},
+							"logout_redirect_uri": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Where to redirect the client after the logout.`,
+							},
+							"logout_revoke": schema.BoolAttribute{
+								Computed: true,
+								Optional: true,
+								Default:  booldefault.StaticBool(false),
+								MarkdownDescription: `Revoke tokens as part of the logout.` + "\n" +
+									`` + "\n" +
+									`For more granular token revocation, you can also adjust the ` + "`" + `logout_revoke_access_token` + "`" + ` and ` + "`" + `logout_revoke_refresh_token` + "`" + ` parameters.` + "\n" +
+									`Default: false`,
+							},
+							"logout_revoke_access_token": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Revoke the access token as part of the logout. Requires ` + "`" + `logout_revoke` + "`" + ` to be set to ` + "`" + `true` + "`" + `. Default: true`,
+							},
+							"logout_revoke_refresh_token": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Revoke the refresh token as part of the logout. Requires ` + "`" + `logout_revoke` + "`" + ` to be set to ` + "`" + `true` + "`" + `. Default: true`,
+							},
+							"logout_uri_suffix": schema.StringAttribute{
+								Optional:    true,
+								Description: `The request URI suffix that activates the logout.`,
+							},
+							"max_age": schema.Float64Attribute{
+								Optional:    true,
+								Description: `The maximum age (in seconds) compared to the ` + "`" + `auth_time` + "`" + ` claim.`,
+							},
+							"mtls_introspection_endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `Alias for the introspection endpoint to be used for mTLS client authentication. If set it overrides the value in ` + "`" + `mtls_endpoint_aliases` + "`" + ` returned by the discovery endpoint.`,
+							},
+							"mtls_revocation_endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `Alias for the introspection endpoint to be used for mTLS client authentication. If set it overrides the value in ` + "`" + `mtls_endpoint_aliases` + "`" + ` returned by the discovery endpoint.`,
+							},
+							"mtls_token_endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `Alias for the token endpoint to be used for mTLS client authentication. If set it overrides the value in ` + "`" + `mtls_endpoint_aliases` + "`" + ` returned by the discovery endpoint.`,
+							},
+							"no_proxy": schema.StringAttribute{
+								Optional:    true,
+								Description: `Do not use proxy with these hosts.`,
+							},
+							"password_param_type": schema.ListAttribute{
+								Computed: true,
+								Optional: true,
+								Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+									types.StringValue("body"),
+									types.StringValue("header"),
+									types.StringValue("query"),
+								})),
+								ElementType: types.StringType,
+								Description: `Where to look for the username and password: - ` + "`" + `header` + "`" + `: search the HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body. Default: ["body","header","query"]`,
+							},
+							"preserve_query_args": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `With this parameter, you can preserve request query arguments even when doing authorization code flow. Default: false`,
+							},
+							"principals": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"directory": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`default`),
+										Description: `The Kong Identity directory instance to look up against. Default: "default"`,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`^[a-zA-Z0-9_-]+$`), "must match pattern "+regexp.MustCompile(`^[a-zA-Z0-9_-]+$`).String()),
+										},
+									},
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `When true, query Kong Identity to map a Principal after token verification. Default: false`,
+									},
+									"error_on_miss": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(true),
+										Description: `When true (default), return 401 if fail to match a Principal in Kong Identity after token verification. When false, the request continues without authenticated_principal set. Default: true`,
+									},
+									"jit": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"all_claims": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `Send the full set of verified token claims with the Kong Identity principal lookup. Default: false`,
+											},
+											"claims": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Send only the named token claims with the Kong Identity principal lookup. The claims are picked from the same source the principal claim is read from. Set all_claims to send every verified claim instead.`,
+												Validators: []validator.List{
+													listvalidator.SizeAtLeast(1),
+												},
+											},
+										},
+										MarkdownDescription: `Token claims to share with the Kong Identity principal lookup. Kong Identity, not this plugin, decides whether the claims are used: a trusted IdP with JIT provisioning enabled in Konnect maps them onto a principal provisioned just in time. By default the lookup only carries the principal claim (e.g. 'sub') and no additional claims are shared.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+									},
+									"match_consumer": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(true),
+										Description: `If a Consumer is attached to the matched Principal in Kong Identity, load it and set it in the request context, overriding consumer_by. Default: true`,
+									},
+									"match_consumer_groups": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(true),
+										Description: `If Consumer Groups are attached to the matched Principal in Kong Identity, load them, overriding consumer_groups_claim. Default: true`,
+									},
+									"principal_by": schema.StringAttribute{
+										Optional:    true,
+										Description: `Custom identity name for a type=custom Kong Identity lookup. When absent and principal_claim is set, an OIDC lookup is performed using principal_claim as the claim name instead of 'sub'.`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
+									},
+									"principal_claim": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `Token claim to use for the Kong Identity lookup. If multiple values are set, it means the claim is inside a nested object of the token payload. When principal_by is also set, performs a custom identity lookup (type=custom). When set alone, performs an OIDC lookup using this claim name instead of the default 'sub'.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
+									},
+								},
+								Description: `Configuration for Kong Identity principal hydration after token verification.`,
+							},
+							"proof_of_possession_auth_methods_validation": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP. Default: true`,
+							},
+							"proof_of_possession_dpop": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`off`),
+								Description: `Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof. possible known values include one of ["off", "optional", "strict"]; Default: "off"`,
+							},
+							"proof_of_possession_mtls": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`off`),
+								Description: `Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401. possible known values include one of ["off", "optional", "strict"]; Default: "off"`,
+							},
+							"protected_resource_metadata": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"authorization_servers": schema.ListAttribute{
+										Computed:    true,
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `List of authorization server issuer URIs to advertise in the RFC 9728 metadata document. Not Null`,
+										Validators: []validator.List{
+											speakeasy_listvalidators.NotNull(),
+											listvalidator.SizeAtLeast(1),
+										},
+									},
+									"metadata_endpoint": schema.StringAttribute{
+										Optional:    true,
+										Description: `Override the well-known metadata endpoint path. Defaults to the path component of resource with /.well-known/oauth-protected-resource appended.`,
+									},
+									"resource": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The URI of the protected resource. Used as the resource field in the RFC 9728 metadata document and to derive the well-known endpoint path. Not Null`,
+										Validators: []validator.String{
+											speakeasy_stringvalidators.NotNull(),
+										},
+									},
+									"scopes_supported": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `Scopes supported by this protected resource. Included in the RFC 9728 metadata document and in the scope attribute of WWW-Authenticate challenge headers on 401 responses.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
+									},
+								},
+								MarkdownDescription: `When configured, the plugin advertises this API as an OAuth 2.0 protected resource per RFC 9728. It serves a discovery document at the well-known URI and includes resource_metadata in WWW-Authenticate challenge headers.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+							},
+							"pushed_authorization_request_endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `The pushed authorization endpoint. If set it overrides the value in ` + "`" + `pushed_authorization_request_endpoint` + "`" + ` returned by the discovery endpoint.`,
+							},
+							"pushed_authorization_request_endpoint_auth_method": schema.StringAttribute{
+								Optional:    true,
+								Description: `The pushed authorization request endpoint authentication method: ` + "`" + `client_secret_basic` + "`" + `, ` + "`" + `client_secret_post` + "`" + `, ` + "`" + `client_secret_jwt` + "`" + `, ` + "`" + `private_key_jwt` + "`" + `, ` + "`" + `tls_client_auth` + "`" + `, ` + "`" + `self_signed_tls_client_auth` + "`" + `, or ` + "`" + `none` + "`" + `: do not authenticate. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]`,
+							},
+							"redirect_uri": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The redirect URI passed to the authorization and token endpoints.`,
+							},
+							"redis": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"cloud_authentication": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"auth_provider": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
+											},
+											"aws_access_key_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `AWS Access Key ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_assume_role_arn": schema.StringAttribute{
+												Optional:    true,
+												Description: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.`,
+											},
+											"aws_cache_name": schema.StringAttribute{
+												Optional:    true,
+												Description: `The name of the AWS Elasticache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_is_serverless": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `This flag specifies whether the cluster is serverless when auth_provider is set to ` + "`" + `aws` + "`" + `. Default: true`,
+											},
+											"aws_region": schema.StringAttribute{
+												Optional:    true,
+												Description: `The region of the AWS ElastiCache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_role_session_name": schema.StringAttribute{
+												Optional:    true,
+												Description: `The session name for the temporary credentials when assuming the IAM role.`,
+											},
+											"aws_secret_access_key": schema.StringAttribute{
+												Optional:    true,
+												Description: `AWS Secret Access Key to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"azure_client_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Client ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"azure_client_secret": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Client Secret to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"azure_tenant_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Tenant ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"gcp_service_account_json": schema.StringAttribute{
+												Optional:    true,
+												Description: `GCP Service Account JSON to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `gcp` + "`" + `.`,
+											},
+										},
+										Description: `Cloud auth related configs for connecting to a Cloud Provider's Redis instance.`,
+									},
+									"cluster_max_redirections": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(5),
+										Description: `Maximum retry attempts for redirection. Default: 5`,
+									},
+									"cluster_nodes": schema.ListNestedAttribute{
+										Optional: true,
+										NestedObject: schema.NestedAttributeObject{
+											Validators: []validator.Object{
+												speakeasy_objectvalidators.NotNull(),
+											},
+											Attributes: map[string]schema.Attribute{
+												"ip": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Default:     stringdefault.StaticString(`127.0.0.1`),
+													Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+												},
+												"port": schema.Int64Attribute{
+													Computed:    true,
+													Optional:    true,
+													Default:     int64default.StaticInt64(6379),
+													Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 65535),
+													},
+												},
+											},
+										},
+										Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
+									},
+									"connect_timeout": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 2147483646),
+										},
+									},
+									"connection_is_proxied": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+									},
+									"database": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(0),
+										Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+									},
+									"host": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`127.0.0.1`),
+										Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+									},
+									"keepalive_backlog": schema.Int64Attribute{
+										Optional:    true,
+										Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 2147483646),
+										},
+									},
+									"keepalive_pool_size": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(256),
+										Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 2147483646),
+										},
+									},
+									"password": schema.StringAttribute{
+										Optional:    true,
+										Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
+									},
+									"port": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`6379`),
+										Description: `An integer representing a port number between 0 and 65535, inclusive. Default: "6379"`,
+									},
+									"prefix": schema.StringAttribute{
+										Optional:    true,
+										Description: `The Redis session key prefix.`,
+									},
+									"read_timeout": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 2147483646),
+										},
+									},
+									"send_timeout": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 2147483646),
+										},
+									},
+									"sentinel_master": schema.StringAttribute{
+										Optional:    true,
+										Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+									},
+									"sentinel_nodes": schema.ListNestedAttribute{
+										Optional: true,
+										NestedObject: schema.NestedAttributeObject{
+											Validators: []validator.Object{
+												speakeasy_objectvalidators.NotNull(),
+											},
+											Attributes: map[string]schema.Attribute{
+												"host": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Default:     stringdefault.StaticString(`127.0.0.1`),
+													Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+												},
+												"port": schema.Int64Attribute{
+													Computed:    true,
+													Optional:    true,
+													Default:     int64default.StaticInt64(6379),
+													Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+													Validators: []validator.Int64{
+														int64validator.Between(0, 65535),
+													},
+												},
+											},
+										},
+										Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+										Validators: []validator.List{
+											listvalidator.SizeAtLeast(1),
+										},
+									},
+									"sentinel_password": schema.StringAttribute{
+										Optional:    true,
+										Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
+									},
+									"sentinel_role": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
+									},
+									"sentinel_username": schema.StringAttribute{
+										Optional:    true,
+										Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
+									},
+									"server_name": schema.StringAttribute{
+										Optional:    true,
+										Description: `A string representing an SNI (server name indication) value for TLS.`,
+									},
+									"socket": schema.StringAttribute{
+										Optional:    true,
+										Description: `The Redis unix socket path.`,
+									},
+									"ssl": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `If set to true, uses SSL to connect to Redis. Default: false`,
+									},
+									"ssl_verify": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(true),
+										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+									},
+									"username": schema.StringAttribute{
+										Optional:    true,
+										Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
+									},
+								},
+							},
+							"rediscovery_lifetime": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(30),
+								Description: `Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis. Default: 30`,
+							},
+							"refresh_token_param_name": schema.StringAttribute{
+								Optional:    true,
+								Description: `The name of the parameter used to pass the refresh token.`,
+							},
+							"refresh_token_param_type": schema.ListAttribute{
+								Computed: true,
+								Optional: true,
+								Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+									types.StringValue("body"),
+									types.StringValue("header"),
+									types.StringValue("query"),
+								})),
+								ElementType: types.StringType,
+								Description: `Where to look for the refresh token: - ` + "`" + `header` + "`" + `: search the HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body. Default: ["body","header","query"]`,
+							},
+							"refresh_tokens": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Specifies whether the plugin should try to refresh (soon to be) expired access tokens if the plugin has a ` + "`" + `refresh_token` + "`" + ` available. Default: true`,
+							},
+							"require_proof_key_for_code_exchange": schema.BoolAttribute{
+								Optional:    true,
+								Description: `Forcibly enable or disable the proof key for code exchange. When not set the value is determined through the discovery using the value of ` + "`" + `code_challenge_methods_supported` + "`" + `, and enabled automatically (in case the ` + "`" + `code_challenge_methods_supported` + "`" + ` is missing, the PKCE will not be enabled).`,
+							},
+							"require_pushed_authorization_requests": schema.BoolAttribute{
+								Optional:    true,
+								Description: `Forcibly enable or disable the pushed authorization requests. When not set the value is determined through the discovery using the value of ` + "`" + `require_pushed_authorization_requests` + "`" + ` (which defaults to ` + "`" + `false` + "`" + `).`,
+							},
+							"require_signed_request_object": schema.BoolAttribute{
+								Optional:    true,
+								Description: `Forcibly enable or disable the usage of signed request object on authorization or pushed authorization endpoint. When not set the value is determined through the discovery using the value of ` + "`" + `require_signed_request_object` + "`" + `, and enabled automatically (in case the ` + "`" + `require_signed_request_object` + "`" + ` is missing, the feature will not be enabled).`,
+							},
+							"resolve_distributed_claims": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Distributed claims are represented by the ` + "`" + `_claim_names` + "`" + ` and ` + "`" + `_claim_sources` + "`" + ` members of the JSON object containing the claims. If this parameter is set to ` + "`" + `true` + "`" + `, the plugin explicitly resolves these distributed claims. Default: false`,
+							},
+							"response_mode": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`query`),
+								Description: `Response mode passed to the authorization endpoint: - ` + "`" + `query` + "`" + `: for parameters in query string - ` + "`" + `form_post` + "`" + `: for parameters in request body - ` + "`" + `fragment` + "`" + `: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - ` + "`" + `query.jwt` + "`" + `, ` + "`" + `form_post.jwt` + "`" + `, ` + "`" + `fragment.jwt` + "`" + `: similar to ` + "`" + `query` + "`" + `, ` + "`" + `form_post` + "`" + ` and ` + "`" + `fragment` + "`" + ` but the parameters are encoded in a JWT - ` + "`" + `jwt` + "`" + `: shortcut that indicates the default encoding for the requested response type. possible known values include one of ["form_post", "form_post.jwt", "fragment", "fragment.jwt", "jwt", "query", "query.jwt"]; Default: "query"`,
+							},
+							"response_type": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("code")})),
+								ElementType: types.StringType,
+								Description: `The response type passed to the authorization endpoint. Default: ["code"]`,
+							},
+							"reverify": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Specifies whether to always verify tokens stored in the session. Default: false`,
+							},
+							"revocation_endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `The revocation endpoint. If set it overrides the value in ` + "`" + `revocation_endpoint` + "`" + ` returned by the discovery endpoint.`,
+							},
+							"revocation_endpoint_auth_method": schema.StringAttribute{
+								Optional:    true,
+								Description: `The revocation endpoint authentication method: : ` + "`" + `client_secret_basic` + "`" + `, ` + "`" + `client_secret_post` + "`" + `, ` + "`" + `client_secret_jwt` + "`" + `, ` + "`" + `private_key_jwt` + "`" + `, ` + "`" + `tls_client_auth` + "`" + `, ` + "`" + `self_signed_tls_client_auth` + "`" + `, or ` + "`" + `none` + "`" + `: do not authenticate. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]`,
+							},
+							"revocation_token_param_name": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`token`),
+								Description: `Designate token's parameter name for revocation. Default: "token"`,
+							},
+							"roles_claim": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("roles")})),
+								ElementType: types.StringType,
+								Description: `The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["roles"]`,
+							},
+							"roles_required": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The roles (` + "`" + `roles_claim` + "`" + ` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.`,
+							},
+							"run_on_preflight": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Specifies whether to run this plugin on pre-flight (` + "`" + `OPTIONS` + "`" + `) requests. Default: true`,
+							},
+							"scopes": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("openid")})),
+								ElementType: types.StringType,
+								Description: `The scopes passed to the authorization and token endpoints. Default: ["openid"]`,
+							},
+							"scopes_claim": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("scope")})),
+								ElementType: types.StringType,
+								Description: `The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["scope"]`,
+							},
+							"scopes_required": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The scopes (` + "`" + `scopes_claim` + "`" + ` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.`,
+							},
+							"search_user_info": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers. Default: false`,
+							},
+							"session_absolute_timeout": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(86400),
+								Description: `Limits how long the session can be renewed in seconds, until re-authentication is required. 0 disables the checks. Default: 86400`,
+							},
+							"session_audience": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`default`),
+								Description: `The session audience, which is the intended target application. For example ` + "`" + `"my-application"` + "`" + `. Default: "default"`,
+							},
+							"session_bind": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Bind the session to data acquired from the HTTP request or connection.`,
+							},
+							"session_cookie_domain": schema.StringAttribute{
+								Optional:    true,
+								Description: `The session cookie Domain flag.`,
+							},
+							"session_cookie_http_only": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Forbids JavaScript from accessing the cookie, for example, through the ` + "`" + `Document.cookie` + "`" + ` property. Default: true`,
+							},
+							"session_cookie_name": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`session`),
+								Description: `The session cookie name. Default: "session"`,
+							},
+							"session_cookie_path": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`/`),
+								Description: `The session cookie Path flag. Default: "/"`,
+							},
+							"session_cookie_same_site": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`Lax`),
+								Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. possible known values include one of ["Default", "Lax", "None", "Strict"]; Default: "Lax"`,
+							},
+							"session_cookie_secure": schema.BoolAttribute{
+								Optional:    true,
+								Description: `Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.`,
+							},
+							"session_enforce_same_subject": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `When set to ` + "`" + `true` + "`" + `, audiences are forced to share the same subject. Default: false`,
+							},
+							"session_hash_storage_key": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `When set to ` + "`" + `true` + "`" + `, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie. Default: false`,
+							},
+							"session_hash_subject": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `When set to ` + "`" + `true` + "`" + `, the value of subject is hashed before being stored. Only applies when ` + "`" + `session_store_metadata` + "`" + ` is enabled. Default: false`,
+							},
+							"session_idling_timeout": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(900),
+								Description: `Specifies how long the session can be inactive until it is considered invalid in seconds. 0 disables the checks and touching. Default: 900`,
+							},
+							"session_memcached_host": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`127.0.0.1`),
+								Description: `The memcached host. Default: "127.0.0.1"`,
+							},
+							"session_memcached_port": schema.Int64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     int64default.StaticInt64(11211),
+								Description: `The memcached port. Default: 11211`,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 65535),
+								},
+							},
+							"session_memcached_prefix": schema.StringAttribute{
+								Optional:    true,
+								Description: `The memcached session key prefix.`,
+							},
+							"session_memcached_socket": schema.StringAttribute{
+								Optional:    true,
+								Description: `The memcached unix socket path.`,
+							},
+							"session_memcached_ssl": schema.BoolAttribute{
+								Optional:    true,
+								Description: `If set to true, uses SSL to connect to memcached`,
+							},
+							"session_memcached_ssl_verify": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `If set to true, verifies the validity of the memcached server SSL certificate. Default: true`,
+							},
+							"session_remember": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Enables or disables persistent sessions. Default: false`,
+							},
+							"session_remember_absolute_timeout": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(2592000),
+								Description: `Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks. Default: 2592000`,
+							},
+							"session_remember_cookie_name": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`remember`),
+								Description: `Persistent session cookie name. Use with the ` + "`" + `remember` + "`" + ` configuration parameter. Default: "remember"`,
+							},
+							"session_remember_rolling_timeout": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(604800),
+								Description: `Specifies how long the persistent session is considered valid in seconds. 0 disables the checks and rolling. Default: 604800`,
+							},
+							"session_request_headers": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Set of headers to send to upstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. ` + "`" + `[ "id", "timeout" ]` + "`" + ` will set Session-Id and Session-Timeout request headers.`,
+							},
+							"session_response_headers": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Set of headers to send to downstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. ` + "`" + `[ "id", "timeout" ]` + "`" + ` will set Session-Id and Session-Timeout response headers.`,
+							},
+							"session_rolling_timeout": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(3600),
+								Description: `Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling. Default: 3600`,
+							},
+							"session_secret": schema.StringAttribute{
+								Optional:    true,
+								Description: `The session secret.`,
+							},
+							"session_storage": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`cookie`),
+								Description: `The session storage for session data: - ` + "`" + `cookie` + "`" + `: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - ` + "`" + `memcache` + "`" + `: stores session data in memcached - ` + "`" + `redis` + "`" + `: stores session data in Redis. possible known values include one of ["cookie", "memcache", "memcached", "redis"]; Default: "cookie"`,
+							},
+							"session_store_metadata": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject. Default: false`,
+							},
+							"ssl_verify": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Verify identity provider server certificate. If set to ` + "`" + `true` + "`" + `, the plugin uses the CA certificate set in the ` + "`" + `kong.conf` + "`" + ` config parameter ` + "`" + `lua_ssl_trusted_certificate` + "`" + `. Default: true`,
+							},
+							"timeout": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(10000),
+								Description: `Network IO timeout in milliseconds. Default: 10000`,
+								Validators: []validator.Float64{
+									float64validator.AtLeast(0),
+								},
+							},
+							"tls_client_auth_cert_id": schema.StringAttribute{
+								Optional:    true,
+								Description: `ID of the Certificate entity representing the client certificate to use for mTLS client authentication for connections between Kong and the Auth Server.`,
+							},
+							"tls_client_auth_ssl_verify": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Verify identity provider server certificate during mTLS client authentication. Default: true`,
+							},
+							"token_cache_key_include_scope": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Include the scope in the token cache key, so token with different scopes are considered diffrent tokens. Default: false`,
+							},
+							"token_endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `The token endpoint. If set it overrides the value in ` + "`" + `token_endpoint` + "`" + ` returned by the discovery endpoint.`,
+							},
+							"token_endpoint_auth_method": schema.StringAttribute{
+								Optional:    true,
+								Description: `The token endpoint authentication method: ` + "`" + `client_secret_basic` + "`" + `, ` + "`" + `client_secret_post` + "`" + `, ` + "`" + `client_secret_jwt` + "`" + `, ` + "`" + `private_key_jwt` + "`" + `, ` + "`" + `tls_client_auth` + "`" + `, ` + "`" + `self_signed_tls_client_auth` + "`" + `, or ` + "`" + `none` + "`" + `: do not authenticate. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]`,
+							},
+							"token_exchange": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"cache": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"enabled": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `Whether to enable caching. Default: true`,
+											},
+											"ttl": schema.Int64Attribute{
+												Optional:    true,
+												Description: `Cache ttl in seconds used when caching exchanged tokens, use it to override ` + "`" + `conf.cache_ttl` + "`" + `. Token expiry will be used if shorter than this value.`,
+											},
+										},
+										Description: `Cache support for token exchange`,
+									},
+									"grant_type": schema.StringAttribute{
+										Computed: true,
+										Optional: true,
+										Default:  stringdefault.StaticString(`token_exchange`),
+										MarkdownDescription: `The token exchange grant. ` + "`" + `token_exchange` + "`" + ` (default) uses the OAuth 2.0 Token Exchange grant (RFC 8693). ` + "`" + `jwt_bearer` + "`" + ` uses the JWT Bearer authorization-grant flow (RFC 7523); see ` + "`" + `token_exchange.provider` + "`" + ` for provider-specific defaults in this mode.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
+											`possible known values include one of ["jwt_bearer", "token_exchange"]; Default: "token_exchange"`,
+									},
+									"map_identities_from": schema.StringAttribute{
+										Computed: true,
+										Optional: true,
+										Default:  stringdefault.StaticString(`exchanged_tokens`),
+										MarkdownDescription: `Which token's claims to use for consumer, consumer group, and principal mapping. Only takes effect when token exchange is configured. ` + "`" + `exchanged_tokens` + "`" + ` (default) uses the token(s) returned by the exchange or tokens derived from it, as today. ` + "`" + `subject_token` + "`" + ` uses the original, pre-exchange bearer token's claims instead.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
+											`possible known values include one of ["exchanged_tokens", "subject_token"]; Default: "exchanged_tokens"`,
+									},
+									"provider": schema.StringAttribute{
+										Computed: true,
+										Optional: true,
+										Default:  stringdefault.StaticString(`standard`),
+										MarkdownDescription: `Identity provider used with ` + "`" + `grant_type = jwt_bearer` + "`" + `; not allowed with ` + "`" + `grant_type = token_exchange` + "`" + `. ` + "`" + `standard` + "`" + ` (default) adds no provider-specific parameter. ` + "`" + `microsoft` + "`" + ` adds the required ` + "`" + `requested_token_use=on_behalf_of` + "`" + `, which is fixed and cannot be overridden via ` + "`" + `post_args_names/values` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
+											`possible known values include one of ["microsoft", "standard"]; Default: "standard"`,
+									},
+									"request": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"actor_token": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"header_name": schema.StringAttribute{
+														Optional:    true,
+														Description: `Header name containing the actor token. Required when ` + "`" + `source` + "`" + ` is ` + "`" + `header` + "`" + `.`,
+													},
+													"source": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     stringdefault.StaticString(`none`),
+														Description: `Where to obtain the actor token. ` + "`" + `header` + "`" + ` reads it from a request header. ` + "`" + `config` + "`" + ` uses a fixed value. ` + "`" + `none` + "`" + ` disables actor token support. possible known values include one of ["config", "header", "none"]; Default: "none"`,
+													},
+													"static_token": schema.StringAttribute{
+														Optional:    true,
+														Description: `Static actor token value. Required when ` + "`" + `source` + "`" + ` is ` + "`" + `config` + "`" + `.`,
+													},
+													"type": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     stringdefault.StaticString(`urn:ietf:params:oauth:token-type:access_token`),
+														Description: `The RFC 8693 token type identifier of the actor token (the ` + "`" + `actor_token_type` + "`" + ` request parameter). Default: "urn:ietf:params:oauth:token-type:access_token"`,
+													},
+												},
+												MarkdownDescription: `How to obtain the actor token to include in the token exchange request. Represents the identity of the party acting on behalf of the subject.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"audience": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Audiences used in the token exchange request. Values defined here override those defined in ` + "`" + `config.audience` + "`" + `.`,
+											},
+											"empty_audience": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `Use empty audiences. Use this field to remove audiences defined in ` + "`" + `config.audience` + "`" + `. Default: false`,
+											},
+											"empty_headers": schema.BoolAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  booldefault.StaticBool(false),
+												MarkdownDescription: `Use no extra headers on the token exchange request. Use this field to remove extra headers defined in ` + "`" + `config.token_headers_names` + "`" + `.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
+													`Default: false`,
+											},
+											"empty_post_args": schema.BoolAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  booldefault.StaticBool(false),
+												MarkdownDescription: `Use no extra POST arguments on the token exchange request. Use this field to remove extra POST arguments defined in ` + "`" + `config.token_post_args_names` + "`" + `.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
+													`Default: false`,
+											},
+											"empty_scopes": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `Use empty scopes. Use this field to remove scopes defined in ` + "`" + `config.scopes` + "`" + `. Default: false`,
+											},
+											"headers_names": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Extra header names sent only on the token exchange request. Overrides ` + "`" + `config.token_headers_names` + "`" + ` for this request.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"headers_values": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Values paired by index with ` + "`" + `headers_names` + "`" + `.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"post_args_names": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Extra POST argument names sent only on the token exchange request. Overrides ` + "`" + `config.token_post_args_names` + "`" + ` for this request. Use this, not the top-level field, for parameters that must not be attached to the plugin's other token endpoint calls, for example ` + "`" + `requested_token_use` + "`" + ` for Entra ID's On-Behalf-Of flow.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"post_args_values": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Values paired by index with ` + "`" + `post_args_names` + "`" + `.` + "\n" +
+													`` + "\n" +
+													`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+											},
+											"scopes": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Scopes used in the token exchange request. Values defined here override those defined in ` + "`" + `config.scopes` + "`" + `.`,
+											},
+										},
+										Description: `Parameters used in the token exchange request.`,
+									},
+									"subject_token_issuers": schema.ListNestedAttribute{
+										Computed: true,
+										Optional: true,
+										NestedObject: schema.NestedAttributeObject{
+											Validators: []validator.Object{
+												speakeasy_objectvalidators.NotNull(),
+											},
+											Attributes: map[string]schema.Attribute{
+												"conditions": schema.SingleNestedAttribute{
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"has_audience": schema.ListAttribute{
+															Optional:    true,
+															ElementType: types.StringType,
+															Description: `Audience values that must all be present in the token, matched against ` + "`" + `audience_claim` + "`" + `.`,
+														},
+														"has_scopes": schema.ListAttribute{
+															Optional:    true,
+															ElementType: types.StringType,
+															Description: `Scope values that must all be present in the token, matched against ` + "`" + `scopes_claim` + "`" + `.`,
+														},
+														"missing_audience": schema.ListAttribute{
+															Optional:    true,
+															ElementType: types.StringType,
+															Description: `Audience values that must all be absent from the token, matched against ` + "`" + `audience_claim` + "`" + `.`,
+														},
+														"missing_scopes": schema.ListAttribute{
+															Optional:    true,
+															ElementType: types.StringType,
+															Description: `Scope values that must all be absent from the token, matched against ` + "`" + `scopes_claim` + "`" + `.`,
+														},
+													},
+													Description: `A token will only be exchanged when it matches all these criteria. To exchange tokens issued by a different issuer, ` + "`" + `conditions` + "`" + ` must not be defined -- every token from that issuer is exchanged unconditionally, since a foreign-issued token that isn't exchanged can never pass normal verification against the target issuer anyway. In contrast, to exchange tokens issued by the target issuer itself, ` + "`" + `conditions` + "`" + ` must be defined.`,
+												},
+												"deny_on_mismatch": schema.BoolAttribute{
+													Computed: true,
+													Optional: true,
+													Default:  booldefault.StaticBool(false),
+													MarkdownDescription: `When true, a token issued by ` + "`" + `issuer` + "`" + ` that fails to match ` + "`" + `conditions` + "`" + ` is denied instead of being passed through unexchanged. Evaluated independently for this item only, with no effect on other ` + "`" + `subject_token_issuers` + "`" + ` items. Only allowed when this issuer is the target issuer, since ` + "`" + `conditions` + "`" + ` is required there and foreign-issuer items always match.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
+														`Default: false`,
+												},
+												"issuer": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `Tokens of whose iss claim matches this value will be exchanged. Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
+												},
+												"jwks_uri": schema.StringAttribute{
+													Optional: true,
+													MarkdownDescription: `An explicit JWKS endpoint for this issuer. This field should be left empty when this issuer is the same as the target issuer. It is only used when ` + "`" + `verify_signature` + "`" + ` is ` + "`" + `true` + "`" + `. When set, Kong fetches the signing keys from this URI directly instead of using OIDC Discovery.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+												},
+												"verify_signature": schema.BoolAttribute{
+													Computed: true,
+													Optional: true,
+													Default:  booldefault.StaticBool(false),
+													MarkdownDescription: `When true, Kong cryptographically verifies the signature of the incoming subject token before exchanging it. This field should be left empty or set to ` + "`" + `false` + "`" + ` when this issuer is the same as the target issuer. Defaults to ` + "`" + `false` + "`" + ` for backward compatibility.` + "\n" +
+														`` + "\n" +
+														`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.` + "\n" +
+														`Default: false`,
+												},
+											},
+										},
+										Description: `Trusted token issuers from which the upstream may accept tokens to be exchanged. If a JWT bearer matches all the conditions of a subject token issuer item, the token will be exchanged. Not Null`,
+										Validators: []validator.List{
+											speakeasy_listvalidators.NotNull(),
+											listvalidator.SizeAtLeast(1),
+										},
+									},
+								},
+								Description: `Details on how to accept tokens from other identity providers.`,
+							},
+							"token_exchange_endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `Endpoint used to perform the legacy token exchange.`,
+							},
+							"token_headers_client": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra headers passed from the client to the token endpoint.`,
+							},
+							"token_headers_grants": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Enable the sending of the token endpoint response headers only with certain grants: - ` + "`" + `password` + "`" + `: with OAuth password grant - ` + "`" + `client_credentials` + "`" + `: with OAuth client credentials grant - ` + "`" + `authorization_code` + "`" + `: with authorization code flow - ` + "`" + `refresh_token` + "`" + ` with refresh token grant.`,
+							},
+							"token_headers_names": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra header names passed to the token endpoint.`,
+							},
+							"token_headers_prefix": schema.StringAttribute{
+								Optional:    true,
+								Description: `Add a prefix to the token endpoint response headers before forwarding them to the downstream client.`,
+							},
+							"token_headers_replay": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The names of token endpoint response headers to forward to the downstream client.`,
+							},
+							"token_headers_values": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra header values passed to the token endpoint.`,
+							},
+							"token_post_args_client": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Pass extra arguments from the client to the OpenID-Connect plugin. If arguments exist, the client can pass them using: - Query parameters - Request Body - Request Header  This parameter can be used with ` + "`" + `scope` + "`" + ` values, like this:  ` + "`" + `config.token_post_args_client=scope` + "`" + `  In this case, the token would take the ` + "`" + `scope` + "`" + ` value from the query parameter or from the request body or from the header and send it to the token endpoint.`,
+							},
+							"token_post_args_names": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra post argument names passed to the token endpoint.`,
+							},
+							"token_post_args_values": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra post argument values passed to the token endpoint.`,
+							},
+							"unauthorized_destroy_session": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Destroy any active session for the unauthorized requests. Default: true`,
+							},
+							"unauthorized_error_message": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`Unauthorized`),
+								Description: `The error message for the unauthorized requests (when not using the redirection). Default: "Unauthorized"`,
+							},
+							"unauthorized_redirect_uri": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Where to redirect the client on unauthorized requests.`,
+							},
+							"unexpected_redirect_uri": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Where to redirect the client when unexpected errors happen with the requests.`,
+							},
+							"upstream_access_token_header": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`authorization:bearer`),
+								Description: `The upstream access token header. Default: "authorization:bearer"`,
+							},
+							"upstream_access_token_jwk_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The upstream access token JWK header.`,
+							},
+							"upstream_headers": schema.ListNestedAttribute{
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"header": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The name of the header. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+											},
+										},
+										"path": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The path of the header value. Not Null`,
+											Validators: []validator.List{
+												speakeasy_listvalidators.NotNull(),
+												listvalidator.SizeAtLeast(1),
+											},
+										},
+									},
+								},
+								Description: `The upstream claim to header mappings.`,
+							},
+							"upstream_headers_claims": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The upstream header claims. Only top level claims are supported.`,
+							},
+							"upstream_headers_names": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The upstream header names for the claim values.`,
+							},
+							"upstream_id_token_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The upstream id token header.`,
+							},
+							"upstream_id_token_jwk_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The upstream id token JWK header.`,
+							},
+							"upstream_introspection_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The upstream introspection header.`,
+							},
+							"upstream_introspection_jwt_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The upstream introspection JWT header.`,
+							},
+							"upstream_refresh_token_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The upstream refresh token header.`,
+							},
+							"upstream_session_id_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The upstream session id header.`,
+							},
+							"upstream_user_info_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The upstream user info header.`,
+							},
+							"upstream_user_info_jwt_header": schema.StringAttribute{
+								Optional:    true,
+								Description: `The upstream user info JWT header (in case the user info returns a JWT response).`,
+							},
+							"userinfo_accept": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`application/json`),
+								Description: `The value of ` + "`" + `Accept` + "`" + ` header for user info requests: - ` + "`" + `application/json` + "`" + `: user info response as JSON - ` + "`" + `application/jwt` + "`" + `: user info response as JWT (from the obsolete IETF draft document). possible known values include one of ["application/json", "application/jwt"]; Default: "application/json"`,
+							},
+							"userinfo_endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `The user info endpoint. If set it overrides the value in ` + "`" + `userinfo_endpoint` + "`" + ` returned by the discovery endpoint.`,
+							},
+							"userinfo_headers_client": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra headers passed from the client to the user info endpoint.`,
+							},
+							"userinfo_headers_names": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra header names passed to the user info endpoint.`,
+							},
+							"userinfo_headers_values": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra header values passed to the user info endpoint.`,
+							},
+							"userinfo_query_args_client": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra query arguments passed from the client to the user info endpoint.`,
+							},
+							"userinfo_query_args_names": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra query argument names passed to the user info endpoint.`,
+							},
+							"userinfo_query_args_values": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Extra query argument values passed to the user info endpoint.`,
+							},
+							"using_pseudo_issuer": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `If the plugin uses a pseudo issuer. When set to true, the plugin will not discover the configuration from the issuer URL specified with ` + "`" + `config.issuer` + "`" + `. Default: false`,
+							},
+							"verify_claims": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Verify tokens for standard claims. Default: true`,
+							},
+							"verify_nonce": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Verify nonce on authorization code flow. Default: true`,
+							},
+							"verify_parameters": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Verify plugin configuration against discovery. Default: false`,
+							},
+							"verify_signature": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `Verify the cryptographic signature of tokens. Disabling this skips verification for every token source, including tokens presented directly by clients (bearer); this is insecure for that path. To trust only tokens fetched from the identity provider for specific grants, use ` + "`" + `ignore_signature` + "`" + ` instead, which never affects bearer tokens. Default: true`,
+							},
+						},
+						Description: `Configuration for the OpenID Connect auth strategy.`,
 					},
 					"created_at": schema.StringAttribute{
 						Computed: true,
@@ -209,6 +2537,36 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"datastores": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `An immutable user-defined identifier for this resource. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthBetween(2, 255),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `The Token Vault Datastore holding this entity's credential storage: the directory credentials` + "\n" +
+							`are written to, and the encryption keys that seal them. Required when ` + "`" + `token_vault` + "`" + ` is set` + "\n" +
+							`(on an auth strategy, when its credential manager is enabled), and the referenced Datastore` + "\n" +
+							`must have type ` + "`" + `token-vault` + "`" + `. Only one Datastore can be referenced.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+							listvalidator.SizeAtMost(1),
+						},
 					},
 					"display_name": schema.StringAttribute{
 						Computed:    true,
@@ -242,21 +2600,104 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation.` + "\n" +
-							`Not Null`,
+						Computed:    true,
+						Optional:    true,
+						Description: `A user-defined unique identifier for this auth strategy instance, used as a stable human-readable reference. This value is immutable after creation. Not Null`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 						},
+					},
+					"token_vault": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"enable_credential_manager": schema.BoolAttribute{
+								Computed: true,
+								Optional: true,
+								Default:  booldefault.StaticBool(false),
+								MarkdownDescription: `Enables the self-service credential manager UI through which end users authorize` + "\n" +
+									`upstream providers for Token Vault datastore linked to this auth strategy. This OIDC` + "\n" +
+									`auth strategy is used to authenticate access to the self-service UI, but need not` + "\n" +
+									`necessarily be the same auth strategy that is used to authenticate access to upstream` + "\n" +
+									`Token Vault providers.` + "\n" +
+									`` + "\n" +
+									`Requires a ` + "`" + `token-vault` + "`" + ` Datastore reference in ` + "`" + `datastores` + "`" + `; enabling the credential` + "\n" +
+									`manager without one is rejected. The credential manager cannot be used without` + "\n" +
+									`enrollment protection.` + "\n" +
+									`Default: false`,
+							},
+							"storage": schema.SingleNestedAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
+								Attributes: map[string]schema.Attribute{
+									"current_version": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The version of the encryption key used to encrypt new tokens.`,
+									},
+									"directory": schema.StringAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
+										Description: `The name of the directory in which tokens are stored.`,
+									},
+									"keys": schema.ListNestedAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
+										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Computed:    true,
+													Description: `A [vault reference](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault) to the encryption key. A literal key value is rejected.`,
+												},
+												"version": schema.StringAttribute{
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
+													Description: `The identifier of this key version.`,
+												},
+											},
+										},
+										Description: `The encryption keys used to protect stored tokens. Keep previous versions in the list so existing tokens can still be decrypted.`,
+									},
+								},
+								MarkdownDescription: `Read-only. The directory and encryption key versions this entity's credentials are stored` + "\n" +
+									`with, resolved from the ` + "`" + `token-vault` + "`" + ` Datastore referenced in ` + "`" + `datastores` + "`" + `; change them on` + "\n" +
+									`the Datastore.`,
+							},
+						},
+						MarkdownDescription: `Enables enrollment protection for the Token Vault datastore linked to this auth strategy.` + "\n" +
+							`Users of the linked Token Vault will need to authenticate using this OIDC auth strategy` + "\n" +
+							`before completing enrollment with upstream providers. Enrollment links always store upstream` + "\n" +
+							`credentials in the Token Vault belonging to the principal who requested the link. Enrollment` + "\n" +
+							`protection ensures that other principals cannot use an enrollment link to unknowingly` + "\n" +
+							`authorize the storage of their upstream credentials in another principal's Token Vault.` + "\n" +
+							`` + "\n" +
+							`Note that the auth strategy used to protect upstream resources such as MCP servers need not` + "\n" +
+							`be the same auth strategy used for enrollment protection. Omit ` + "`" + `token_vault` + "`" + ` entirely to` + "\n" +
+							`enforce no such enrollment protection.` + "\n" +
+							`` + "\n" +
+							`Requires a ` + "`" + `token-vault` + "`" + ` Datastore reference in ` + "`" + `datastores` + "`" + `; enabling enrollment protection` + "\n" +
+							`without one is rejected.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
 					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
@@ -266,10 +2707,7 @@ func (r *AIGatewayAuthStrategyResource) Schema(ctx context.Context, req resource
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`Configuration for an auth strategy.`,
+				Description: `Configuration for an auth strategy.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("key_auth"),
@@ -333,7 +2771,7 @@ func (r *AIGatewayAuthStrategyResource) Create(ctx context.Context, req resource
 	}
 	res, err := r.client.AIGatewayAuthStrategies.CreateAiGatewayAuthStrategy(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -400,7 +2838,7 @@ func (r *AIGatewayAuthStrategyResource) Read(ctx context.Context, req resource.R
 	}
 	res, err := r.client.AIGatewayAuthStrategies.GetAiGatewayAuthStrategy(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -454,7 +2892,7 @@ func (r *AIGatewayAuthStrategyResource) Update(ctx context.Context, req resource
 	}
 	res, err := r.client.AIGatewayAuthStrategies.UpdateAiGatewayAuthStrategy(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -514,7 +2952,7 @@ func (r *AIGatewayAuthStrategyResource) Delete(ctx context.Context, req resource
 	}
 	res, err := r.client.AIGatewayAuthStrategies.DeleteAiGatewayAuthStrategy(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

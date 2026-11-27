@@ -18,6 +18,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/boolplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -106,21 +107,39 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"environment": schema.SingleNestedAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
+								Description: `The UUID of the environment.`,
+							},
+							"name": schema.StringAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
+								Description: `The name of the environment.`,
+							},
+						},
+						Description: `The environment this record is scoped to.`,
+					},
 					"environment_id": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 						},
-						MarkdownDescription: `UUID of the organization environment this control-plane implementation is scoped` + "\n" +
-							`to. Environment names are not accepted. Not applicable to gateway-service` + "\n" +
-							`implementations.` + "\n" +
-							`On create: must be an environment associated with the API. Required when the API` + "\n" +
-							`has multiple associated environments (` + "`" + `400` + "`" + ` if omitted). Optional for a` + "\n" +
-							`single-environment API and accepted only if it matches that environment. Returns` + "\n" +
-							`` + "`" + `404` + "`" + ` if the UUID is unknown or not associated with the API.` + "\n" +
-							`On read: optional; present when the implementation is associated with an` + "\n" +
-							`environment.` + "\n" +
+						MarkdownDescription: `UUID of the organization environment this implementation is scoped to.` + "\n" +
+							`Must be an environment associated with the API. Required when the API` + "\n" +
+							`has multiple associated environments (` + "`" + `400` + "`" + ` if omitted).` + "\n" +
+							`Returns ` + "`" + `404` + "`" + ` if the UUID is unknown or not associated with the API.` + "\n" +
 							`Requires replacement if changed.`,
 					},
 					"id": schema.StringAttribute{
@@ -157,15 +176,10 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("service_reference"), FieldPath: path.Root("service_reference").AtName("environment_id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("control_plane_reference"), FieldPath: path.Root("control_plane_reference").AtName("environment_id")}}),
 				},
-				MarkdownDescription: `UUID of the organization environment this control-plane implementation is scoped` + "\n" +
-					`to. Environment names are not accepted. Not applicable to gateway-service` + "\n" +
-					`implementations.` + "\n" +
-					`On create: must be an environment associated with the API. Required when the API` + "\n" +
-					`has multiple associated environments (` + "`" + `400` + "`" + ` if omitted). Optional for a` + "\n" +
-					`single-environment API and accepted only if it matches that environment. Returns` + "\n" +
-					`` + "`" + `404` + "`" + ` if the UUID is unknown or not associated with the API.` + "\n" +
-					`On read: optional; present when the implementation is associated with an` + "\n" +
-					`environment.`,
+				MarkdownDescription: `UUID of the organization environment this implementation is scoped to.` + "\n" +
+					`Must be an environment associated with the API. Required when the API` + "\n" +
+					`has multiple associated environments (` + "`" + `400` + "`" + ` if omitted).` + "\n" +
+					`Returns ` + "`" + `404` + "`" + ` if the UUID is unknown or not associated with the API.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -187,21 +201,39 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"environment": schema.SingleNestedAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
+								Description: `The UUID of the environment.`,
+							},
+							"name": schema.StringAttribute{
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
+								Description: `The name of the environment.`,
+							},
+						},
+						Description: `The environment this record is scoped to.`,
+					},
 					"environment_id": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 						},
-						MarkdownDescription: `UUID of the organization environment this control-plane implementation is scoped` + "\n" +
-							`to. Environment names are not accepted. Not applicable to gateway-service` + "\n" +
-							`implementations.` + "\n" +
-							`On create: must be an environment associated with the API. Required when the API` + "\n" +
-							`has multiple associated environments (` + "`" + `400` + "`" + ` if omitted). Optional for a` + "\n" +
-							`single-environment API and accepted only if it matches that environment. Returns` + "\n" +
-							`` + "`" + `404` + "`" + ` if the UUID is unknown or not associated with the API.` + "\n" +
-							`On read: optional; present when the implementation is associated with an` + "\n" +
-							`environment.` + "\n" +
+						MarkdownDescription: `UUID of the organization environment this implementation is scoped to.` + "\n" +
+							`Must be an environment associated with the API. Required when the API` + "\n" +
+							`has multiple associated environments (` + "`" + `400` + "`" + ` if omitted).` + "\n" +
+							`Returns ` + "`" + `404` + "`" + ` if the UUID is unknown or not associated with the API.` + "\n" +
 							`Requires replacement if changed.`,
 					},
 					"id": schema.StringAttribute{
@@ -315,7 +347,7 @@ func (r *APIImplementationResource) Create(ctx context.Context, req resource.Cre
 	}
 	res, err := r.client.APIImplementation.CreateAPIImplementation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -382,7 +414,7 @@ func (r *APIImplementationResource) Read(ctx context.Context, req resource.ReadR
 	}
 	res, err := r.client.APIImplementation.FetchAPIImplementation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -460,7 +492,7 @@ func (r *APIImplementationResource) Delete(ctx context.Context, req resource.Del
 	}
 	res, err := r.client.APIImplementation.DeleteAPIImplementation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

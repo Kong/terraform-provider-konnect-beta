@@ -2,35 +2,35 @@
 
 package shared
 
-// Name - Filter using **one** of the following operators: `eq`, `contains`
-type Name struct {
+// MeshControlPlaneFilterParametersName - Filter using **one** of the following operators: `eq`, `contains`
+type MeshControlPlaneFilterParametersName struct {
 	// The field exactly matches the provided value.
 	Eq *string `queryParam:"name=eq"`
 	// The field contains the provided value.
 	Contains *string `queryParam:"name=contains"`
 }
 
-func (n *Name) GetEq() *string {
-	if n == nil {
+func (m *MeshControlPlaneFilterParametersName) GetEq() *string {
+	if m == nil {
 		return nil
 	}
-	return n.Eq
+	return m.Eq
 }
 
-func (n *Name) GetContains() *string {
-	if n == nil {
+func (m *MeshControlPlaneFilterParametersName) GetContains() *string {
+	if m == nil {
 		return nil
 	}
-	return n.Contains
+	return m.Contains
 }
 
 type MeshControlPlaneFilterParameters struct {
 	// Filter using **one** of the following operators: `eq`, `contains`
-	Name   *Name              `queryParam:"name=name"`
-	Labels *LabelsFieldFilter `queryParam:"name=labels"`
+	Name   *MeshControlPlaneFilterParametersName `queryParam:"name=name"`
+	Labels *LabelsFieldFilter                    `queryParam:"name=labels"`
 }
 
-func (m *MeshControlPlaneFilterParameters) GetName() *Name {
+func (m *MeshControlPlaneFilterParameters) GetName() *MeshControlPlaneFilterParametersName {
 	if m == nil {
 		return nil
 	}

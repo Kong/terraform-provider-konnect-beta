@@ -91,25 +91,19 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 									"assume_role": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"assume_role": schema.SingleNestedAttribute{
+											"arn": schema.StringAttribute{
 												Required: true,
-												Attributes: map[string]schema.Attribute{
-													"arn": schema.StringAttribute{
-														Required: true,
-														MarkdownDescription: `The [ARN](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns)` + "\n" +
-															`of the IAM role to assume, formatted as ` + "`" + `arn:aws:iam::<account-id>:role/<role-name>` + "`" + `.`,
-														Validators: []validator.String{
-															stringvalidator.UTF8LengthBetween(10, 2048),
-															stringvalidator.RegexMatches(regexp.MustCompile(`^arn:aws(-[a-z-]+)?:iam:.+`), "must match pattern "+regexp.MustCompile(`^arn:aws(-[a-z-]+)?:iam:.+`).String()),
-														},
-													},
-													"session_name": schema.StringAttribute{
-														Optional: true,
-														MarkdownDescription: `The session name to attach to the assumed role session. The value becomes part of the assumed` + "\n" +
-															`role user ARN, queryable as ` + "`" + `arn:aws:sts::<account-id>:assumed-role/<role-name>/<session-name>` + "`" + `.`,
-													},
+												MarkdownDescription: `The [ARN](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns)` + "\n" +
+													`of the IAM role to assume, formatted as ` + "`" + `arn:aws:iam::<account-id>:role/<role-name>` + "`" + `.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthBetween(10, 2048),
+													stringvalidator.RegexMatches(regexp.MustCompile(`^arn:aws(-[a-z-]+)?:iam:.+`), "must match pattern "+regexp.MustCompile(`^arn:aws(-[a-z-]+)?:iam:.+`).String()),
 												},
-												Description: `Configuration for assuming an IAM role. Required when ` + "`" + `type` + "`" + ` is ` + "`" + `assume_role` + "`" + `.`,
+											},
+											"session_name": schema.StringAttribute{
+												Optional: true,
+												MarkdownDescription: `The session name to attach to the assumed role session. The value becomes part of the assumed` + "\n" +
+													`role user ARN, queryable as ` + "`" + `arn:aws:sts::<account-id>:assumed-role/<role-name>/<session-name>` + "`" + `.`,
 											},
 										},
 										MarkdownDescription: `Configures whether to authenticate using credentials obtained by first assuming a role, using the AWS default credentials provider chain` + "\n" +
@@ -151,8 +145,9 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"password": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:  true,
+								Optional:  true,
+								Sensitive: true,
 								MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
 									`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
 									`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
@@ -195,8 +190,9 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
+								Computed:  true,
+								Optional:  true,
+								Sensitive: true,
 								MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
 									`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
 									`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
@@ -320,7 +316,8 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 								},
 							},
 							"key": schema.StringAttribute{
-								Required: true,
+								Required:  true,
+								Sensitive: true,
 								MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
 									`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
 									`If provided as an expression, the expression itself is stored and returned by the API.`,
@@ -404,6 +401,8 @@ func (r *EventGatewayBackendClusterResource) Create(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateEventGatewayBackendClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -412,7 +411,7 @@ func (r *EventGatewayBackendClusterResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewayBackendClusters.CreateEventGatewayBackendCluster(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -464,6 +463,8 @@ func (r *EventGatewayBackendClusterResource) Read(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetEventGatewayBackendClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -472,7 +473,7 @@ func (r *EventGatewayBackendClusterResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.EventGatewayBackendClusters.GetEventGatewayBackendCluster(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -518,6 +519,8 @@ func (r *EventGatewayBackendClusterResource) Update(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateEventGatewayBackendClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -526,7 +529,7 @@ func (r *EventGatewayBackendClusterResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewayBackendClusters.UpdateEventGatewayBackendCluster(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -578,6 +581,8 @@ func (r *EventGatewayBackendClusterResource) Delete(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteEventGatewayBackendClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -586,7 +591,7 @@ func (r *EventGatewayBackendClusterResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewayBackendClusters.DeleteEventGatewayBackendCluster(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

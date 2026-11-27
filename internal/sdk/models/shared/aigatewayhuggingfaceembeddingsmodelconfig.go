@@ -6,13 +6,10 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayHuggingfaceEmbeddingsModelConfig - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Hugging Face-specific configuration for a model.
+// AIGatewayHuggingfaceEmbeddingsModelConfig - Hugging Face-specific configuration for a model.
 type AIGatewayHuggingfaceEmbeddingsModelConfig struct {
 	// The URL of the embeddings model.
-	UpstreamURL *string `default:"null" json:"upstream_url"`
+	UpstreamURL *string `json:"upstream_url,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"huggingface" json:"type"`
 	// Whether to use the Hugging Face inference cache.

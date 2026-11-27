@@ -1220,7 +1220,7 @@ func (r *MeshCircuitBreakerResource) Create(ctx context.Context, req resource.Cr
 	}
 	res, err := r.client.MeshCircuitBreaker.PutMeshCircuitBreaker(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1260,7 +1260,7 @@ func (r *MeshCircuitBreakerResource) Create(ctx context.Context, req resource.Cr
 	}
 	res1, err := r.client.MeshCircuitBreaker.GetMeshCircuitBreaker(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -1320,7 +1320,7 @@ func (r *MeshCircuitBreakerResource) Read(ctx context.Context, req resource.Read
 	}
 	res, err := r.client.MeshCircuitBreaker.GetMeshCircuitBreaker(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1374,7 +1374,7 @@ func (r *MeshCircuitBreakerResource) Update(ctx context.Context, req resource.Up
 	}
 	res, err := r.client.MeshCircuitBreaker.PutMeshCircuitBreaker(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1414,7 +1414,7 @@ func (r *MeshCircuitBreakerResource) Update(ctx context.Context, req resource.Up
 	}
 	res1, err := r.client.MeshCircuitBreaker.GetMeshCircuitBreaker(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -1474,7 +1474,7 @@ func (r *MeshCircuitBreakerResource) Delete(ctx context.Context, req resource.De
 	}
 	res, err := r.client.MeshCircuitBreaker.DeleteMeshCircuitBreaker(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

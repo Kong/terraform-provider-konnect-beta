@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -18,7 +19,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
+	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
 )
 
@@ -38,18 +43,21 @@ type AIGatewayPolicyResource struct {
 
 // AIGatewayPolicyResourceModel describes the resource data model.
 type AIGatewayPolicyResourceModel struct {
-	Config      jsontypes.Normalized    `tfsdk:"config"`
-	CreatedAt   types.String            `tfsdk:"created_at"`
-	DisplayName types.String            `tfsdk:"display_name"`
-	Enabled     types.Bool              `tfsdk:"enabled"`
-	GatewayID   types.String            `tfsdk:"gateway_id"`
-	Global      types.Bool              `tfsdk:"global"`
-	ID          types.String            `tfsdk:"id"`
-	Labels      map[string]types.String `tfsdk:"labels"`
-	ManagedBy   map[string]types.String `tfsdk:"managed_by"`
-	Name        types.String            `tfsdk:"name"`
-	Type        types.String            `tfsdk:"type"`
-	UpdatedAt   types.String            `tfsdk:"updated_at"`
+	Condition   types.String                    `tfsdk:"condition"`
+	Config      jsontypes.Normalized            `tfsdk:"config"`
+	CreatedAt   types.String                    `tfsdk:"created_at"`
+	Datastores  []tfTypes.AIGatewayDatastoreRef `tfsdk:"datastores"`
+	DisplayName types.String                    `tfsdk:"display_name"`
+	Enabled     types.Bool                      `tfsdk:"enabled"`
+	Expressions map[string]jsontypes.Normalized `tfsdk:"expressions"`
+	GatewayID   types.String                    `tfsdk:"gateway_id"`
+	Global      types.Bool                      `tfsdk:"global"`
+	ID          types.String                    `tfsdk:"id"`
+	Labels      map[string]types.String         `tfsdk:"labels"`
+	ManagedBy   map[string]types.String         `tfsdk:"managed_by"`
+	Name        types.String                    `tfsdk:"name"`
+	Type        types.String                    `tfsdk:"type"`
+	UpdatedAt   types.String                    `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayPolicyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,6 +68,15 @@ func (r *AIGatewayPolicyResource) Schema(ctx context.Context, req resource.Schem
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AIGatewayPolicy Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional: true,
+				MarkdownDescription: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.` + "\n" +
+					`` + "\n" +
+					`**Requires a minimum runtime version of ` + "`" + `2.1` + "`" + `**.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.StringAttribute{
 				CustomType: jsontypes.NormalizedType{},
 				Required:   true,
@@ -74,6 +91,28 @@ func (r *AIGatewayPolicyResource) Schema(ctx context.Context, req resource.Schem
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
+			"datastores": schema.ListNestedAttribute{
+				Computed: true,
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.Object{
+						speakeasy_objectvalidators.NotNull(),
+					},
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							Computed:    true,
+							Optional:    true,
+							Description: `An immutable user-defined identifier for this resource. Not Null`,
+							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
+								stringvalidator.UTF8LengthBetween(2, 255),
+								stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`), "must match pattern "+regexp.MustCompile(`^[a-z][a-z0-9-]*[a-z0-9]+$`).String()),
+							},
+						},
+					},
+				},
+				Description: `Names of the Datastores this policy references.`,
+			},
 			"display_name": schema.StringAttribute{
 				Required:    true,
 				Description: `The display name for this policy instance.`,
@@ -86,6 +125,16 @@ func (r *AIGatewayPolicyResource) Schema(ctx context.Context, req resource.Schem
 				Optional:    true,
 				Default:     booldefault.StaticBool(true),
 				Description: `Whether the policy is enabled. Default: true`,
+			},
+			"expressions": schema.MapAttribute{
+				Optional:    true,
+				ElementType: jsontypes.NormalizedType{},
+				MarkdownDescription: `Policy config expressions` + "\n" +
+					`` + "\n" +
+					`**Requires a minimum runtime version of ` + "`" + `2.3` + "`" + `**.`,
+				Validators: []validator.Map{
+					mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+				},
 			},
 			"gateway_id": schema.StringAttribute{
 				Required:    true,
@@ -120,17 +169,16 @@ func (r *AIGatewayPolicyResource) Schema(ctx context.Context, req resource.Schem
 				ElementType: types.StringType,
 				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 					`` + "\n" +
-					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+					`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+					`Values must be 1–127 characters long and must not be empty.` + "\n" +
+					`Keys and values must not contain spaces or control characters.`,
 			},
 			"name": schema.StringAttribute{
-				Required: true,
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`A user-defined unique identifier for this policy instance, used as a stable human-readable reference. This value is immutable after creation.`,
+				Required:    true,
+				Description: `A user-defined unique identifier for this policy instance, used as a stable human-readable reference. This value is immutable after creation.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 256),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 				},
 			},
 			"type": schema.StringAttribute{
@@ -138,6 +186,9 @@ func (r *AIGatewayPolicyResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: `The type of the Policy. This is equivalent to the Kong 3 plugin name.` + "\n" +
 					`Some examples are: 'ai-sanitizer', 'ai-prompt-guard', and 'rate-limiting'.` + "\n" +
 					`Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and configuration documentation can be found in the [Developer Docs](https://developer.konghq.com/plugins/).`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -196,7 +247,7 @@ func (r *AIGatewayPolicyResource) Create(ctx context.Context, req resource.Creat
 	}
 	res, err := r.client.AIGatewayPolicies.CreateAiGatewayPolicy(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -263,7 +314,7 @@ func (r *AIGatewayPolicyResource) Read(ctx context.Context, req resource.ReadReq
 	}
 	res, err := r.client.AIGatewayPolicies.GetAiGatewayPolicy(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -317,7 +368,7 @@ func (r *AIGatewayPolicyResource) Update(ctx context.Context, req resource.Updat
 	}
 	res, err := r.client.AIGatewayPolicies.UpdateAiGatewayPolicy(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -377,7 +428,7 @@ func (r *AIGatewayPolicyResource) Delete(ctx context.Context, req resource.Delet
 	}
 	res, err := r.client.AIGatewayPolicies.DeleteAiGatewayPolicy(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

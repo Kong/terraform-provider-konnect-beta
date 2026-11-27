@@ -18,6 +18,12 @@ type OIDCIdentityProviderConfigOutput struct {
 	// authentication.
 	//
 	ClaimMappings *OIDCIdentityProviderClaimMappings `json:"claim_mappings,omitempty"`
+	// The back-channel logout settings for the OIDC identity provider. To receive logout notifications, set
+	// your identity provider's back-channel logout URL to your portal's URL followed by
+	// `/api/v3/developer/backchannel-logout`, for example
+	// `https://my-portal.example.com/api/v3/developer/backchannel-logout`.
+	//
+	BackchannelLogout *OIDCIdentityProviderBackChannelLogout `json:"backchannel_logout,omitempty"`
 }
 
 func (o OIDCIdentityProviderConfigOutput) MarshalJSON() ([]byte, error) {
@@ -57,4 +63,11 @@ func (o *OIDCIdentityProviderConfigOutput) GetClaimMappings() *OIDCIdentityProvi
 		return nil
 	}
 	return o.ClaimMappings
+}
+
+func (o *OIDCIdentityProviderConfigOutput) GetBackchannelLogout() *OIDCIdentityProviderBackChannelLogout {
+	if o == nil {
+		return nil
+	}
+	return o.BackchannelLogout
 }

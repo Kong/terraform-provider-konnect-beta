@@ -16,11 +16,19 @@ Portal Resource
 resource "konnect_portal" "my_portal" {
   provider = konnect-beta
   ai = {
-    enabled = true
+    enabled = false
     features = {
+      ai_search = {
+        enabled = false
+      }
       mcp_server = {
         enabled                  = false
         write_operations_enabled = false
+      }
+      portal_agent = {
+        audience     = "all"
+        display_name = "AI"
+        enabled      = false
       }
     }
   }
@@ -41,6 +49,7 @@ resource "konnect_portal" "my_portal" {
   notifications_developer_pii_visibility_enabled = false
   rbac_enabled                                   = false
   sipr_enabled                                   = true
+  theme_name                                     = "...my_theme_name..."
 }
 ```
 
@@ -75,6 +84,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `notifications_developer_pii_visibility_enabled` (Boolean) When enabled, portal registration notifications include the registering developer's identifying information (such as name and email). Default: false
 - `rbac_enabled` (Boolean) Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC. Default: false
 - `sipr_enabled` (Boolean) Whether ip allow list is enabled for the portal. Default: false
+- `theme_name` (String) Name of the theme to use for the default content created upon creation of this portal. Must match an available theme name; if omitted or unrecognized, the default theme is used. Only applies when `create_default_content` is true. Requires replacement if changed.
 
 ### Read-Only
 
@@ -89,23 +99,43 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 Optional:
 
-- `enabled` (Boolean) Is AI enabled?. Not Null
-- `features` (Attributes) Not Null (see [below for nested schema](#nestedatt--ai--features))
+- `enabled` (Boolean) Is AI enabled?. Default: false
+- `features` (Attributes) AI features configuration. When top-level `enabled` is false, every feature toggle here is automatically reset to false. Not Null (see [below for nested schema](#nestedatt--ai--features))
 
 <a id="nestedatt--ai--features"></a>
 ### Nested Schema for `ai.features`
 
 Optional:
 
-- `mcp_server` (Attributes) AI Features config. Not Null (see [below for nested schema](#nestedatt--ai--features--mcp_server))
+- `ai_search` (Attributes) AI Search config (see [below for nested schema](#nestedatt--ai--features--ai_search))
+- `mcp_server` (Attributes) AI Features config (see [below for nested schema](#nestedatt--ai--features--mcp_server))
+- `portal_agent` (Attributes) Portal Agent config (see [below for nested schema](#nestedatt--ai--features--portal_agent))
+
+<a id="nestedatt--ai--features--ai_search"></a>
+### Nested Schema for `ai.features.ai_search`
+
+Optional:
+
+- `enabled` (Boolean) Whether AI Search is enabled or not. Default: false
+
 
 <a id="nestedatt--ai--features--mcp_server"></a>
 ### Nested Schema for `ai.features.mcp_server`
 
 Optional:
 
-- `enabled` (Boolean) Whether the MCP Server is enabled or not. Not Null
-- `write_operations_enabled` (Boolean) Whether write operations are enabled or not for the Portal MCP Server enabled. Not Null
+- `enabled` (Boolean) Whether the MCP Server is enabled or not. Default: false
+- `write_operations_enabled` (Boolean) Whether write operations are enabled or not for the Portal MCP Server enabled. Default: false
+
+
+<a id="nestedatt--ai--features--portal_agent"></a>
+### Nested Schema for `ai.features.portal_agent`
+
+Optional:
+
+- `audience` (String) The audience allowed to interact with the Portal Agent. `all` makes the Portal Agent available to every developer, including unauthenticated ones. `authenticated` restricts access to signed-in developers only. possible known values include one of ["all", "authenticated"]; Default: "all"
+- `display_name` (String) The display name for the Portal Agent, shown to developers in the portal. Default: "AI"
+- `enabled` (Boolean) Whether the Portal Agent is enabled or not. Default: false
 
 ## Import
 

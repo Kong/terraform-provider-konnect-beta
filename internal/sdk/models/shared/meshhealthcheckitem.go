@@ -241,7 +241,14 @@ func CreateHealthyPanicThresholdStr(str string) HealthyPanicThreshold {
 	}
 }
 
-func (u *HealthyPanicThreshold) UnmarshalJSON(data []byte) error {
+func (u *HealthyPanicThreshold) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = HealthyPanicThreshold{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

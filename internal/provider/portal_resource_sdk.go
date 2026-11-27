@@ -20,11 +20,33 @@ func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Contex
 			r.Ai = nil
 		} else {
 			r.Ai = &tfTypes.AISettings{}
-			r.Ai.Enabled = types.BoolValue(resp.Ai.Enabled)
-			r.Ai.Features = &tfTypes.Features{}
-			r.Ai.Features.McpServer = &tfTypes.McpServer{}
-			r.Ai.Features.McpServer.Enabled = types.BoolValue(resp.Ai.Features.McpServer.Enabled)
-			r.Ai.Features.McpServer.WriteOperationsEnabled = types.BoolValue(resp.Ai.Features.McpServer.WriteOperationsEnabled)
+			r.Ai.Enabled = types.BoolPointerValue(resp.Ai.Enabled)
+			r.Ai.Features = &tfTypes.AISettingsFeatures{}
+			if resp.Ai.Features.AiSearch == nil {
+				r.Ai.Features.AiSearch = nil
+			} else {
+				r.Ai.Features.AiSearch = &tfTypes.Autogenerate{}
+				r.Ai.Features.AiSearch.Enabled = types.BoolPointerValue(resp.Ai.Features.AiSearch.Enabled)
+			}
+			if resp.Ai.Features.McpServer == nil {
+				r.Ai.Features.McpServer = nil
+			} else {
+				r.Ai.Features.McpServer = &tfTypes.McpServer{}
+				r.Ai.Features.McpServer.Enabled = types.BoolPointerValue(resp.Ai.Features.McpServer.Enabled)
+				r.Ai.Features.McpServer.WriteOperationsEnabled = types.BoolPointerValue(resp.Ai.Features.McpServer.WriteOperationsEnabled)
+			}
+			if resp.Ai.Features.PortalAgent == nil {
+				r.Ai.Features.PortalAgent = nil
+			} else {
+				r.Ai.Features.PortalAgent = &tfTypes.PortalAgent{}
+				if resp.Ai.Features.PortalAgent.Audience != nil {
+					r.Ai.Features.PortalAgent.Audience = types.StringValue(string(*resp.Ai.Features.PortalAgent.Audience))
+				} else {
+					r.Ai.Features.PortalAgent.Audience = types.StringNull()
+				}
+				r.Ai.Features.PortalAgent.DisplayName = types.StringPointerValue(resp.Ai.Features.PortalAgent.DisplayName)
+				r.Ai.Features.PortalAgent.Enabled = types.BoolPointerValue(resp.Ai.Features.PortalAgent.Enabled)
+			}
 		}
 		r.AuthenticationEnabled = types.BoolPointerValue(resp.AuthenticationEnabled)
 		r.AutoApproveApplications = types.BoolPointerValue(resp.AutoApproveApplications)
@@ -140,21 +162,73 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 	}
 	var ai *shared.AISettings
 	if r.Ai != nil {
-		var enabled bool
-		enabled = r.Ai.Enabled.ValueBool()
-
-		var enabled1 bool
-		enabled1 = r.Ai.Features.McpServer.Enabled.ValueBool()
-
-		var writeOperationsEnabled bool
-		writeOperationsEnabled = r.Ai.Features.McpServer.WriteOperationsEnabled.ValueBool()
-
-		mcpServer := shared.McpServer{
-			Enabled:                enabled1,
-			WriteOperationsEnabled: writeOperationsEnabled,
+		enabled := new(bool)
+		if !r.Ai.Enabled.IsUnknown() && !r.Ai.Enabled.IsNull() {
+			*enabled = r.Ai.Enabled.ValueBool()
+		} else {
+			enabled = nil
 		}
-		features := shared.Features{
-			McpServer: mcpServer,
+		var portalAgent *shared.PortalAgent
+		if r.Ai.Features.PortalAgent != nil {
+			enabled1 := new(bool)
+			if !r.Ai.Features.PortalAgent.Enabled.IsUnknown() && !r.Ai.Features.PortalAgent.Enabled.IsNull() {
+				*enabled1 = r.Ai.Features.PortalAgent.Enabled.ValueBool()
+			} else {
+				enabled1 = nil
+			}
+			displayName1 := new(string)
+			if !r.Ai.Features.PortalAgent.DisplayName.IsUnknown() && !r.Ai.Features.PortalAgent.DisplayName.IsNull() {
+				*displayName1 = r.Ai.Features.PortalAgent.DisplayName.ValueString()
+			} else {
+				displayName1 = nil
+			}
+			audience := new(shared.PortalAgentAudience)
+			if !r.Ai.Features.PortalAgent.Audience.IsUnknown() && !r.Ai.Features.PortalAgent.Audience.IsNull() {
+				*audience = shared.PortalAgentAudience(r.Ai.Features.PortalAgent.Audience.ValueString())
+			} else {
+				audience = nil
+			}
+			portalAgent = &shared.PortalAgent{
+				Enabled:     enabled1,
+				DisplayName: displayName1,
+				Audience:    audience,
+			}
+		}
+		var aiSearch *shared.AiSearch
+		if r.Ai.Features.AiSearch != nil {
+			enabled2 := new(bool)
+			if !r.Ai.Features.AiSearch.Enabled.IsUnknown() && !r.Ai.Features.AiSearch.Enabled.IsNull() {
+				*enabled2 = r.Ai.Features.AiSearch.Enabled.ValueBool()
+			} else {
+				enabled2 = nil
+			}
+			aiSearch = &shared.AiSearch{
+				Enabled: enabled2,
+			}
+		}
+		var mcpServer *shared.McpServer
+		if r.Ai.Features.McpServer != nil {
+			enabled3 := new(bool)
+			if !r.Ai.Features.McpServer.Enabled.IsUnknown() && !r.Ai.Features.McpServer.Enabled.IsNull() {
+				*enabled3 = r.Ai.Features.McpServer.Enabled.ValueBool()
+			} else {
+				enabled3 = nil
+			}
+			writeOperationsEnabled := new(bool)
+			if !r.Ai.Features.McpServer.WriteOperationsEnabled.IsUnknown() && !r.Ai.Features.McpServer.WriteOperationsEnabled.IsNull() {
+				*writeOperationsEnabled = r.Ai.Features.McpServer.WriteOperationsEnabled.ValueBool()
+			} else {
+				writeOperationsEnabled = nil
+			}
+			mcpServer = &shared.McpServer{
+				Enabled:                enabled3,
+				WriteOperationsEnabled: writeOperationsEnabled,
+			}
+		}
+		features := shared.AISettingsFeatures{
+			PortalAgent: portalAgent,
+			AiSearch:    aiSearch,
+			McpServer:   mcpServer,
 		}
 		ai = &shared.AISettings{
 			Enabled:  enabled,
@@ -222,6 +296,12 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 	} else {
 		createDefaultContent = nil
 	}
+	themeName := new(string)
+	if !r.ThemeName.IsUnknown() && !r.ThemeName.IsNull() {
+		*themeName = r.ThemeName.ValueString()
+	} else {
+		themeName = nil
+	}
 	out := shared.CreatePortal{
 		Name:                             name,
 		DisplayName:                      displayName,
@@ -238,6 +318,7 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 		Labels:                           labels,
 		NotificationsDeveloperPiiVisibilityEnabled: notificationsDeveloperPiiVisibilityEnabled,
 		CreateDefaultContent:                       createDefaultContent,
+		ThemeName:                                  themeName,
 	}
 
 	return &out, diags
@@ -278,21 +359,73 @@ func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared
 	}
 	var ai *shared.AISettings
 	if r.Ai != nil {
-		var enabled bool
-		enabled = r.Ai.Enabled.ValueBool()
-
-		var enabled1 bool
-		enabled1 = r.Ai.Features.McpServer.Enabled.ValueBool()
-
-		var writeOperationsEnabled bool
-		writeOperationsEnabled = r.Ai.Features.McpServer.WriteOperationsEnabled.ValueBool()
-
-		mcpServer := shared.McpServer{
-			Enabled:                enabled1,
-			WriteOperationsEnabled: writeOperationsEnabled,
+		enabled := new(bool)
+		if !r.Ai.Enabled.IsUnknown() && !r.Ai.Enabled.IsNull() {
+			*enabled = r.Ai.Enabled.ValueBool()
+		} else {
+			enabled = nil
 		}
-		features := shared.Features{
-			McpServer: mcpServer,
+		var portalAgent *shared.PortalAgent
+		if r.Ai.Features.PortalAgent != nil {
+			enabled1 := new(bool)
+			if !r.Ai.Features.PortalAgent.Enabled.IsUnknown() && !r.Ai.Features.PortalAgent.Enabled.IsNull() {
+				*enabled1 = r.Ai.Features.PortalAgent.Enabled.ValueBool()
+			} else {
+				enabled1 = nil
+			}
+			displayName1 := new(string)
+			if !r.Ai.Features.PortalAgent.DisplayName.IsUnknown() && !r.Ai.Features.PortalAgent.DisplayName.IsNull() {
+				*displayName1 = r.Ai.Features.PortalAgent.DisplayName.ValueString()
+			} else {
+				displayName1 = nil
+			}
+			audience := new(shared.PortalAgentAudience)
+			if !r.Ai.Features.PortalAgent.Audience.IsUnknown() && !r.Ai.Features.PortalAgent.Audience.IsNull() {
+				*audience = shared.PortalAgentAudience(r.Ai.Features.PortalAgent.Audience.ValueString())
+			} else {
+				audience = nil
+			}
+			portalAgent = &shared.PortalAgent{
+				Enabled:     enabled1,
+				DisplayName: displayName1,
+				Audience:    audience,
+			}
+		}
+		var aiSearch *shared.AiSearch
+		if r.Ai.Features.AiSearch != nil {
+			enabled2 := new(bool)
+			if !r.Ai.Features.AiSearch.Enabled.IsUnknown() && !r.Ai.Features.AiSearch.Enabled.IsNull() {
+				*enabled2 = r.Ai.Features.AiSearch.Enabled.ValueBool()
+			} else {
+				enabled2 = nil
+			}
+			aiSearch = &shared.AiSearch{
+				Enabled: enabled2,
+			}
+		}
+		var mcpServer *shared.McpServer
+		if r.Ai.Features.McpServer != nil {
+			enabled3 := new(bool)
+			if !r.Ai.Features.McpServer.Enabled.IsUnknown() && !r.Ai.Features.McpServer.Enabled.IsNull() {
+				*enabled3 = r.Ai.Features.McpServer.Enabled.ValueBool()
+			} else {
+				enabled3 = nil
+			}
+			writeOperationsEnabled := new(bool)
+			if !r.Ai.Features.McpServer.WriteOperationsEnabled.IsUnknown() && !r.Ai.Features.McpServer.WriteOperationsEnabled.IsNull() {
+				*writeOperationsEnabled = r.Ai.Features.McpServer.WriteOperationsEnabled.ValueBool()
+			} else {
+				writeOperationsEnabled = nil
+			}
+			mcpServer = &shared.McpServer{
+				Enabled:                enabled3,
+				WriteOperationsEnabled: writeOperationsEnabled,
+			}
+		}
+		features := shared.AISettingsFeatures{
+			PortalAgent: portalAgent,
+			AiSearch:    aiSearch,
+			McpServer:   mcpServer,
 		}
 		ai = &shared.AISettings{
 			Enabled:  enabled,

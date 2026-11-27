@@ -6,17 +6,14 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayRedisGCPAuthentication - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// GCP specific configs for connecting to a Cloud Provider's redis instance.
+// AIGatewayRedisGCPAuthentication - GCP specific configs for connecting to a Cloud Provider's redis instance.
 type AIGatewayRedisGCPAuthentication struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"gcp" json:"type"`
 	// GCP Service Account JSON.
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	ServiceAccountJSON *string `default:"null" json:"service_account_json"`
+	ServiceAccountJSON *string `json:"service_account_json,omitempty"`
 }
 
 func (a AIGatewayRedisGCPAuthentication) MarshalJSON() ([]byte, error) {

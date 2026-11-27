@@ -14,12 +14,14 @@ type EventGatewayProduceSchemaValidationPolicyConfigType string
 const (
 	EventGatewayProduceSchemaValidationPolicyConfigTypeConfluentSchemaRegistry EventGatewayProduceSchemaValidationPolicyConfigType = "confluent_schema_registry"
 	EventGatewayProduceSchemaValidationPolicyConfigTypeJSON                    EventGatewayProduceSchemaValidationPolicyConfigType = "json"
+	EventGatewayProduceSchemaValidationPolicyConfigTypeInlineSchema            EventGatewayProduceSchemaValidationPolicyConfigType = "inline_schema"
 )
 
 // EventGatewayProduceSchemaValidationPolicyConfig - The configuration of the produce schema validation policy.
 type EventGatewayProduceSchemaValidationPolicyConfig struct {
 	EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig `queryParam:"inline" union:"member"`
 	EventGatewayProduceSchemaValidationPolicyJSONConfig           *EventGatewayProduceSchemaValidationPolicyJSONConfig           `queryParam:"inline" union:"member"`
+	EventGatewayProduceSchemaValidationPolicyInlineSchemaConfig   *EventGatewayProduceSchemaValidationPolicyInlineSchemaConfig   `queryParam:"inline" union:"member"`
 
 	Type EventGatewayProduceSchemaValidationPolicyConfigType
 }
@@ -42,7 +44,23 @@ func CreateEventGatewayProduceSchemaValidationPolicyConfigJSON(json EventGateway
 	}
 }
 
-func (u *EventGatewayProduceSchemaValidationPolicyConfig) UnmarshalJSON(data []byte) error {
+func CreateEventGatewayProduceSchemaValidationPolicyConfigInlineSchema(inlineSchema EventGatewayProduceSchemaValidationPolicyInlineSchemaConfig) EventGatewayProduceSchemaValidationPolicyConfig {
+	typ := EventGatewayProduceSchemaValidationPolicyConfigTypeInlineSchema
+
+	return EventGatewayProduceSchemaValidationPolicyConfig{
+		EventGatewayProduceSchemaValidationPolicyInlineSchemaConfig: &inlineSchema,
+		Type: typ,
+	}
+}
+
+func (u *EventGatewayProduceSchemaValidationPolicyConfig) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = EventGatewayProduceSchemaValidationPolicyConfig{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`
@@ -72,6 +90,15 @@ func (u *EventGatewayProduceSchemaValidationPolicyConfig) UnmarshalJSON(data []b
 		u.EventGatewayProduceSchemaValidationPolicyJSONConfig = eventGatewayProduceSchemaValidationPolicyJSONConfig
 		u.Type = EventGatewayProduceSchemaValidationPolicyConfigTypeJSON
 		return nil
+	case "inline_schema":
+		eventGatewayProduceSchemaValidationPolicyInlineSchemaConfig := new(EventGatewayProduceSchemaValidationPolicyInlineSchemaConfig)
+		if err := utils.UnmarshalJSON(data, &eventGatewayProduceSchemaValidationPolicyInlineSchemaConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == inline_schema) type EventGatewayProduceSchemaValidationPolicyInlineSchemaConfig within EventGatewayProduceSchemaValidationPolicyConfig: %w", string(data), err)
+		}
+
+		u.EventGatewayProduceSchemaValidationPolicyInlineSchemaConfig = eventGatewayProduceSchemaValidationPolicyInlineSchemaConfig
+		u.Type = EventGatewayProduceSchemaValidationPolicyConfigTypeInlineSchema
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for EventGatewayProduceSchemaValidationPolicyConfig", string(data))
@@ -84,6 +111,10 @@ func (u EventGatewayProduceSchemaValidationPolicyConfig) MarshalJSON() ([]byte, 
 
 	if u.EventGatewayProduceSchemaValidationPolicyJSONConfig != nil {
 		return utils.MarshalJSON(u.EventGatewayProduceSchemaValidationPolicyJSONConfig, "", true)
+	}
+
+	if u.EventGatewayProduceSchemaValidationPolicyInlineSchemaConfig != nil {
+		return utils.MarshalJSON(u.EventGatewayProduceSchemaValidationPolicyInlineSchemaConfig, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type EventGatewayProduceSchemaValidationPolicyConfig: all fields are null")

@@ -6,17 +6,15 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// Aws - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type Aws struct {
 	// Overrides the AWS_REGION environment variable for SageMaker requests.
-	Region *string `default:"null" json:"region"`
+	Region *string `json:"region,omitempty"`
 	// Assume a different IAM role after authenticating; mutually required with role_session_name.
-	AssumeRoleArn *string `default:"null" json:"assume_role_arn"`
+	AssumeRoleArn *string `json:"assume_role_arn,omitempty"`
 	// Session identifier for the assumed role; mutually required with assume_role_arn.
-	RoleSessionName *string `default:"null" json:"role_session_name"`
+	RoleSessionName *string `json:"role_session_name,omitempty"`
 	// Overrides the STS endpoint when assuming a role.
-	StsEndpointURL *string `default:"null" json:"sts_endpoint_url"`
+	StsEndpointURL *string `json:"sts_endpoint_url,omitempty"`
 }
 
 func (a Aws) MarshalJSON() ([]byte, error) {
@@ -60,11 +58,11 @@ func (a *Aws) GetStsEndpointURL() *string {
 
 type Target struct {
 	// Sets the X-Amzn-SageMaker-Target-Model header (multi-model endpoints).
-	Model *string `default:"null" json:"model"`
+	Model *string `json:"model,omitempty"`
 	// Sets the X-Amzn-SageMaker-Target-Variant header (A/B variant testing).
-	Variant *string `default:"null" json:"variant"`
+	Variant *string `json:"variant,omitempty"`
 	// Sets the X-Amzn-SageMaker-Target-Container-Hostname header (multi-container).
-	ContainerHostname *string `default:"null" json:"container_hostname"`
+	ContainerHostname *string `json:"container_hostname,omitempty"`
 }
 
 func (t Target) MarshalJSON() ([]byte, error) {
@@ -99,10 +97,7 @@ func (t *Target) GetContainerHostname() *string {
 	return t.ContainerHostname
 }
 
-// AIGatewayTargetSagemakerConfig - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// AWS SageMaker-specific configuration for a model.
+// AIGatewayTargetSagemakerConfig - AWS SageMaker-specific configuration for a model.
 type AIGatewayTargetSagemakerConfig struct {
 	// The number of dimensions for embedding outputs.
 	EmbeddingsDimensions *int64 `json:"embeddings_dimensions,omitempty"`
@@ -116,6 +111,18 @@ type AIGatewayTargetSagemakerConfig struct {
 	CacheReadCost *float64 `json:"cache_read_cost,omitempty"`
 	// Cost per 1M cache-write prompt tokens for billing and cost tracking.
 	CacheWriteCost *float64 `json:"cache_write_cost,omitempty"`
+	// Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
+	InputCostList []AIGatewayModalCostList `json:"input_cost_list,omitempty"`
+	// Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
+	OutputCostList []AIGatewayModalCostList `json:"output_cost_list,omitempty"`
+	// Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
+	CacheReadCostList []AIGatewayModalCostList `json:"cache_read_cost_list,omitempty"`
 	// Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
 	CacheWriteCostList []AIGatewayCacheWriteCost `json:"cache_write_cost_list,omitempty"`
 	// Above an input-token threshold, scale input and output pricing by the corresponding factor.
@@ -130,12 +137,14 @@ type AIGatewayTargetSagemakerConfig struct {
 	TopP *float64 `json:"top_p,omitempty"`
 	// The upstream URL for the model endpoint.
 	UpstreamURL *string `json:"upstream_url,omitempty"`
+	// Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	UpstreamBaseURL *string `json:"upstream_base_url,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
-	type_ string `const:"sagemaker" json:"type"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	Aws    *Aws    `json:"aws"`
-	Target *Target `json:"target"`
+	type_  string  `const:"sagemaker" json:"type"`
+	Aws    *Aws    `json:"aws,omitempty"`
+	Target *Target `json:"target,omitempty"`
 }
 
 func (a AIGatewayTargetSagemakerConfig) MarshalJSON() ([]byte, error) {
@@ -191,6 +200,27 @@ func (a *AIGatewayTargetSagemakerConfig) GetCacheWriteCost() *float64 {
 	return a.CacheWriteCost
 }
 
+func (a *AIGatewayTargetSagemakerConfig) GetInputCostList() []AIGatewayModalCostList {
+	if a == nil {
+		return nil
+	}
+	return a.InputCostList
+}
+
+func (a *AIGatewayTargetSagemakerConfig) GetOutputCostList() []AIGatewayModalCostList {
+	if a == nil {
+		return nil
+	}
+	return a.OutputCostList
+}
+
+func (a *AIGatewayTargetSagemakerConfig) GetCacheReadCostList() []AIGatewayModalCostList {
+	if a == nil {
+		return nil
+	}
+	return a.CacheReadCostList
+}
+
 func (a *AIGatewayTargetSagemakerConfig) GetCacheWriteCostList() []AIGatewayCacheWriteCost {
 	if a == nil {
 		return nil
@@ -238,6 +268,13 @@ func (a *AIGatewayTargetSagemakerConfig) GetUpstreamURL() *string {
 		return nil
 	}
 	return a.UpstreamURL
+}
+
+func (a *AIGatewayTargetSagemakerConfig) GetUpstreamBaseURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamBaseURL
 }
 
 func (a *AIGatewayTargetSagemakerConfig) GetType() string {

@@ -147,7 +147,10 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 				Description: `The UUID of your Gateway.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The unique identifier of the policy.`,
 			},
 			"labels": schema.MapAttribute{
@@ -231,7 +234,7 @@ func (r *EventGatewayClusterPolicyAclsResource) Create(ctx context.Context, req 
 	}
 	res, err := r.client.EventGatewayVirtualClusterPolicies.CreateEventGatewayVirtualClusterClusterLevelPolicyAcls(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -291,7 +294,7 @@ func (r *EventGatewayClusterPolicyAclsResource) Read(ctx context.Context, req re
 	}
 	res, err := r.client.EventGatewayVirtualClusterPolicies.GetEventGatewayVirtualClusterClusterLevelPolicyAcls(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -345,7 +348,7 @@ func (r *EventGatewayClusterPolicyAclsResource) Update(ctx context.Context, req 
 	}
 	res, err := r.client.EventGatewayVirtualClusterPolicies.UpdateEventGatewayVirtualClusterClusterLevelPolicyAcls(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -405,7 +408,7 @@ func (r *EventGatewayClusterPolicyAclsResource) Delete(ctx context.Context, req 
 	}
 	res, err := r.client.EventGatewayVirtualClusterPolicies.DeleteEventGatewayVirtualClusterClusterLevelPolicyAcls(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -32,9 +32,6 @@ func newAIGatewayMCPServers(rootSDK *KonnectBeta, sdkConfig config.SDKConfigurat
 }
 
 // CreateAiGatewayMcpServer - Create an MCP Server
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Registers a new MCP Server for the AI Gateway.
 func (s *AIGatewayMCPServers) CreateAiGatewayMcpServer(ctx context.Context, request operations.CreateAiGatewayMcpServerRequest, opts ...operations.Option) (*operations.CreateAiGatewayMcpServerResponse, error) {
 	o := operations.Options{}
@@ -373,9 +370,6 @@ func (s *AIGatewayMCPServers) CreateAiGatewayMcpServer(ctx context.Context, requ
 }
 
 // GetAiGatewayMcpServer - Get an MCP Server
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Returns the details of a specific MCP Server.
 func (s *AIGatewayMCPServers) GetAiGatewayMcpServer(ctx context.Context, request operations.GetAiGatewayMcpServerRequest, opts ...operations.Option) (*operations.GetAiGatewayMcpServerResponse, error) {
 	o := operations.Options{}
@@ -665,9 +659,6 @@ func (s *AIGatewayMCPServers) GetAiGatewayMcpServer(ctx context.Context, request
 }
 
 // UpdateAiGatewayMcpServer - Update an MCP Server
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Updates the configuration of an existing MCP Server.
 func (s *AIGatewayMCPServers) UpdateAiGatewayMcpServer(ctx context.Context, request operations.UpdateAiGatewayMcpServerRequest, opts ...operations.Option) (*operations.UpdateAiGatewayMcpServerResponse, error) {
 	o := operations.Options{}
@@ -985,9 +976,6 @@ func (s *AIGatewayMCPServers) UpdateAiGatewayMcpServer(ctx context.Context, requ
 }
 
 // DeleteAiGatewayMcpServer - Delete an MCP Server
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Removes a specific MCP Server from the AI Gateway.
 func (s *AIGatewayMCPServers) DeleteAiGatewayMcpServer(ctx context.Context, request operations.DeleteAiGatewayMcpServerRequest, opts ...operations.Option) (*operations.DeleteAiGatewayMcpServerResponse, error) {
 	o := operations.Options{}

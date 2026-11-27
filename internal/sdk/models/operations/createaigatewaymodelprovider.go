@@ -35,6 +35,10 @@ func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderReq
 	return c.GetCreateAIGatewayModelProviderRequest().AIGatewayModelProviderAzure
 }
 
+func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderRequestBaseten() *shared.AIGatewayModelProviderBaseten {
+	return c.GetCreateAIGatewayModelProviderRequest().AIGatewayModelProviderBaseten
+}
+
 func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderRequestBedrock() *shared.AIGatewayModelProviderBedrock {
 	return c.GetCreateAIGatewayModelProviderRequest().AIGatewayModelProviderBedrock
 }
@@ -59,6 +63,10 @@ func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderReq
 	return c.GetCreateAIGatewayModelProviderRequest().AIGatewayModelProviderDeepseek
 }
 
+func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderRequestFireworks() *shared.AIGatewayModelProviderFireworks {
+	return c.GetCreateAIGatewayModelProviderRequest().AIGatewayModelProviderFireworks
+}
+
 func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderRequestGemini() *shared.AIGatewayModelProviderGemini {
 	return c.GetCreateAIGatewayModelProviderRequest().AIGatewayModelProviderGemini
 }
@@ -73,6 +81,10 @@ func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderReq
 
 func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderRequestLlama2() *shared.AIGatewayModelProviderLlama2 {
 	return c.GetCreateAIGatewayModelProviderRequest().AIGatewayModelProviderLlama2
+}
+
+func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderRequestMeta() *shared.AIGatewayModelProviderMeta {
+	return c.GetCreateAIGatewayModelProviderRequest().AIGatewayModelProviderMeta
 }
 
 func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderRequestMistral() *shared.AIGatewayModelProviderMistral {
@@ -101,6 +113,14 @@ func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderReq
 
 func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderRequestSagemaker() *shared.AIGatewayModelProviderSagemaker {
 	return c.GetCreateAIGatewayModelProviderRequest().AIGatewayModelProviderSagemaker
+}
+
+func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderRequestTogetherai() *shared.AIGatewayModelProviderTogetherai {
+	return c.GetCreateAIGatewayModelProviderRequest().AIGatewayModelProviderTogetherai
+}
+
+func (c *CreateAiGatewayModelProviderRequest) GetCreateAIGatewayModelProviderRequestTypesafe() *shared.AIGatewayModelProviderTypesafe {
+	return c.GetCreateAIGatewayModelProviderRequest().AIGatewayModelProviderTypesafe
 }
 
 type CreateAiGatewayModelProviderResponse struct {
@@ -166,6 +186,13 @@ func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderAzure() 
 	return nil
 }
 
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderBaseten() *shared.AIGatewayModelProviderAIGatewayModelProviderBaseten {
+	if v := c.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderBaseten
+	}
+	return nil
+}
+
 func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderBedrock() *shared.AIGatewayModelProviderAIGatewayModelProviderBedrock {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderBedrock
@@ -208,6 +235,13 @@ func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderDeepseek
 	return nil
 }
 
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderFireworks() *shared.AIGatewayModelProviderAIGatewayModelProviderFireworks {
+	if v := c.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderFireworks
+	}
+	return nil
+}
+
 func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderGemini() *shared.AIGatewayModelProviderAIGatewayModelProviderGemini {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderGemini
@@ -232,6 +266,13 @@ func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderKimi() *
 func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderLlama2() *shared.AIGatewayModelProviderAIGatewayModelProviderLlama2 {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderLlama2
+	}
+	return nil
+}
+
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderMeta() *shared.AIGatewayModelProviderAIGatewayModelProviderMeta {
+	if v := c.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderMeta
 	}
 	return nil
 }
@@ -281,6 +322,20 @@ func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderXai() *s
 func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderSagemaker() *shared.AIGatewayModelProviderAIGatewayModelProviderSagemaker {
 	if v := c.GetAIGatewayModelProvider(); v != nil {
 		return v.AIGatewayModelProviderAIGatewayModelProviderSagemaker
+	}
+	return nil
+}
+
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderTogetherai() *shared.AIGatewayModelProviderAIGatewayModelProviderTogetherai {
+	if v := c.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderTogetherai
+	}
+	return nil
+}
+
+func (c *CreateAiGatewayModelProviderResponse) GetAIGatewayModelProviderTypesafe() *shared.AIGatewayModelProviderAIGatewayModelProviderTypesafe {
+	if v := c.GetAIGatewayModelProvider(); v != nil {
+		return v.AIGatewayModelProviderAIGatewayModelProviderTypesafe
 	}
 	return nil
 }

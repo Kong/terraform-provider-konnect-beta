@@ -186,7 +186,7 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`v2`),
-				Description: `The version of the control plane. Setting it propagates the change to the global control plane, and is the only way to move a control plane between versions. Default: "v2"`,
+				Description: `The version of the control plane. Setting it propagates the change to the global control plane, and is the only way to move a control plane between versions. A version only moves forward - once a control plane runs a newer version, setting an older one is rejected. Omitting the field falls back to the default, so a create lands on the default version and a whole-record update of a control plane that already runs a newer version is rejected. Default: "v2"`,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`^v[0-9]{1,9}$`), "must match pattern "+regexp.MustCompile(`^v[0-9]{1,9}$`).String()),
 				},
@@ -241,7 +241,7 @@ func (r *MeshControlPlaneResource) Create(ctx context.Context, req resource.Crea
 	}
 	res, err := r.client.Mesh.CreateCp(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -301,7 +301,7 @@ func (r *MeshControlPlaneResource) Read(ctx context.Context, req resource.ReadRe
 	}
 	res, err := r.client.Mesh.GetMeshControlPlane(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -355,7 +355,7 @@ func (r *MeshControlPlaneResource) Update(ctx context.Context, req resource.Upda
 	}
 	res, err := r.client.Mesh.UpdateCp(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -415,7 +415,7 @@ func (r *MeshControlPlaneResource) Delete(ctx context.Context, req resource.Dele
 	}
 	res, err := r.client.Mesh.DeleteMeshControlPlane(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

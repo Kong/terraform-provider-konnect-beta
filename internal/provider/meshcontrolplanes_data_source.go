@@ -98,7 +98,7 @@ func (r *MeshControlPlanesDataSource) Schema(ctx context.Context, req datasource
 						},
 						"version": schema.StringAttribute{
 							Computed:    true,
-							Description: `The version of the control plane. Setting it propagates the change to the global control plane, and is the only way to move a control plane between versions.`,
+							Description: `The version of the control plane. Setting it propagates the change to the global control plane, and is the only way to move a control plane between versions. A version only moves forward - once a control plane runs a newer version, setting an older one is rejected. Omitting the field falls back to the default, so a create lands on the default version and a whole-record update of a control plane that already runs a newer version is rejected.`,
 						},
 					},
 				},
@@ -199,7 +199,7 @@ func (r *MeshControlPlanesDataSource) Read(ctx context.Context, req datasource.R
 	}
 	res, err := r.client.Mesh.ListMeshControlPlanes(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -229,7 +229,7 @@ func (r *MeshControlPlanesDataSource) Read(ctx context.Context, req datasource.R
 		res, err = res.Next()
 
 		if err != nil {
-			resp.Diagnostics.AddError("failed to retrieve next page of results", err.Error())
+			resp.Diagnostics.AddError("failed to retrieve next page of results", redactSensitiveValues(ctx, err.Error()))
 			if res != nil && res.RawResponse != nil {
 				resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 			}

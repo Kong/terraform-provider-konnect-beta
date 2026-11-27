@@ -117,13 +117,6 @@ Optional:
 
 Required:
 
-- `assume_role` (Attributes) Configuration for assuming an IAM role. Required when `type` is `assume_role`. (see [below for nested schema](#nestedatt--authentication--sasl_aws_iam--sasl_aws_iam--assume_role--assume_role))
-
-<a id="nestedatt--authentication--sasl_aws_iam--sasl_aws_iam--assume_role--assume_role"></a>
-### Nested Schema for `authentication.sasl_aws_iam.sasl_aws_iam.assume_role.assume_role`
-
-Required:
-
 - `arn` (String) The [ARN](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns)
 of the IAM role to assume, formatted as `arn:aws:iam::<account-id>:role/<role-name>`.
 
@@ -131,7 +124,6 @@ Optional:
 
 - `session_name` (String) The session name to attach to the assumed role session. The value becomes part of the assumed
 role user ARN, queryable as `arn:aws:sts::<account-id>:assumed-role/<role-name>/<session-name>`.
-
 
 
 <a id="nestedatt--authentication--sasl_aws_iam--sasl_aws_iam--default_provider_chain"></a>
@@ -145,7 +137,7 @@ role user ARN, queryable as `arn:aws:sts::<account-id>:assumed-role/<role-name>/
 
 Optional:
 
-- `password` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+- `password` (String, Sensitive) A sensitive value containing the secret or a reference to a secret as a template string expression.
 If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
 If provided as an expression, the expression itself is stored and returned by the API.
 Not Null
@@ -160,7 +152,7 @@ Not Null
 Optional:
 
 - `algorithm` (String) The algorithm used for SASL/SCRAM authentication. possible known values include one of ["sha256", "sha512"]; Not Null
-- `password` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+- `password` (String, Sensitive) A sensitive value containing the secret or a reference to a secret as a template string expression.
 If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
 If provided as an expression, the expression itself is stored and returned by the API.
 Not Null
@@ -194,7 +186,7 @@ Required:
 
 - `certificate` (String) A literal value or a reference to an existing secret as a template string expression.
 The value is stored and returned by the API as-is, not treated as sensitive information.
-- `key` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+- `key` (String, Sensitive) A sensitive value containing the secret or a reference to a secret as a template string expression.
 If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
 If provided as an expression, the expression itself is stored and returned by the API.
 

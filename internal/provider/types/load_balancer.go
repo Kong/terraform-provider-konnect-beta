@@ -7,10 +7,10 @@ import (
 )
 
 type LoadBalancer struct {
-	LeastRequest *LeastRequest      `tfsdk:"least_request"`
-	Maglev       *Maglev            `tfsdk:"maglev"`
-	Random       *RawProviderConfig `tfsdk:"random"`
-	RingHash     *RingHash          `tfsdk:"ring_hash"`
-	RoundRobin   *RawProviderConfig `tfsdk:"round_robin"`
-	Type         types.String       `tfsdk:"type"`
+	LeastRequest *LeastRequest                                                          `tfsdk:"least_request"`
+	Maglev       *Maglev                                                                `tfsdk:"maglev"`
+	Random       *AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig `tfsdk:"random"`
+	RingHash     *RingHash                                                              `tfsdk:"ring_hash"`
+	RoundRobin   *AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig `tfsdk:"round_robin"`
+	Type         types.String                                                           `tfsdk:"type"`
 }

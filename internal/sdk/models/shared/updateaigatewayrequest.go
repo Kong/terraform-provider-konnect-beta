@@ -2,9 +2,26 @@
 
 package shared
 
-// UpdateAIGatewayRequest - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
 type UpdateAIGatewayRequest struct {
+	// The minimum AI Gateway runtime version supported by this AI Gateway. This is the lowest data plane version that may receive configuration from it, and it controls which features the API accepts.
+	//
+	// It may be lowered only when no configuration already stored uses a feature that requires a runtime version above the requested one. Otherwise the request is rejected, naming the entities and fields that stand in the way so that they can be removed or downgraded first.
+	//
+	// Can only be set when the AI Gateway's deployment_type is `hybrid`. For `managed` and `serverless` deployments, Konnect manages this value and requests that include it are rejected.
+	//
+	// When not specified, the minimum runtime version is left unchanged.
+	//
+	// When runtime_auto_upgrade is enabled (the default), this value is raised automatically to track the minimum runtime version reported across connected data planes, so any value set here may be superseded as the fleet upgrades.
+	//
+	MinRuntimeVersion *string `json:"min_runtime_version,omitempty"`
+	// Whether the control plane should automatically raise min_runtime_version to match the DP fleet's minimum runtime version (the lowest AI Gateway runtime version reported across all connected data planes) as that value increases.
+	//
+	// Can only be set when deployment_type is `hybrid`. For `managed` and `serverless` deployments, Konnect manages runtime upgrades and this value is read-only.
+	RuntimeAutoUpgrade *bool `default:"true" json:"runtime_auto_upgrade"`
 	// The display name for this AI Gateway.
 	DisplayName string `json:"display_name"`
 	// The name for this AI Gateway. This value is immutable after creation.
@@ -20,6 +37,38 @@ type UpdateAIGatewayRequest struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]string `json:"labels,omitempty"`
+	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+	//
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
+	//
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+}
+
+func (u UpdateAIGatewayRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAIGatewayRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UpdateAIGatewayRequest) GetMinRuntimeVersion() *string {
+	if u == nil {
+		return nil
+	}
+	return u.MinRuntimeVersion
+}
+
+func (u *UpdateAIGatewayRequest) GetRuntimeAutoUpgrade() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.RuntimeAutoUpgrade
 }
 
 func (u *UpdateAIGatewayRequest) GetDisplayName() string {
@@ -55,4 +104,11 @@ func (u *UpdateAIGatewayRequest) GetLabels() map[string]string {
 		return nil
 	}
 	return u.Labels
+}
+
+func (u *UpdateAIGatewayRequest) GetManagedBy() map[string]string {
+	if u == nil {
+		return nil
+	}
+	return u.ManagedBy
 }

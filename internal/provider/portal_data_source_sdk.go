@@ -35,15 +35,33 @@ func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponse(ctx context
 func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponsePortal(ctx context.Context, resp *shared.ListPortalsResponsePortal) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	if resp.Ai == nil {
-		r.Ai = nil
+	r.Ai = &tfTypes.AISettings{}
+	r.Ai.Enabled = types.BoolPointerValue(resp.Ai.Enabled)
+	r.Ai.Features = &tfTypes.AISettingsFeatures{}
+	if resp.Ai.Features.AiSearch == nil {
+		r.Ai.Features.AiSearch = nil
 	} else {
-		r.Ai = &tfTypes.AISettings{}
-		r.Ai.Enabled = types.BoolValue(resp.Ai.Enabled)
-		r.Ai.Features = &tfTypes.Features{}
+		r.Ai.Features.AiSearch = &tfTypes.Autogenerate{}
+		r.Ai.Features.AiSearch.Enabled = types.BoolPointerValue(resp.Ai.Features.AiSearch.Enabled)
+	}
+	if resp.Ai.Features.McpServer == nil {
+		r.Ai.Features.McpServer = nil
+	} else {
 		r.Ai.Features.McpServer = &tfTypes.McpServer{}
-		r.Ai.Features.McpServer.Enabled = types.BoolValue(resp.Ai.Features.McpServer.Enabled)
-		r.Ai.Features.McpServer.WriteOperationsEnabled = types.BoolValue(resp.Ai.Features.McpServer.WriteOperationsEnabled)
+		r.Ai.Features.McpServer.Enabled = types.BoolPointerValue(resp.Ai.Features.McpServer.Enabled)
+		r.Ai.Features.McpServer.WriteOperationsEnabled = types.BoolPointerValue(resp.Ai.Features.McpServer.WriteOperationsEnabled)
+	}
+	if resp.Ai.Features.PortalAgent == nil {
+		r.Ai.Features.PortalAgent = nil
+	} else {
+		r.Ai.Features.PortalAgent = &tfTypes.PortalAgent{}
+		if resp.Ai.Features.PortalAgent.Audience != nil {
+			r.Ai.Features.PortalAgent.Audience = types.StringValue(string(*resp.Ai.Features.PortalAgent.Audience))
+		} else {
+			r.Ai.Features.PortalAgent.Audience = types.StringNull()
+		}
+		r.Ai.Features.PortalAgent.DisplayName = types.StringPointerValue(resp.Ai.Features.PortalAgent.DisplayName)
+		r.Ai.Features.PortalAgent.Enabled = types.BoolPointerValue(resp.Ai.Features.PortalAgent.Enabled)
 	}
 	r.AuthenticationEnabled = types.BoolPointerValue(resp.AuthenticationEnabled)
 	r.AutoApproveApplications = types.BoolPointerValue(resp.AutoApproveApplications)

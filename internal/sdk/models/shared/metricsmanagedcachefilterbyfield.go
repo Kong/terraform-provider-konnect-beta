@@ -163,7 +163,14 @@ func CreateMetricsManagedCacheFilterByFieldMetricsManagedCacheFilterByFieldEmpty
 	}
 }
 
-func (u *MetricsManagedCacheFilterByField) UnmarshalJSON(data []byte) error {
+func (u *MetricsManagedCacheFilterByField) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MetricsManagedCacheFilterByField{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

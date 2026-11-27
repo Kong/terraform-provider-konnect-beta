@@ -7,5 +7,5 @@ import (
 )
 
 type Config struct {
-	URL types.String `tfsdk:"url"`
+	Prefix types.String `tfsdk:"prefix"`
 }

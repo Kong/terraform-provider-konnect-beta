@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/boolplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"regexp"
@@ -36,17 +37,18 @@ type AIGatewayCertificateResource struct {
 
 // AIGatewayCertificateResourceModel describes the resource data model.
 type AIGatewayCertificateResourceModel struct {
-	Cert      types.String            `tfsdk:"cert"`
-	CertAlt   types.String            `tfsdk:"cert_alt"`
-	CreatedAt types.String            `tfsdk:"created_at"`
-	GatewayID types.String            `tfsdk:"gateway_id"`
-	ID        types.String            `tfsdk:"id"`
-	Key       types.String            `tfsdk:"key"`
-	KeyAlt    types.String            `tfsdk:"key_alt"`
-	Labels    map[string]types.String `tfsdk:"labels"`
-	ManagedBy map[string]types.String `tfsdk:"managed_by"`
-	Name      types.String            `tfsdk:"name"`
-	UpdatedAt types.String            `tfsdk:"updated_at"`
+	Cert           types.String            `tfsdk:"cert"`
+	CertAlt        types.String            `tfsdk:"cert_alt"`
+	CreatedAt      types.String            `tfsdk:"created_at"`
+	GatewayID      types.String            `tfsdk:"gateway_id"`
+	ID             types.String            `tfsdk:"id"`
+	Key            types.String            `tfsdk:"key"`
+	KeyAlt         types.String            `tfsdk:"key_alt"`
+	KonnectManaged types.Bool              `tfsdk:"konnect_managed"`
+	Labels         map[string]types.String `tfsdk:"labels"`
+	ManagedBy      map[string]types.String `tfsdk:"managed_by"`
+	Name           types.String            `tfsdk:"name"`
+	UpdatedAt      types.String            `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewayCertificateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,6 +62,9 @@ func (r *AIGatewayCertificateResource) Schema(ctx context.Context, req resource.
 			"cert": schema.StringAttribute{
 				Required:    true,
 				Description: `PEM-encoded public certificate chain.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"cert_alt": schema.StringAttribute{
 				Optional:    true,
@@ -86,10 +91,20 @@ func (r *AIGatewayCertificateResource) Schema(ctx context.Context, req resource.
 			"key": schema.StringAttribute{
 				Required:    true,
 				Description: `PEM-encoded private key matching ` + "`" + `cert` + "`" + `.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"key_alt": schema.StringAttribute{
 				Optional:    true,
 				Description: `PEM-encoded private key matching ` + "`" + `cert_alt` + "`" + `. Requires ` + "`" + `cert_alt` + "`" + ` to be set.`,
+			},
+			"konnect_managed": schema.BoolAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+				},
+				Description: `An immutable read-only flag to identify resource managed by Konnect services.`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
@@ -107,17 +122,16 @@ func (r *AIGatewayCertificateResource) Schema(ctx context.Context, req resource.
 				ElementType: types.StringType,
 				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 					`` + "\n" +
-					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+					`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+					`Values must be 1–127 characters long and must not be empty.` + "\n" +
+					`Keys and values must not contain spaces or control characters.`,
 			},
 			"name": schema.StringAttribute{
-				Required: true,
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`A user-defined unique identifier for this certificate, used as a stable human-readable reference. This value is immutable after creation.`,
+				Required:    true,
+				Description: `A user-defined unique identifier for this certificate, used as a stable human-readable reference. This value is immutable after creation.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 256),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 				},
 			},
 			"updated_at": schema.StringAttribute{
@@ -177,7 +191,7 @@ func (r *AIGatewayCertificateResource) Create(ctx context.Context, req resource.
 	}
 	res, err := r.client.AIGatewayCertificates.CreateAiGatewayCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -244,7 +258,7 @@ func (r *AIGatewayCertificateResource) Read(ctx context.Context, req resource.Re
 	}
 	res, err := r.client.AIGatewayCertificates.GetAiGatewayCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -298,7 +312,7 @@ func (r *AIGatewayCertificateResource) Update(ctx context.Context, req resource.
 	}
 	res, err := r.client.AIGatewayCertificates.UpdateAiGatewayCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -358,7 +372,7 @@ func (r *AIGatewayCertificateResource) Delete(ctx context.Context, req resource.
 	}
 	res, err := r.client.AIGatewayCertificates.DeleteAiGatewayCertificate(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

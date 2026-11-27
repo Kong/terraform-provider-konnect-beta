@@ -80,9 +80,13 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 								Optional: true,
 								MarkdownDescription: `Describes how to handle a failure in a policy applied to consumed records.` + "\n" +
 									`* ` + "`" + `error` + "`" + ` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.` + "\n" +
+									`A single record that always fails the policy, for example one written by a producer with access to the topic, pins every consumer group on that offset.` + "\n" +
+									`The error the client receives contains the policy failure reason, which can include runtime-specific configuration details.` + "\n" +
 									`* ` + "`" + `skip` + "`" + ` - the record is not delivered to the client.` + "\n" +
 									`* ` + "`" + `passthrough` + "`" + ` - passes the record to the client even though policy execution failed.` + "\n" +
 									`* ` + "`" + `mark` + "`" + ` - passes the record to the client but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets.` + "\n" +
+									`If you don't want to share this information with clients, remove the header with a Modify Headers consume policy.` + "\n" +
 									`` + "\n" +
 									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
 									`possible known values include one of ["error", "skip", "passthrough", "mark"]`,
@@ -137,7 +141,155 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 						Description: `The configuration of the consume schema validation policy when using a schema registry.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("inline_schema"),
 								path.MatchRelative().AtParent().AtName("json"),
+							}...),
+						},
+					},
+					"inline_schema": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"failure_mode": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `Describes how to handle a failure in a policy applied to consumed records.` + "\n" +
+									`* ` + "`" + `error` + "`" + ` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.` + "\n" +
+									`A single record that always fails the policy, for example one written by a producer with access to the topic, pins every consumer group on that offset.` + "\n" +
+									`The error the client receives contains the policy failure reason, which can include runtime-specific configuration details.` + "\n" +
+									`* ` + "`" + `skip` + "`" + ` - the record is not delivered to the client.` + "\n" +
+									`* ` + "`" + `passthrough` + "`" + ` - passes the record to the client even though policy execution failed.` + "\n" +
+									`* ` + "`" + `mark` + "`" + ` - passes the record to the client but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets.` + "\n" +
+									`If you don't want to share this information with clients, remove the header with a Modify Headers consume policy.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+									`possible known values include one of ["error", "skip", "passthrough", "mark"]`,
+							},
+							"key": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"avro": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"schema": schema.StringAttribute{
+												Required:    true,
+												Description: `A schema that applies according to ` + "`" + `schema_type` + "`" + `.`,
+											},
+										},
+										MarkdownDescription: `The configuration of an inline schema when using Avro.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("json"),
+											}...),
+										},
+									},
+									"json": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"schema": schema.StringAttribute{
+												Required:    true,
+												Description: `A schema that applies according to ` + "`" + `schema_type` + "`" + `.`,
+											},
+										},
+										MarkdownDescription: `The configuration of an inline schema when using JSON.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("avro"),
+											}...),
+										},
+									},
+								},
+								MarkdownDescription: `Defines the schema for a record key or value, inline.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+							},
+							"key_validation_action": schema.StringAttribute{
+								Optional:           true,
+								DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+								MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`Defines a behavior when record key is not valid.` + "\n" +
+									`* mark - marks a record with kong/server header and client ID value` + "\n" +
+									`  to help to identify the clients violating schema.` + "\n" +
+									`* skip - skips delivering a record.` + "\n" +
+									`possible known values include one of ["mark", "skip"]`,
+							},
+							"validate_key": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record key.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+							},
+							"validate_value": schema.BoolAttribute{
+								Optional: true,
+								MarkdownDescription: `If true, validate the record value.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+							},
+							"value": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"avro": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"schema": schema.StringAttribute{
+												Required:    true,
+												Description: `A schema that applies according to ` + "`" + `schema_type` + "`" + `.`,
+											},
+										},
+										MarkdownDescription: `The configuration of an inline schema when using Avro.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("json"),
+											}...),
+										},
+									},
+									"json": schema.SingleNestedAttribute{
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"schema": schema.StringAttribute{
+												Required:    true,
+												Description: `A schema that applies according to ` + "`" + `schema_type` + "`" + `.`,
+											},
+										},
+										MarkdownDescription: `The configuration of an inline schema when using JSON.` + "\n" +
+											`` + "\n" +
+											`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("avro"),
+											}...),
+										},
+									},
+								},
+								MarkdownDescription: `Defines the schema for a record key or value, inline.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+							},
+							"value_validation_action": schema.StringAttribute{
+								Optional:           true,
+								DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+								MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`Defines a behavior when record value is not valid.` + "\n" +
+									`* mark - marks a record with kong/server header and client ID value` + "\n" +
+									`  to help to identify the clients violating schema.` + "\n" +
+									`* skip - skips delivering a record.` + "\n" +
+									`possible known values include one of ["mark", "skip"]`,
+							},
+						},
+						MarkdownDescription: `The configuration of the consume schema validation policy when using an inline schema.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `1.3` + "`" + `**.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("json"),
+								path.MatchRelative().AtParent().AtName("confluent_schema_registry"),
 							}...),
 						},
 					},
@@ -148,9 +300,13 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 								Optional: true,
 								MarkdownDescription: `Describes how to handle a failure in a policy applied to consumed records.` + "\n" +
 									`* ` + "`" + `error` + "`" + ` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.` + "\n" +
+									`A single record that always fails the policy, for example one written by a producer with access to the topic, pins every consumer group on that offset.` + "\n" +
+									`The error the client receives contains the policy failure reason, which can include runtime-specific configuration details.` + "\n" +
 									`* ` + "`" + `skip` + "`" + ` - the record is not delivered to the client.` + "\n" +
 									`* ` + "`" + `passthrough` + "`" + ` - passes the record to the client even though policy execution failed.` + "\n" +
 									`* ` + "`" + `mark` + "`" + ` - passes the record to the client but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+									`The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets.` + "\n" +
+									`If you don't want to share this information with clients, remove the header with a Modify Headers consume policy.` + "\n" +
 									`` + "\n" +
 									`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
 									`possible known values include one of ["error", "skip", "passthrough", "mark"]`,
@@ -205,6 +361,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 						Description: `The configuration of the consume schema validation policy when using JSON parsing without schema.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("inline_schema"),
 								path.MatchRelative().AtParent().AtName("confluent_schema_registry"),
 							}...),
 						},
@@ -239,7 +396,10 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 				Description: `The UUID of your Gateway.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The unique identifier of the policy.`,
 			},
 			"labels": schema.MapAttribute{
@@ -323,7 +483,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Create(ctx context.C
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.CreateEventGatewayVirtualClusterConsumePolicySchemaValidation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -383,7 +543,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Read(ctx context.Con
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.GetEventGatewayVirtualClusterConsumePolicySchemaValidation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -437,7 +597,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Update(ctx context.C
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.UpdateEventGatewayVirtualClusterConsumePolicySchemaValidation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -497,7 +657,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Delete(ctx context.C
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.DeleteEventGatewayVirtualClusterConsumePolicySchemaValidation(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

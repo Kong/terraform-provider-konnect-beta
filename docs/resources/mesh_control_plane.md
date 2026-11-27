@@ -47,7 +47,7 @@ resource "konnect_mesh_control_plane" "my_meshcontrolplane" {
 - `description` (String)
 - `features` (Attributes List) Requires replacement if changed. (see [below for nested schema](#nestedatt--features))
 - `labels` (Map of String) Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
-- `version` (String) The version of the control plane. Setting it propagates the change to the global control plane, and is the only way to move a control plane between versions. Default: "v2"
+- `version` (String) The version of the control plane. Setting it propagates the change to the global control plane, and is the only way to move a control plane between versions. A version only moves forward - once a control plane runs a newer version, setting an older one is rejected. Omitting the field falls back to the default, so a create lands on the default version and a whole-record update of a control plane that already runs a newer version is rejected. Default: "v2"
 
 ### Read-Only
 

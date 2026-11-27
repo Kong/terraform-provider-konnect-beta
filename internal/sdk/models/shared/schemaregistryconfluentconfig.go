@@ -12,6 +12,7 @@ type SchemaType string
 const (
 	SchemaTypeAvro SchemaType = "avro"
 	SchemaTypeJSON SchemaType = "json"
+	SchemaTypeAny  SchemaType = "any"
 )
 
 func (e SchemaType) ToPointer() *SchemaType {
@@ -22,7 +23,7 @@ func (e SchemaType) ToPointer() *SchemaType {
 func (e *SchemaType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "avro", "json":
+		case "avro", "json", "any":
 			return true
 		}
 	}
@@ -39,6 +40,8 @@ type SchemaRegistryConfluentConfig struct {
 	//
 	TimeoutSeconds *int64 `default:"10" json:"timeout_seconds"`
 	// The authentication configuration for the schema registry.
+	// The Event Gateway only requires read-only access to the schema registry to fetch schemas for validation, so we recommend using credentials with read-only scope.
+	//
 	Authentication *SchemaRegistryAuthenticationScheme `json:"authentication,omitempty"`
 }
 

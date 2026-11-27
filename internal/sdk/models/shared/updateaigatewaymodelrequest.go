@@ -16,10 +16,7 @@ const (
 	UpdateAIGatewayModelRequestTypeModel UpdateAIGatewayModelRequestType = "model"
 )
 
-// UpdateAIGatewayModelRequest - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Configuration for an AI Gateway model.
+// UpdateAIGatewayModelRequest - Configuration for an AI Gateway model.
 type UpdateAIGatewayModelRequest struct {
 	AIGatewayModelAPI   *AIGatewayModelAPI   `queryParam:"inline" union:"member"`
 	AIGatewayModelModel *AIGatewayModelModel `queryParam:"inline" union:"member"`
@@ -45,7 +42,14 @@ func CreateUpdateAIGatewayModelRequestModel(model AIGatewayModelModel) UpdateAIG
 	}
 }
 
-func (u *UpdateAIGatewayModelRequest) UnmarshalJSON(data []byte) error {
+func (u *UpdateAIGatewayModelRequest) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = UpdateAIGatewayModelRequest{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

@@ -5,7 +5,13 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
       allow = [
         "..."
       ]
+      allow_when = [
+        "..."
+      ]
       deny = [
+        "..."
+      ]
+      deny_when = [
         "..."
       ]
     }
@@ -17,11 +23,24 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
     ]
   }
   config = {
+    balancer = {
+      lowest_latency = {
+        # ...
+      }
+    }
+    ca_certificates = [
+      "my-ca-certificate"
+    ]
+    certificates = [
+      "my-certificate"
+    ]
     logging = {
       max_payload_size = 524288
       payloads         = false
     }
     max_request_body_size = 8388608
+    path                  = "/a2a"
+    protocol              = "http"
     proxy = {
       auth = {
         password = "...my_password..."
@@ -64,6 +83,13 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
         "..."
       ]
     }
+    targets = [
+      {
+        address  = "booking-agent-1.internal.kongair.com:443"
+        failover = false
+        weight   = 100
+      }
+    ]
     upstream = {
       auth = {
         aws = {

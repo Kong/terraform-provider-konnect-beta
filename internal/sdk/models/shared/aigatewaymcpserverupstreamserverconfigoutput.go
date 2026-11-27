@@ -3,13 +3,13 @@
 package shared
 
 import (
+	"encoding/json"
+	"errors"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayMCPServerUpstreamServerConfigLogging - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Configuration for AI Gateway logging.
+// AIGatewayMCPServerUpstreamServerConfigLogging - Configuration for AI Gateway logging.
 type AIGatewayMCPServerUpstreamServerConfigLogging struct {
 	Payloads *bool `default:"false" json:"payloads"`
 	Audits   *bool `default:"false" json:"audits"`
@@ -40,21 +40,264 @@ func (a *AIGatewayMCPServerUpstreamServerConfigLogging) GetAudits() *bool {
 	return a.Audits
 }
 
-// AIGatewayMCPServerUpstreamServerConfigOutput - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+type AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"round-robin" json:"algorithm"`
+}
+
+func (a AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig) GetAlgorithm() string {
+	return "round-robin"
+}
+
+type AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"lowest-latency" json:"algorithm"`
+}
+
+func (a AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig) GetAlgorithm() string {
+	return "lowest-latency"
+}
+
+type AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"least-connections" json:"algorithm"`
+}
+
+func (a AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig) GetAlgorithm() string {
+	return "least-connections"
+}
+
+type AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	algorithm string `const:"consistent-hashing" json:"algorithm"`
+	// The request header whose value selects the target. Requests without the header all hash to the same target.
+	HashOnHeader string `json:"hash_on_header"`
+}
+
+func (a AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) GetAlgorithm() string {
+	return "consistent-hashing"
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) GetHashOnHeader() string {
+	if a == nil {
+		return ""
+	}
+	return a.HashOnHeader
+}
+
+type AIGatewayMCPServerUpstreamServerConfigBalancerType string
+
+const (
+	AIGatewayMCPServerUpstreamServerConfigBalancerTypeConsistentHashing AIGatewayMCPServerUpstreamServerConfigBalancerType = "consistent-hashing"
+	AIGatewayMCPServerUpstreamServerConfigBalancerTypeLeastConnections  AIGatewayMCPServerUpstreamServerConfigBalancerType = "least-connections"
+	AIGatewayMCPServerUpstreamServerConfigBalancerTypeLowestLatency     AIGatewayMCPServerUpstreamServerConfigBalancerType = "lowest-latency"
+	AIGatewayMCPServerUpstreamServerConfigBalancerTypeRoundRobin        AIGatewayMCPServerUpstreamServerConfigBalancerType = "round-robin"
+)
+
+// AIGatewayMCPServerUpstreamServerConfigBalancer - Load balancing configuration for `targets`. Only valid with `targets`.
 //
-// Routing, logging, and server configuration for the MCP Server.
+// **Requires a minimum runtime version of `2.4`**.
+type AIGatewayMCPServerUpstreamServerConfigBalancer struct {
+	AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig `queryParam:"inline" union:"member"`
+	AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig  *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig  `queryParam:"inline" union:"member"`
+	AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig     *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig     `queryParam:"inline" union:"member"`
+	AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig        *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig        `queryParam:"inline" union:"member"`
+
+	Type AIGatewayMCPServerUpstreamServerConfigBalancerType
+}
+
+func CreateAIGatewayMCPServerUpstreamServerConfigBalancerConsistentHashing(consistentHashing AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig) AIGatewayMCPServerUpstreamServerConfigBalancer {
+	typ := AIGatewayMCPServerUpstreamServerConfigBalancerTypeConsistentHashing
+
+	return AIGatewayMCPServerUpstreamServerConfigBalancer{
+		AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig: &consistentHashing,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayMCPServerUpstreamServerConfigBalancerLeastConnections(leastConnections AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig) AIGatewayMCPServerUpstreamServerConfigBalancer {
+	typ := AIGatewayMCPServerUpstreamServerConfigBalancerTypeLeastConnections
+
+	return AIGatewayMCPServerUpstreamServerConfigBalancer{
+		AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig: &leastConnections,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayMCPServerUpstreamServerConfigBalancerLowestLatency(lowestLatency AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig) AIGatewayMCPServerUpstreamServerConfigBalancer {
+	typ := AIGatewayMCPServerUpstreamServerConfigBalancerTypeLowestLatency
+
+	return AIGatewayMCPServerUpstreamServerConfigBalancer{
+		AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig: &lowestLatency,
+		Type: typ,
+	}
+}
+
+func CreateAIGatewayMCPServerUpstreamServerConfigBalancerRoundRobin(roundRobin AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig) AIGatewayMCPServerUpstreamServerConfigBalancer {
+	typ := AIGatewayMCPServerUpstreamServerConfigBalancerTypeRoundRobin
+
+	return AIGatewayMCPServerUpstreamServerConfigBalancer{
+		AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig: &roundRobin,
+		Type: typ,
+	}
+}
+
+func (u *AIGatewayMCPServerUpstreamServerConfigBalancer) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayMCPServerUpstreamServerConfigBalancer{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
+
+	type discriminator struct {
+		Algorithm string `json:"algorithm"`
+	}
+
+	dis := new(discriminator)
+	if err := json.Unmarshal(data, &dis); err != nil {
+		return fmt.Errorf("could not unmarshal discriminator: %w", err)
+	}
+
+	switch dis.Algorithm {
+	case "consistent-hashing":
+		aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig := new(AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == consistent-hashing) type AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig within AIGatewayMCPServerUpstreamServerConfigBalancer: %w", string(data), err)
+		}
+
+		u.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig = aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+		u.Type = AIGatewayMCPServerUpstreamServerConfigBalancerTypeConsistentHashing
+		return nil
+	case "least-connections":
+		aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig := new(AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == least-connections) type AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig within AIGatewayMCPServerUpstreamServerConfigBalancer: %w", string(data), err)
+		}
+
+		u.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig = aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+		u.Type = AIGatewayMCPServerUpstreamServerConfigBalancerTypeLeastConnections
+		return nil
+	case "lowest-latency":
+		aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig := new(AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == lowest-latency) type AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig within AIGatewayMCPServerUpstreamServerConfigBalancer: %w", string(data), err)
+		}
+
+		u.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig = aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+		u.Type = AIGatewayMCPServerUpstreamServerConfigBalancerTypeLowestLatency
+		return nil
+	case "round-robin":
+		aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig := new(AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Algorithm == round-robin) type AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig within AIGatewayMCPServerUpstreamServerConfigBalancer: %w", string(data), err)
+		}
+
+		u.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig = aiGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig
+		u.Type = AIGatewayMCPServerUpstreamServerConfigBalancerTypeRoundRobin
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayMCPServerUpstreamServerConfigBalancer", string(data))
+}
+
+func (u AIGatewayMCPServerUpstreamServerConfigBalancer) MarshalJSON() ([]byte, error) {
+	if u.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig, "", true)
+	}
+
+	if u.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig, "", true)
+	}
+
+	if u.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig, "", true)
+	}
+
+	if u.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type AIGatewayMCPServerUpstreamServerConfigBalancer: all fields are null")
+}
+
+// AIGatewayMCPServerUpstreamServerConfigProtocol - The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+//
+// **Requires a minimum runtime version of `2.4`**.
+type AIGatewayMCPServerUpstreamServerConfigProtocol string
+
+const (
+	AIGatewayMCPServerUpstreamServerConfigProtocolHTTP  AIGatewayMCPServerUpstreamServerConfigProtocol = "http"
+	AIGatewayMCPServerUpstreamServerConfigProtocolHTTPS AIGatewayMCPServerUpstreamServerConfigProtocol = "https"
+)
+
+func (e AIGatewayMCPServerUpstreamServerConfigProtocol) ToPointer() *AIGatewayMCPServerUpstreamServerConfigProtocol {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AIGatewayMCPServerUpstreamServerConfigProtocol) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "http", "https":
+			return true
+		}
+	}
+	return false
+}
+
+// AIGatewayMCPServerUpstreamServerConfigOutput - Routing, logging, and server configuration for the MCP Server.
 type AIGatewayMCPServerUpstreamServerConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Route configuration for an MCP Server that terminates its own listener. At least one
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
-	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
 	//
+	Route AIGatewayMCPServerRouteWithMatcher `json:"route"`
 	// Configuration for AI Gateway logging.
 	Logging *AIGatewayMCPServerUpstreamServerConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
@@ -64,12 +307,47 @@ type AIGatewayMCPServerUpstreamServerConfigOutput struct {
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
-	URL string `json:"url"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
+	URL *string `default:"null" json:"url"`
+	// List of targets the upstream load balances requests across.
+	// Replaces `url`: set exactly one of `url` or `targets`.
 	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Targets []AIGatewayUpstreamTarget `json:"targets,omitempty"`
+	// Load balancing configuration for `targets`. Only valid with `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Balancer *AIGatewayMCPServerUpstreamServerConfigBalancer `json:"balancer,omitempty"`
+	// The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Protocol *AIGatewayMCPServerUpstreamServerConfigProtocol `json:"protocol,omitempty"`
+	// The path prefix of requests sent to the `targets`. Only valid with `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Path *string `json:"path,omitempty"`
+	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
+	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
+	// AI Gateway.
+	//
+	// The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
+	// proxies requests to the upstream MCP server. The generated Service presents a single client
+	// certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
+	// certificate may be configured.
+	//
+	// If unset, no client certificate is presented to the upstream.
+	//
+	Certificates []string `json:"certificates,omitempty"`
+	// CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
+	// name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
+	//
+	// The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
+	// generated for this MCP Server, which proxies requests to the upstream MCP server.
+	//
+	// If unset, the default trust store is used to verify the upstream's TLS certificate.
+	//
+	CaCertificates []string `json:"ca_certificates,omitempty"`
 	// Configuration applied when proxying to the upstream service, including authentication.
-	Upstream *AIGatewayUpstreamConfigOutput `json:"upstream,omitempty"`
+	Upstream *AIGatewayMCPServerUpstreamConfigOutput `json:"upstream,omitempty"`
 	// The time-to-live (TTL) for the upstream tools cache in seconds. Set to `0` to refresh on
 	// every client call.
 	//
@@ -87,9 +365,9 @@ func (a *AIGatewayMCPServerUpstreamServerConfigOutput) UnmarshalJSON(data []byte
 	return nil
 }
 
-func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetRoute() *AIGatewayMCPServerRouteWithMatcher {
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetRoute() AIGatewayMCPServerRouteWithMatcher {
 	if a == nil {
-		return nil
+		return AIGatewayMCPServerRouteWithMatcher{}
 	}
 	return a.Route
 }
@@ -115,14 +393,84 @@ func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetServer() *AIGatewayMCP
 	return a.Server
 }
 
-func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetURL() string {
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetURL() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.URL
 }
 
-func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetUpstream() *AIGatewayUpstreamConfigOutput {
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetTargets() []AIGatewayUpstreamTarget {
+	if a == nil {
+		return nil
+	}
+	return a.Targets
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetBalancer() *AIGatewayMCPServerUpstreamServerConfigBalancer {
+	if a == nil {
+		return nil
+	}
+	return a.Balancer
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetBalancerConsistentHashing() *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetBalancerLeastConnections() *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetBalancerLowestLatency() *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetBalancerRoundRobin() *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetProtocol() *AIGatewayMCPServerUpstreamServerConfigProtocol {
+	if a == nil {
+		return nil
+	}
+	return a.Protocol
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetPath() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Path
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetCertificates() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Certificates
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetCaCertificates() []string {
+	if a == nil {
+		return nil
+	}
+	return a.CaCertificates
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetUpstream() *AIGatewayMCPServerUpstreamConfigOutput {
 	if a == nil {
 		return nil
 	}
@@ -136,21 +484,13 @@ func (a *AIGatewayMCPServerUpstreamServerConfigOutput) GetToolsCacheTTLSeconds()
 	return a.ToolsCacheTTLSeconds
 }
 
-// AIGatewayMCPServerUpstreamServerConfig - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Routing, logging, and server configuration for the MCP Server.
+// AIGatewayMCPServerUpstreamServerConfig - Routing, logging, and server configuration for the MCP Server.
 type AIGatewayMCPServerUpstreamServerConfig struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Route configuration for an MCP Server that terminates its own listener. At least one
 	// of `hosts`, `paths`, `methods`, or `headers` must be set so the route can match
 	// incoming requests.
-	Route *AIGatewayMCPServerRouteWithMatcher `json:"route,omitempty"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
 	//
+	Route AIGatewayMCPServerRouteWithMatcher `json:"route"`
 	// Configuration for AI Gateway logging.
 	Logging *AIGatewayMCPServerUpstreamServerConfigLogging `json:"logging,omitempty"`
 	// Maximum size of request body to parse. Set to 0 for unlimited.
@@ -160,12 +500,47 @@ type AIGatewayMCPServerUpstreamServerConfig struct {
 	// Helper field to set protocol, host, port and path of the upstream service using a URL.
 	// This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}
 	//
-	URL string `json:"url"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
+	URL *string `default:"null" json:"url"`
+	// List of targets the upstream load balances requests across.
+	// Replaces `url`: set exactly one of `url` or `targets`.
 	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Targets []AIGatewayUpstreamTarget `json:"targets,omitempty"`
+	// Load balancing configuration for `targets`. Only valid with `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Balancer *AIGatewayMCPServerUpstreamServerConfigBalancer `json:"balancer,omitempty"`
+	// The protocol used to reach the `targets`. Only valid with `targets`. If unset, the gateway uses `https`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Protocol *AIGatewayMCPServerUpstreamServerConfigProtocol `json:"protocol,omitempty"`
+	// The path prefix of requests sent to the `targets`. Only valid with `targets`.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	Path *string `json:"path,omitempty"`
+	// Client certificates used for mutual TLS (mTLS) authentication with the upstream MCP server,
+	// referenced by name. Each entry must be the `name` of an existing AI Certificate on the same
+	// AI Gateway.
+	//
+	// The certificates are applied to the Kong Gateway Service generated for this MCP Server, which
+	// proxies requests to the upstream MCP server. The generated Service presents a single client
+	// certificate (`client_certificate`) during the TLS handshake with the upstream, so at most one
+	// certificate may be configured.
+	//
+	// If unset, no client certificate is presented to the upstream.
+	//
+	Certificates []string `json:"certificates,omitempty"`
+	// CA certificates used to verify the TLS certificate of the upstream MCP server, referenced by
+	// name. Each entry must be the `name` of an existing AI CA Certificate on the same AI Gateway.
+	//
+	// The CA certificates build the trust store (`ca_certificates`) of the Kong Gateway Service
+	// generated for this MCP Server, which proxies requests to the upstream MCP server.
+	//
+	// If unset, the default trust store is used to verify the upstream's TLS certificate.
+	//
+	CaCertificates []string `json:"ca_certificates,omitempty"`
 	// Configuration applied when proxying to the upstream service, including authentication.
-	Upstream *AIGatewayUpstreamConfig `json:"upstream,omitempty"`
+	Upstream *AIGatewayMCPServerUpstreamConfig `json:"upstream,omitempty"`
 	// The time-to-live (TTL) for the upstream tools cache in seconds. Set to `0` to refresh on
 	// every client call.
 	//
@@ -183,9 +558,9 @@ func (a *AIGatewayMCPServerUpstreamServerConfig) UnmarshalJSON(data []byte) erro
 	return nil
 }
 
-func (a *AIGatewayMCPServerUpstreamServerConfig) GetRoute() *AIGatewayMCPServerRouteWithMatcher {
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetRoute() AIGatewayMCPServerRouteWithMatcher {
 	if a == nil {
-		return nil
+		return AIGatewayMCPServerRouteWithMatcher{}
 	}
 	return a.Route
 }
@@ -211,14 +586,84 @@ func (a *AIGatewayMCPServerUpstreamServerConfig) GetServer() *AIGatewayMCPServer
 	return a.Server
 }
 
-func (a *AIGatewayMCPServerUpstreamServerConfig) GetURL() string {
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetURL() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.URL
 }
 
-func (a *AIGatewayMCPServerUpstreamServerConfig) GetUpstream() *AIGatewayUpstreamConfig {
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetTargets() []AIGatewayUpstreamTarget {
+	if a == nil {
+		return nil
+	}
+	return a.Targets
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetBalancer() *AIGatewayMCPServerUpstreamServerConfigBalancer {
+	if a == nil {
+		return nil
+	}
+	return a.Balancer
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetBalancerConsistentHashing() *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerConsistentHashingConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetBalancerLeastConnections() *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetBalancerLowestLatency() *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerLowestLatencyConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetBalancerRoundRobin() *AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig {
+	if v := a.GetBalancer(); v != nil {
+		return v.AIGatewayMCPServerUpstreamServerConfigBalancerAIGatewayUpstreamBalancerRoundRobinConfig
+	}
+	return nil
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetProtocol() *AIGatewayMCPServerUpstreamServerConfigProtocol {
+	if a == nil {
+		return nil
+	}
+	return a.Protocol
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetPath() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Path
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetCertificates() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Certificates
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetCaCertificates() []string {
+	if a == nil {
+		return nil
+	}
+	return a.CaCertificates
+}
+
+func (a *AIGatewayMCPServerUpstreamServerConfig) GetUpstream() *AIGatewayMCPServerUpstreamConfig {
 	if a == nil {
 		return nil
 	}

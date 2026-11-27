@@ -108,7 +108,7 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 		if resp.SpecRenderer == nil {
 			r.SpecRenderer = nil
 		} else {
-			r.SpecRenderer = &tfTypes.SpecRenderer{}
+			r.SpecRenderer = &tfTypes.PortalCustomizationSpecRenderer{}
 			r.SpecRenderer.AllowCustomServerUrls = types.BoolPointerValue(resp.SpecRenderer.AllowCustomServerUrls)
 			r.SpecRenderer.HideDeprecated = types.BoolPointerValue(resp.SpecRenderer.HideDeprecated)
 			r.SpecRenderer.HideInternal = types.BoolPointerValue(resp.SpecRenderer.HideInternal)
@@ -116,11 +116,21 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 			r.SpecRenderer.ShowSchemas = types.BoolPointerValue(resp.SpecRenderer.ShowSchemas)
 			r.SpecRenderer.TryItInsomnia = types.BoolPointerValue(resp.SpecRenderer.TryItInsomnia)
 			r.SpecRenderer.TryItUI = types.BoolPointerValue(resp.SpecRenderer.TryItUI)
+			if resp.SpecRenderer.TryItUIAudience != nil {
+				r.SpecRenderer.TryItUIAudience = types.StringValue(string(*resp.SpecRenderer.TryItUIAudience))
+			} else {
+				r.SpecRenderer.TryItUIAudience = types.StringNull()
+			}
 		}
 		if resp.Theme == nil {
 			r.Theme = nil
 		} else {
 			r.Theme = &tfTypes.Theme{}
+			if resp.Theme.BorderRadius != nil {
+				r.Theme.BorderRadius = types.StringValue(string(*resp.Theme.BorderRadius))
+			} else {
+				r.Theme.BorderRadius = types.StringNull()
+			}
 			if resp.Theme.Colors == nil {
 				r.Theme.Colors = nil
 			} else {
@@ -202,10 +212,17 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 				Primary: primary,
 			}
 		}
+		borderRadius := new(shared.BorderRadius)
+		if !r.Theme.BorderRadius.IsUnknown() && !r.Theme.BorderRadius.IsNull() {
+			*borderRadius = shared.BorderRadius(r.Theme.BorderRadius.ValueString())
+		} else {
+			borderRadius = nil
+		}
 		theme = &shared.Theme{
-			Name:   name,
-			Mode:   mode,
-			Colors: colors,
+			Name:         name,
+			Mode:         mode,
+			Colors:       colors,
+			BorderRadius: borderRadius,
 		}
 	}
 	layout := new(string)
@@ -324,7 +341,7 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 			FooterBottom:   footerBottom,
 		}
 	}
-	var specRenderer *shared.SpecRenderer
+	var specRenderer *shared.PortalCustomizationSpecRenderer
 	if r.SpecRenderer != nil {
 		tryItUI := new(bool)
 		if !r.SpecRenderer.TryItUI.IsUnknown() && !r.SpecRenderer.TryItUI.IsNull() {
@@ -368,7 +385,13 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 		} else {
 			allowCustomServerUrls = nil
 		}
-		specRenderer = &shared.SpecRenderer{
+		tryItUIAudience := new(shared.PortalCustomizationTryItUIAudience)
+		if !r.SpecRenderer.TryItUIAudience.IsUnknown() && !r.SpecRenderer.TryItUIAudience.IsNull() {
+			*tryItUIAudience = shared.PortalCustomizationTryItUIAudience(r.SpecRenderer.TryItUIAudience.ValueString())
+		} else {
+			tryItUIAudience = nil
+		}
+		specRenderer = &shared.PortalCustomizationSpecRenderer{
 			TryItUI:               tryItUI,
 			TryItInsomnia:         tryItInsomnia,
 			InfiniteScroll:        infiniteScroll,
@@ -376,6 +399,7 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 			HideInternal:          hideInternal,
 			HideDeprecated:        hideDeprecated,
 			AllowCustomServerUrls: allowCustomServerUrls,
+			TryItUIAudience:       tryItUIAudience,
 		}
 	}
 	robots := new(string)

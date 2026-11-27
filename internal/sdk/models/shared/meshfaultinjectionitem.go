@@ -68,7 +68,14 @@ func CreatePercentageStr(str string) Percentage {
 	}
 }
 
-func (u *Percentage) UnmarshalJSON(data []byte) error {
+func (u *Percentage) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = Percentage{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -184,7 +191,14 @@ func CreateMeshFaultInjectionItemPercentageStr(str string) MeshFaultInjectionIte
 	}
 }
 
-func (u *MeshFaultInjectionItemPercentage) UnmarshalJSON(data []byte) error {
+func (u *MeshFaultInjectionItemPercentage) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshFaultInjectionItemPercentage{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -298,7 +312,14 @@ func CreateMeshFaultInjectionItemSpecPercentageStr(str string) MeshFaultInjectio
 	}
 }
 
-func (u *MeshFaultInjectionItemSpecPercentage) UnmarshalJSON(data []byte) error {
+func (u *MeshFaultInjectionItemSpecPercentage) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshFaultInjectionItemSpecPercentage{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -620,7 +641,14 @@ func CreateMeshFaultInjectionItemSpecRulesPercentageStr(str string) MeshFaultInj
 	}
 }
 
-func (u *MeshFaultInjectionItemSpecRulesPercentage) UnmarshalJSON(data []byte) error {
+func (u *MeshFaultInjectionItemSpecRulesPercentage) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshFaultInjectionItemSpecRulesPercentage{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -736,7 +764,14 @@ func CreateMeshFaultInjectionItemSpecRulesDefaultPercentageStr(str string) MeshF
 	}
 }
 
-func (u *MeshFaultInjectionItemSpecRulesDefaultPercentage) UnmarshalJSON(data []byte) error {
+func (u *MeshFaultInjectionItemSpecRulesDefaultPercentage) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshFaultInjectionItemSpecRulesDefaultPercentage{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -850,7 +885,14 @@ func CreateMeshFaultInjectionItemSpecRulesDefaultHTTPPercentageStr(str string) M
 	}
 }
 
-func (u *MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage) UnmarshalJSON(data []byte) error {
+func (u *MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -1282,7 +1324,14 @@ func CreateMeshFaultInjectionItemSpecToPercentageStr(str string) MeshFaultInject
 	}
 }
 
-func (u *MeshFaultInjectionItemSpecToPercentage) UnmarshalJSON(data []byte) error {
+func (u *MeshFaultInjectionItemSpecToPercentage) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshFaultInjectionItemSpecToPercentage{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -1398,7 +1447,14 @@ func CreateMeshFaultInjectionItemSpecToDefaultPercentageStr(str string) MeshFaul
 	}
 }
 
-func (u *MeshFaultInjectionItemSpecToDefaultPercentage) UnmarshalJSON(data []byte) error {
+func (u *MeshFaultInjectionItemSpecToDefaultPercentage) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshFaultInjectionItemSpecToDefaultPercentage{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -1512,7 +1568,14 @@ func CreateMeshFaultInjectionItemSpecToDefaultHTTPPercentageStr(str string) Mesh
 	}
 }
 
-func (u *MeshFaultInjectionItemSpecToDefaultHTTPPercentage) UnmarshalJSON(data []byte) error {
+func (u *MeshFaultInjectionItemSpecToDefaultHTTPPercentage) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshFaultInjectionItemSpecToDefaultHTTPPercentage{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

@@ -6,15 +6,15 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// OIDCIdentityProviderConfig - The identity provider that contains configuration data for the OIDC authentication integration.
+// OIDCIdentityProviderConfig - The configuration data for creating an OIDC authentication integration.
 type OIDCIdentityProviderConfig struct {
 	// The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained.
 	IssuerURL string `json:"issuer_url"`
 	// The client ID assigned to your application by the identity provider.
 	ClientID string `json:"client_id"`
 	// The Client Secret assigned to your application by the identity provider.
-	ClientSecret *string `json:"client_secret,omitempty"`
-	// The scopes requested by your application when authenticating with the identity provider.
+	ClientSecret string `json:"client_secret"`
+	// The scopes requested by your application when authenticating with the identity provider. Must include `openid`.
 	Scopes []string `json:"scopes,omitempty"`
 	// Defines the mappings between OpenID Connect (OIDC) claims and local claims used by your application for
 	// authentication.
@@ -47,9 +47,9 @@ func (o *OIDCIdentityProviderConfig) GetClientID() string {
 	return o.ClientID
 }
 
-func (o *OIDCIdentityProviderConfig) GetClientSecret() *string {
+func (o *OIDCIdentityProviderConfig) GetClientSecret() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.ClientSecret
 }

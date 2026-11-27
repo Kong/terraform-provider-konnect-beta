@@ -15,11 +15,20 @@ AIGatewayPolicy Resource
 ```terraform
 resource "konnect_ai_gateway_policy" "my_aigatewaypolicy" {
   provider = konnect-beta
-  config       = "{ \"see\": \"documentation\" }"
+  condition = "...my_condition..."
+  config    = "{ \"see\": \"documentation\" }"
+  datastores = [
+    {
+      name = "shared-redis"
+    }
+  ]
   display_name = "My Cool AI PII Sanitizer Policy"
   enabled      = true
-  gateway_id   = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
-  global       = false
+  expressions = {
+    key = jsonencode("value")
+  }
+  gateway_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+  global     = false
   labels = {
     key = "value"
   }
@@ -41,17 +50,21 @@ Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and
 Parsed as JSON.
 - `display_name` (String) The display name for this policy instance.
 - `gateway_id` (String) The unique ID of the AI Gateway.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this policy instance, used as a stable human-readable reference. This value is immutable after creation.
+- `name` (String) A user-defined unique identifier for this policy instance, used as a stable human-readable reference. This value is immutable after creation.
 - `type` (String) The type of the Policy. This is equivalent to the Kong 3 plugin name.
 Some examples are: 'ai-sanitizer', 'ai-prompt-guard', and 'rate-limiting'.
 Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and configuration documentation can be found in the [Developer Docs](https://developer.konghq.com/plugins/).
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+
+**Requires a minimum runtime version of `2.1`**.
+- `datastores` (Attributes List) Names of the Datastores this policy references. (see [below for nested schema](#nestedatt--datastores))
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
+- `expressions` (Map of String) Policy config expressions
+
+**Requires a minimum runtime version of `2.3`**.
 - `global` (Boolean) Whether the policy is globally applied to all resources. Default: false
 - `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
 
@@ -60,13 +73,22 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used for this resource.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
+
+<a id="nestedatt--datastores"></a>
+### Nested Schema for `datastores`
+
+Optional:
+
+- `name` (String) An immutable user-defined identifier for this resource. Not Null
 
 ## Import
 

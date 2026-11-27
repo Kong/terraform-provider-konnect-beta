@@ -58,6 +58,7 @@ Read-Only:
 - `expires_at` (String) An ISO-8601 timestamp representation of the ssl certificate expiration date.
 - `uploaded_at` (String) An ISO-8601 timestamp representation of the ssl certificate upload date.
 - `validation_errors` (List of String)
+- `validation_warning` (String) A non-null warning value means the domain owner has an actionable item to address. The issue does not affect the domain's current use. The value is a human-readable guidance string; exact wording is application-controlled. Null when no action is needed.
 - `verification_status` (String)
 
 ## Import

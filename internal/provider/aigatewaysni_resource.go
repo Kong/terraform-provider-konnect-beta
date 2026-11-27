@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/boolplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"regexp"
@@ -36,16 +37,17 @@ type AIGatewaySNIResource struct {
 
 // AIGatewaySNIResourceModel describes the resource data model.
 type AIGatewaySNIResourceModel struct {
-	Certificate types.String            `tfsdk:"certificate"`
-	CreatedAt   types.String            `tfsdk:"created_at"`
-	DisplayName types.String            `tfsdk:"display_name"`
-	GatewayID   types.String            `tfsdk:"gateway_id"`
-	Hostname    types.String            `tfsdk:"hostname"`
-	ID          types.String            `tfsdk:"id"`
-	Labels      map[string]types.String `tfsdk:"labels"`
-	ManagedBy   map[string]types.String `tfsdk:"managed_by"`
-	Name        types.String            `tfsdk:"name"`
-	UpdatedAt   types.String            `tfsdk:"updated_at"`
+	Certificate    types.String            `tfsdk:"certificate"`
+	CreatedAt      types.String            `tfsdk:"created_at"`
+	DisplayName    types.String            `tfsdk:"display_name"`
+	GatewayID      types.String            `tfsdk:"gateway_id"`
+	Hostname       types.String            `tfsdk:"hostname"`
+	ID             types.String            `tfsdk:"id"`
+	KonnectManaged types.Bool              `tfsdk:"konnect_managed"`
+	Labels         map[string]types.String `tfsdk:"labels"`
+	ManagedBy      map[string]types.String `tfsdk:"managed_by"`
+	Name           types.String            `tfsdk:"name"`
+	UpdatedAt      types.String            `tfsdk:"updated_at"`
 }
 
 func (r *AIGatewaySNIResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -57,11 +59,11 @@ func (r *AIGatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRe
 		MarkdownDescription: "AIGatewaySNI Resource",
 		Attributes: map[string]schema.Attribute{
 			"certificate": schema.StringAttribute{
-				Required: true,
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`A reference to the certificate with which to associate the SNI hostname, by certificate name. The certificate must have a valid private key to be used by the SNI.`,
+				Required:    true,
+				Description: `A reference to the certificate with which to associate the SNI hostname, by certificate name. The certificate must have a valid private key to be used by the SNI.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -92,6 +94,13 @@ func (r *AIGatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
+			"konnect_managed": schema.BoolAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+				},
+				Description: `An immutable read-only flag to identify resource managed by Konnect services.`,
+			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -108,7 +117,9 @@ func (r *AIGatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRe
 				ElementType: types.StringType,
 				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 					`` + "\n" +
-					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+					`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+					`Values must be 1–127 characters long and must not be empty.` + "\n" +
+					`Keys and values must not contain spaces or control characters.`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
@@ -175,7 +186,7 @@ func (r *AIGatewaySNIResource) Create(ctx context.Context, req resource.CreateRe
 	}
 	res, err := r.client.AIGatewaySNIs.CreateAiGatewaySni(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -242,7 +253,7 @@ func (r *AIGatewaySNIResource) Read(ctx context.Context, req resource.ReadReques
 	}
 	res, err := r.client.AIGatewaySNIs.GetAiGatewaySni(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -296,7 +307,7 @@ func (r *AIGatewaySNIResource) Update(ctx context.Context, req resource.UpdateRe
 	}
 	res, err := r.client.AIGatewaySNIs.UpdateAiGatewaySni(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -356,7 +367,7 @@ func (r *AIGatewaySNIResource) Delete(ctx context.Context, req resource.DeleteRe
 	}
 	res, err := r.client.AIGatewaySNIs.DeleteAiGatewaySni(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

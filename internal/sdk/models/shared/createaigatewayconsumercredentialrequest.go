@@ -34,9 +34,6 @@ func (e *CreateAIGatewayConsumerCredentialRequestType) UnmarshalJSON(data []byte
 type CreateAIGatewayConsumerCredentialRequest struct {
 	// The display name for this credential instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this credential, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -48,7 +45,9 @@ type CreateAIGatewayConsumerCredentialRequest struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string                            `json:"managed_by,omitempty"`
 	Type      CreateAIGatewayConsumerCredentialRequestType `json:"type"`

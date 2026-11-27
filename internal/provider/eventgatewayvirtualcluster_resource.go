@@ -381,8 +381,9 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 										},
 										Attributes: map[string]schema.Attribute{
 											"password": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
+												Computed:  true,
+												Optional:  true,
+												Sensitive: true,
 												MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
 													`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
 													`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
@@ -744,10 +745,13 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 					"prefix": schema.StringAttribute{
 						Required: true,
 						MarkdownDescription: `The namespace is differentiated by this chosen prefix.` + "\n" +
+							`The prefix is prepended to Kafka topic names, so it can only contain the characters Kafka allows in them: ASCII letters, digits, ` + "`" + `.` + "`" + `, ` + "`" + `_` + "`" + ` and ` + "`" + `-` + "`" + `.` + "\n" +
+							`It must contain at least one character other than ` + "`" + `.` + "`" + ` and be at most 100 characters long to leave room for the rest of the topic name (Kafka limits topic names to 249 characters).` + "\n" +
 							`For example, if the prefix is set to "analytics_" the topic named "analytics_user_clicks" is available to the clients` + "\n" +
 							`of the virtual cluster. Topics without the prefix will be ignored unless added via ` + "`" + `additional.topics` + "`" + `.`,
 						Validators: []validator.String{
-							stringvalidator.UTF8LengthAtLeast(1),
+							stringvalidator.UTF8LengthBetween(1, 100),
+							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]*[A-Za-z0-9_-][A-Za-z0-9._-]*$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]*[A-Za-z0-9_-][A-Za-z0-9._-]*$`).String()),
 						},
 					},
 				},
@@ -847,6 +851,8 @@ func (r *EventGatewayVirtualClusterResource) Create(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateEventGatewayVirtualClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -855,7 +861,7 @@ func (r *EventGatewayVirtualClusterResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewayVirtualClusters.CreateEventGatewayVirtualCluster(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -907,6 +913,8 @@ func (r *EventGatewayVirtualClusterResource) Read(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetEventGatewayVirtualClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -915,7 +923,7 @@ func (r *EventGatewayVirtualClusterResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.EventGatewayVirtualClusters.GetEventGatewayVirtualCluster(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -961,6 +969,8 @@ func (r *EventGatewayVirtualClusterResource) Update(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateEventGatewayVirtualClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -969,7 +979,7 @@ func (r *EventGatewayVirtualClusterResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewayVirtualClusters.UpdateEventGatewayVirtualCluster(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1021,6 +1031,8 @@ func (r *EventGatewayVirtualClusterResource) Delete(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteEventGatewayVirtualClusterRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -1029,7 +1041,7 @@ func (r *EventGatewayVirtualClusterResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewayVirtualClusters.DeleteEventGatewayVirtualCluster(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

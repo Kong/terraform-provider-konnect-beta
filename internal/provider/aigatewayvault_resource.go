@@ -126,6 +126,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Optional:    true,
 								Default:     stringdefault.StaticString(`KongVault`),
 								Description: `The session name used when assuming a role. Default: "KongVault"`,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtLeast(1),
+								},
 							},
 							"sts_endpoint_url": schema.StringAttribute{
 								Optional: true,
@@ -145,9 +148,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`Not Null`,
+						Description: `Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -191,15 +192,14 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+						MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 							`This value is immutable after creation.` + "\n" +
 							`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.` + "\n" +
 							`Not Null`,
@@ -217,8 +217,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("azure"),
@@ -263,6 +261,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"neg_ttl": schema.Int64Attribute{
@@ -322,12 +321,11 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`Not Null`,
+						Description: `Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -371,15 +369,14 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+						MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 							`This value is immutable after creation.` + "\n" +
 							`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.` + "\n" +
 							`Not Null`,
@@ -397,8 +394,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws"),
@@ -423,6 +418,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Description: `The CyberArk Secrets Manager organization account name. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"api_key": schema.StringAttribute{
@@ -442,6 +438,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Description: `The CyberArk Secrets Manager backend URL to connect with. Accepts http or https protocols. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"login": schema.StringAttribute{
@@ -450,6 +447,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Description: `The login name of the workload identity. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"neg_ttl": schema.Int64Attribute{
@@ -488,9 +486,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`Not Null`,
+						Description: `Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -534,15 +530,14 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+						MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 							`This value is immutable after creation.` + "\n" +
 							`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.` + "\n" +
 							`Not Null`,
@@ -560,8 +555,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws"),
@@ -606,9 +599,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Description: `The prefix for the environment variable that the value will be stored in.`,
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`Not Null`,
+						Description: `Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -652,15 +643,14 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+						MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 							`This value is immutable after creation.` + "\n" +
 							`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.` + "\n" +
 							`Not Null`,
@@ -678,8 +668,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws"),
@@ -728,6 +716,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"resurrect_ttl": schema.Int64Attribute{
@@ -755,9 +744,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`Not Null`,
+						Description: `Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -801,15 +788,14 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+						MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 							`This value is immutable after creation.` + "\n" +
 							`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.` + "\n" +
 							`Not Null`,
@@ -827,8 +813,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws"),
@@ -863,6 +847,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The hostname of your HashiCorp vault. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"kv": schema.StringAttribute{
@@ -876,6 +861,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Default:     stringdefault.StaticString(`secret`),
 										Description: `The mount point. Default: "secret"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
 									},
 									"namespace": schema.StringAttribute{
 										Optional:    true,
@@ -966,8 +954,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("aws_ec2"),
@@ -998,6 +984,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The hostname of your HashiCorp vault. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"kv": schema.StringAttribute{
@@ -1017,6 +1004,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Default:     stringdefault.StaticString(`secret`),
 										Description: `The mount point. Default: "secret"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
 									},
 									"namespace": schema.StringAttribute{
 										Optional:    true,
@@ -1039,6 +1029,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The nonce for AWS EC2 auth. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"port": schema.Int64Attribute{
@@ -1074,6 +1065,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The role to use for AWS EC2 auth. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"ssl_verify": schema.BoolAttribute{
@@ -1094,8 +1086,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -1136,6 +1126,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The hostname of your HashiCorp vault. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"kv": schema.StringAttribute{
@@ -1155,6 +1146,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Default:     stringdefault.StaticString(`secret`),
 										Description: `The mount point. Default: "secret"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
 									},
 									"namespace": schema.StringAttribute{
 										Optional:    true,
@@ -1191,6 +1185,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The AWS region for auth. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"resurrect_ttl": schema.Int64Attribute{
@@ -1212,6 +1207,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The role to use for AWS IAM auth. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"role_session_name": schema.StringAttribute{
@@ -1249,8 +1245,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -1281,6 +1275,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The hostname of your HashiCorp vault. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"kv": schema.StringAttribute{
@@ -1300,6 +1295,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Default:     stringdefault.StaticString(`secret`),
 										Description: `The mount point. Default: "secret"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
 									},
 									"namespace": schema.StringAttribute{
 										Optional:    true,
@@ -1349,6 +1347,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The role to use for Azure auth. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"ssl_verify": schema.BoolAttribute{
@@ -1369,8 +1368,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -1401,6 +1398,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The client certificate. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"host": schema.StringAttribute{
@@ -1409,6 +1407,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The hostname of your HashiCorp vault. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"key": schema.StringAttribute{
@@ -1426,6 +1425,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Default:     stringdefault.StaticString(`secret`),
 										Description: `The mount point. Default: "secret"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
 									},
 									"namespace": schema.StringAttribute{
 										Optional:    true,
@@ -1491,8 +1493,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -1523,6 +1523,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The hostname of your HashiCorp vault. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"kv": schema.StringAttribute{
@@ -1542,6 +1543,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Default:     stringdefault.StaticString(`secret`),
 										Description: `The mount point. Default: "secret"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
 									},
 									"namespace": schema.StringAttribute{
 										Optional:    true,
@@ -1591,6 +1595,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The role to use for GCP GCE auth. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"ssl_verify": schema.BoolAttribute{
@@ -1611,8 +1616,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -1643,6 +1646,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The hostname of your HashiCorp vault. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"jwt_exp": schema.Int64Attribute{
@@ -1665,6 +1669,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Default:     stringdefault.StaticString(`secret`),
 										Description: `The mount point. Default: "secret"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
 									},
 									"namespace": schema.StringAttribute{
 										Optional:    true,
@@ -1714,6 +1721,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The role to use for GCP IAM auth. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"service_account": schema.StringAttribute{
@@ -1722,6 +1730,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The GCP service account for GCE auth. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"ssl_verify": schema.BoolAttribute{
@@ -1742,8 +1751,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -1778,6 +1785,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The OAuth2 client ID. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"client_secret": schema.StringAttribute{
@@ -1790,6 +1798,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The hostname of your HashiCorp vault. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"kv": schema.StringAttribute{
@@ -1803,6 +1812,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Default:     stringdefault.StaticString(`secret`),
 										Description: `The mount point. Default: "secret"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
 									},
 									"namespace": schema.StringAttribute{
 										Optional:    true,
@@ -1855,6 +1867,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 											`Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"ssl_verify": schema.BoolAttribute{
@@ -1869,6 +1882,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The OAuth2 token endpoint for Hashicorp Vault's OAuth2 auth method. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"ttl": schema.Int64Attribute{
@@ -1883,8 +1897,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -1921,6 +1933,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The hostname of your HashiCorp vault. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"kv": schema.StringAttribute{
@@ -1934,6 +1947,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Default:     stringdefault.StaticString(`secret`),
 										Description: `The mount point. Default: "secret"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
 									},
 									"namespace": schema.StringAttribute{
 										Optional:    true,
@@ -2005,8 +2021,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -2037,6 +2051,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The hostname of your HashiCorp vault. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 									"kv": schema.StringAttribute{
@@ -2050,6 +2065,9 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Default:     stringdefault.StaticString(`secret`),
 										Description: `The mount point. Default: "secret"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
 									},
 									"namespace": schema.StringAttribute{
 										Optional:    true,
@@ -2115,8 +2133,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 										},
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
 										path.MatchRelative().AtParent().AtName("approle"),
@@ -2132,11 +2148,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`Configuration for an AI Gateway Vault.` + "\n" +
-							`Not Null`,
+						Description: `Configuration for an AI Gateway Vault. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -2180,15 +2192,14 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+						MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 							`This value is immutable after creation.` + "\n" +
 							`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.` + "\n" +
 							`Not Null`,
@@ -2206,8 +2217,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws"),
@@ -2239,6 +2248,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 								Description: `The ID of the Konnect Config Store that contains the secrets. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
@@ -2286,15 +2296,14 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						ElementType: types.StringType,
 						MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 							`` + "\n" +
-							`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+							`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+							`Values must be 1–127 characters long and must not be empty.` + "\n" +
+							`Keys and values must not contain spaces or control characters.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+						MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 							`This value is immutable after creation.` + "\n" +
 							`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.` + "\n" +
 							`Not Null`,
@@ -2312,8 +2321,6 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws"),
@@ -2330,10 +2337,7 @@ func (r *AIGatewayVaultResource) Schema(ctx context.Context, req resource.Schema
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("konnect"), FieldPath: path.Root("konnect").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("env"), FieldPath: path.Root("env").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws"), FieldPath: path.Root("aws").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcp"), FieldPath: path.Root("gcp").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure"), FieldPath: path.Root("azure").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("conjur"), FieldPath: path.Root("conjur").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("hcv"), FieldPath: path.Root("hcv").AtName("name")}}),
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
+				MarkdownDescription: `A user-defined unique identifier for this vault instance, used as a stable human-readable reference.` + "\n" +
 					`This value is immutable after creation.` + "\n" +
 					`The name is used to load the right Vault configuration and implementation when referencing secrets with the other entities.`,
 			},
@@ -2394,7 +2398,7 @@ func (r *AIGatewayVaultResource) Create(ctx context.Context, req resource.Create
 	}
 	res, err := r.client.AIGatewayVaults.CreateAiGatewayVault(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2461,7 +2465,7 @@ func (r *AIGatewayVaultResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 	res, err := r.client.AIGatewayVaults.GetAiGatewayVault(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2515,7 +2519,7 @@ func (r *AIGatewayVaultResource) Update(ctx context.Context, req resource.Update
 	}
 	res, err := r.client.AIGatewayVaults.UpdateAiGatewayVault(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -2575,7 +2579,7 @@ func (r *AIGatewayVaultResource) Delete(ctx context.Context, req resource.Delete
 	}
 	res, err := r.client.AIGatewayVaults.DeleteAiGatewayVault(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

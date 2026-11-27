@@ -333,7 +333,14 @@ func CreateMeshTraceItemClientStr(str string) MeshTraceItemClient {
 	}
 }
 
-func (u *MeshTraceItemClient) UnmarshalJSON(data []byte) error {
+func (u *MeshTraceItemClient) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshTraceItemClient{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -432,7 +439,14 @@ func CreateOverallStr(str string) Overall {
 	}
 }
 
-func (u *Overall) UnmarshalJSON(data []byte) error {
+func (u *Overall) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = Overall{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -527,7 +541,14 @@ func CreateRandomStr(str string) Random {
 	}
 }
 
-func (u *Random) UnmarshalJSON(data []byte) error {
+func (u *Random) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = Random{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

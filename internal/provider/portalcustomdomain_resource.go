@@ -129,6 +129,13 @@ func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.Sc
 						},
 						ElementType: types.StringType,
 					},
+					"validation_warning": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `A non-null warning value means the domain owner has an actionable item to address. The issue does not affect the domain's current use. The value is a human-readable guidance string; exact wording is application-controlled. Null when no action is needed.`,
+					},
 					"verification_status": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -194,7 +201,7 @@ func (r *PortalCustomDomainResource) Create(ctx context.Context, req resource.Cr
 	}
 	res, err := r.client.PortalCustomDomains.CreatePortalCustomDomain(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -254,7 +261,7 @@ func (r *PortalCustomDomainResource) Read(ctx context.Context, req resource.Read
 	}
 	res, err := r.client.PortalCustomDomains.GetPortalCustomDomain(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -308,7 +315,7 @@ func (r *PortalCustomDomainResource) Update(ctx context.Context, req resource.Up
 	}
 	res, err := r.client.PortalCustomDomains.UpdatePortalCustomDomain(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -368,7 +375,7 @@ func (r *PortalCustomDomainResource) Delete(ctx context.Context, req resource.De
 	}
 	res, err := r.client.PortalCustomDomains.DeletePortalCustomDomain(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

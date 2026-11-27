@@ -11,7 +11,9 @@ resource "konnect_portal_identity_provider" "my_portalidentityprovider" {
       client_secret = "YOUR_CLIENT_SECRET"
       issuer_url    = "https://konghq.okta.com/oauth2/default"
       scopes = [
-        "..."
+        "openid",
+        "email",
+        "profile",
       ]
     }
   }

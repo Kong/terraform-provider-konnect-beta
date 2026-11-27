@@ -4,6 +4,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -16,12 +18,18 @@ func (r *PortalApplicationRegistrationResourceModel) RefreshFromSharedGetApplica
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.AdditionalData == nil {
+			r.AdditionalData = jsontypes.NewNormalizedNull()
+		} else {
+			additionalDataResult, _ := json.Marshal(resp.AdditionalData)
+			r.AdditionalData = jsontypes.NewNormalizedValue(string(additionalDataResult))
+		}
 		r.API = &tfTypes.API{}
 		r.API.EntityType = types.StringValue(string(resp.API.EntityType))
 		r.API.ID = types.StringValue(resp.API.ID)
 		r.API.Name = types.StringValue(resp.API.Name)
 		r.API.Version = types.StringPointerValue(resp.API.Version)
-		r.Application = &tfTypes.Application{}
+		r.Application = &tfTypes.APIEnvironmentRef{}
 		r.Application.ID = types.StringValue(resp.Application.ID)
 		r.Application.Name = types.StringValue(resp.Application.Name)
 		if resp.Consumer == nil {
@@ -144,15 +152,20 @@ func (r *PortalApplicationRegistrationResourceModel) ToSharedCreateApplicationRe
 	var apiID string
 	apiID = r.APIID.ValueString()
 
-	status := new(shared.Status)
+	status := new(shared.CreateApplicationRegistrationRequestStatus)
 	if !r.Status.IsUnknown() && !r.Status.IsNull() {
-		*status = shared.Status(r.Status.ValueString())
+		*status = shared.CreateApplicationRegistrationRequestStatus(r.Status.ValueString())
 	} else {
 		status = nil
 	}
+	var additionalData interface{}
+	if !r.AdditionalData.IsUnknown() && !r.AdditionalData.IsNull() {
+		_ = json.Unmarshal([]byte(r.AdditionalData.ValueString()), &additionalData)
+	}
 	out := shared.CreateApplicationRegistrationRequest{
-		APIID:  apiID,
-		Status: status,
+		APIID:          apiID,
+		Status:         status,
+		AdditionalData: additionalData,
 	}
 
 	return &out, diags

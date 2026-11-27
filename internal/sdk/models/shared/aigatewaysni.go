@@ -7,10 +7,7 @@ import (
 	"time"
 )
 
-// AIGatewaySNI - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// An SNI represents a many-to-one mapping of hostnames to a certificate. A certificate can have many hostnames associated with it; when the AI Gateway receives an SSL request, it uses the SNI field in the Client Hello to look up the certificate associated with the SNI.
+// AIGatewaySNI - An SNI represents a many-to-one mapping of hostnames to a certificate. A certificate can have many hostnames associated with it; when the AI Gateway receives an SSL request, it uses the SNI field in the Client Hello to look up the certificate associated with the SNI.
 type AIGatewaySNI struct {
 	// The name for this SNI. This value is immutable after creation.
 	Name string `json:"name"`
@@ -27,12 +24,11 @@ type AIGatewaySNI struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A reference to the certificate with which to associate the SNI hostname, by certificate name. The certificate must have a valid private key to be used by the SNI.
 	Certificate string `json:"certificate"`
 	// Contains a unique identifier used for this resource.
@@ -41,6 +37,8 @@ type AIGatewaySNI struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
+	// An immutable read-only flag to identify resource managed by Konnect services.
+	KonnectManaged *bool `json:"konnect_managed,omitempty"`
 }
 
 func (a AIGatewaySNI) MarshalJSON() ([]byte, error) {
@@ -115,4 +113,11 @@ func (a *AIGatewaySNI) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return a.UpdatedAt
+}
+
+func (a *AIGatewaySNI) GetKonnectManaged() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.KonnectManaged
 }

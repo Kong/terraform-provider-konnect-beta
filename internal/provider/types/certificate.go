@@ -7,9 +7,9 @@ import (
 )
 
 type Certificate struct {
-	EnvVar         *EventGatewayACLOperation `tfsdk:"env_var"`
-	File           *MeshIdentityItemFile     `tfsdk:"file"`
-	InsecureInline *ExactList                `tfsdk:"insecure_inline"`
-	SecretRef      *SecretRef                `tfsdk:"secret_ref"`
-	Type           types.String              `tfsdk:"type"`
+	EnvVar         *AIGatewayDatastoreRef                   `tfsdk:"env_var"`
+	File           *MeshIdentityItemFile                    `tfsdk:"file"`
+	InsecureInline *ExactList                               `tfsdk:"insecure_inline"`
+	SecretRef      *MeshExternalServiceItemSpecTLSSecretRef `tfsdk:"secret_ref"`
+	Type           types.String                             `tfsdk:"type"`
 }

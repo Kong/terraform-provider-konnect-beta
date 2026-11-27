@@ -39,18 +39,18 @@ type EventGatewayConsumePolicySkipRecordResource struct {
 
 // EventGatewayConsumePolicySkipRecordResourceModel describes the resource data model.
 type EventGatewayConsumePolicySkipRecordResourceModel struct {
-	Condition        types.String               `tfsdk:"condition"`
-	Config           *tfTypes.RawProviderConfig `tfsdk:"config"`
-	CreatedAt        types.String               `tfsdk:"created_at"`
-	Description      types.String               `tfsdk:"description"`
-	Enabled          types.Bool                 `tfsdk:"enabled"`
-	GatewayID        types.String               `tfsdk:"gateway_id"`
-	ID               types.String               `tfsdk:"id"`
-	Labels           map[string]types.String    `tfsdk:"labels"`
-	Name             types.String               `tfsdk:"name"`
-	ParentPolicyID   types.String               `tfsdk:"parent_policy_id"`
-	UpdatedAt        types.String               `tfsdk:"updated_at"`
-	VirtualClusterID types.String               `tfsdk:"virtual_cluster_id"`
+	Condition        types.String                                                                   `tfsdk:"condition"`
+	Config           *tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig `tfsdk:"config"`
+	CreatedAt        types.String                                                                   `tfsdk:"created_at"`
+	Description      types.String                                                                   `tfsdk:"description"`
+	Enabled          types.Bool                                                                     `tfsdk:"enabled"`
+	GatewayID        types.String                                                                   `tfsdk:"gateway_id"`
+	ID               types.String                                                                   `tfsdk:"id"`
+	Labels           map[string]types.String                                                        `tfsdk:"labels"`
+	Name             types.String                                                                   `tfsdk:"name"`
+	ParentPolicyID   types.String                                                                   `tfsdk:"parent_policy_id"`
+	UpdatedAt        types.String                                                                   `tfsdk:"updated_at"`
+	VirtualClusterID types.String                                                                   `tfsdk:"virtual_cluster_id"`
 }
 
 func (r *EventGatewayConsumePolicySkipRecordResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -105,7 +105,10 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Schema(ctx context.Context
 				Description: `The UUID of your Gateway.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The unique identifier of the policy.`,
 			},
 			"labels": schema.MapAttribute{
@@ -192,7 +195,7 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Create(ctx context.Context
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.CreateEventGatewayVirtualClusterConsumePolicySkipRecord(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -252,7 +255,7 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Read(ctx context.Context, 
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.GetEventGatewayVirtualClusterConsumePolicySkipRecord(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -306,7 +309,7 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Update(ctx context.Context
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.UpdateEventGatewayVirtualClusterConsumePolicySkipRecord(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -366,7 +369,7 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Delete(ctx context.Context
 	}
 	res, err := r.client.EventGatewayVirtualClusterConsumePolicies.DeleteEventGatewayVirtualClusterConsumePolicySkipRecord(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

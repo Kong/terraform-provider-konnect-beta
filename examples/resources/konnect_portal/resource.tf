@@ -1,11 +1,19 @@
 resource "konnect_portal" "my_portal" {
   provider = konnect-beta
   ai = {
-    enabled = true
+    enabled = false
     features = {
+      ai_search = {
+        enabled = false
+      }
       mcp_server = {
         enabled                  = false
         write_operations_enabled = false
+      }
+      portal_agent = {
+        audience     = "all"
+        display_name = "AI"
+        enabled      = false
       }
     }
   }
@@ -26,4 +34,5 @@ resource "konnect_portal" "my_portal" {
   notifications_developer_pii_visibility_enabled = false
   rbac_enabled                                   = false
   sipr_enabled                                   = true
+  theme_name                                     = "...my_theme_name..."
 }

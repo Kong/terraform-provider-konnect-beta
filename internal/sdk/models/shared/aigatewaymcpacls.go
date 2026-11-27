@@ -6,15 +6,20 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayMCPACLs - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Access control rules for MCP resources. Configure `allow`, `deny`, or both.
+// AIGatewayMCPACLs - Access control rules for MCP resources. Configure `allow`, `deny`, or both.
 type AIGatewayMCPACLs struct {
 	// List of consumer groups that are permitted access.
 	Allow []string `json:"allow,omitempty"`
 	// List of consumer groups that are denied access.
 	Deny []string `json:"deny,omitempty"`
+	// Allow the request if it matches any of these CEL boolean expressions evaluated against the request context.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	AllowWhen []string `json:"allow_when,omitempty"`
+	// Deny the request if it matches any of these CEL boolean expressions evaluated against the request context.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	DenyWhen []string `json:"deny_when,omitempty"`
 }
 
 func (a AIGatewayMCPACLs) MarshalJSON() ([]byte, error) {
@@ -40,4 +45,18 @@ func (a *AIGatewayMCPACLs) GetDeny() []string {
 		return nil
 	}
 	return a.Deny
+}
+
+func (a *AIGatewayMCPACLs) GetAllowWhen() []string {
+	if a == nil {
+		return nil
+	}
+	return a.AllowWhen
+}
+
+func (a *AIGatewayMCPACLs) GetDenyWhen() []string {
+	if a == nil {
+		return nil
+	}
+	return a.DenyWhen
 }

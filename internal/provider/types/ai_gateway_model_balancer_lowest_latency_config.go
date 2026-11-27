@@ -7,13 +7,14 @@ import (
 )
 
 type AIGatewayModelBalancerLowestLatencyConfig struct {
-	ConnectTimeout   types.Int64    `tfsdk:"connect_timeout"`
-	FailTimeout      types.Int64    `tfsdk:"fail_timeout"`
-	FailoverCriteria []types.String `tfsdk:"failover_criteria"`
-	LatencyStrategy  types.String   `tfsdk:"latency_strategy"`
-	MaxFails         types.Int64    `tfsdk:"max_fails"`
-	ReadTimeout      types.Int64    `tfsdk:"read_timeout"`
-	Retries          types.Int64    `tfsdk:"retries"`
-	Slots            types.Int64    `tfsdk:"slots"`
-	WriteTimeout     types.Int64    `tfsdk:"write_timeout"`
+	ConnectTimeout   types.Int64                            `tfsdk:"connect_timeout"`
+	FailTimeout      types.Int64                            `tfsdk:"fail_timeout"`
+	FailoverCriteria []types.String                         `tfsdk:"failover_criteria"`
+	LatencyStrategy  types.String                           `tfsdk:"latency_strategy"`
+	MaxFails         types.Int64                            `tfsdk:"max_fails"`
+	ReadTimeout      types.Int64                            `tfsdk:"read_timeout"`
+	Retries          types.Int64                            `tfsdk:"retries"`
+	SessionAffinity  *AIGatewayModelBalancerSessionAffinity `tfsdk:"session_affinity"`
+	Slots            types.Int64                            `tfsdk:"slots"`
+	WriteTimeout     types.Int64                            `tfsdk:"write_timeout"`
 }

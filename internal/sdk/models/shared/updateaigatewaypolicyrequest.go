@@ -6,14 +6,9 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// UpdateAIGatewayPolicyRequest - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type UpdateAIGatewayPolicyRequest struct {
 	// The display name for this policy instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this policy instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// The type of the Policy. This is equivalent to the Kong 3 plugin name.
@@ -29,6 +24,14 @@ type UpdateAIGatewayPolicyRequest struct {
 	// Note: Plugins have been renamed to Policies in Kong AI Gateway. Policy types and configuration documentation can be found in the [Developer Docs](https://developer.konghq.com/plugins/).
 	//
 	Config any `json:"config"`
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
+	Condition *string `json:"condition,omitempty"`
+	// Policy config expressions
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Expressions map[string]any `json:"expressions,omitempty"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
 	//
 	// Public labels are intended to store **PUBLIC** metadata.
@@ -38,9 +41,13 @@ type UpdateAIGatewayPolicyRequest struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// Names of the Datastores this policy references.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
 }
 
 func (u UpdateAIGatewayPolicyRequest) MarshalJSON() ([]byte, error) {
@@ -96,6 +103,20 @@ func (u *UpdateAIGatewayPolicyRequest) GetConfig() any {
 	return u.Config
 }
 
+func (u *UpdateAIGatewayPolicyRequest) GetCondition() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Condition
+}
+
+func (u *UpdateAIGatewayPolicyRequest) GetExpressions() map[string]any {
+	if u == nil {
+		return nil
+	}
+	return u.Expressions
+}
+
 func (u *UpdateAIGatewayPolicyRequest) GetLabels() map[string]string {
 	if u == nil {
 		return nil
@@ -108,4 +129,11 @@ func (u *UpdateAIGatewayPolicyRequest) GetManagedBy() map[string]string {
 		return nil
 	}
 	return u.ManagedBy
+}
+
+func (u *UpdateAIGatewayPolicyRequest) GetDatastores() []AIGatewayDatastoreRef {
+	if u == nil {
+		return nil
+	}
+	return u.Datastores
 }

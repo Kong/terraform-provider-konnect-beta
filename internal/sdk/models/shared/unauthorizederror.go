@@ -2,46 +2,93 @@
 
 package shared
 
-// UnauthorizedError - standard error
-type UnauthorizedError struct {
-	Status   any `json:"status"`
-	Title    any `json:"title"`
-	Type     any `json:"type,omitempty"`
-	Instance any `json:"instance"`
-	Detail   any `json:"detail"`
+import (
+	"encoding/json"
+	"fmt"
+)
+
+// UnauthorizedErrorStatus - The HTTP status code of the error. Useful when passing the response
+// body to child properties in a frontend UI. Must be returned as an integer.
+type UnauthorizedErrorStatus int64
+
+const (
+	UnauthorizedErrorStatusFourHundredAndOne UnauthorizedErrorStatus = 401
+)
+
+func (e UnauthorizedErrorStatus) ToPointer() *UnauthorizedErrorStatus {
+	return &e
+}
+func (e *UnauthorizedErrorStatus) UnmarshalJSON(data []byte) error {
+	var v int64
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case 401:
+		*e = UnauthorizedErrorStatus(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for UnauthorizedErrorStatus: %v", v)
+	}
 }
 
-func (u *UnauthorizedError) GetStatus() any {
+// UnauthorizedError - standard error
+type UnauthorizedError struct {
+	// The HTTP status code of the error. Useful when passing the response
+	// body to child properties in a frontend UI. Must be returned as an integer.
+	//
+	Status UnauthorizedErrorStatus `json:"status"`
+	// A short, human-readable summary of the problem. It should not
+	// change between occurences of a problem, except for localization.
+	// Should be provided as "Sentence case" for direct use in the UI.
+	//
+	Title string `json:"title"`
+	// The error type.
+	Type *string `json:"type,omitempty"`
+	// Used to return the correlation ID back to the user, in the format
+	// kong:trace:<correlation_id>. This helps us find the relevant logs
+	// when a customer reports an issue.
+	//
+	Instance string `json:"instance"`
+	// A human readable explanation specific to this occurence of the problem.
+	// This field may contain request/entity data to help the user understand
+	// what went wrong. Enclose variable values in square brackets. Should be
+	// provided as "Sentence case" for direct use in the UI.
+	//
+	Detail string `json:"detail"`
+}
+
+func (u *UnauthorizedError) GetStatus() UnauthorizedErrorStatus {
 	if u == nil {
-		return nil
+		return UnauthorizedErrorStatus(0)
 	}
 	return u.Status
 }
 
-func (u *UnauthorizedError) GetTitle() any {
+func (u *UnauthorizedError) GetTitle() string {
 	if u == nil {
-		return nil
+		return ""
 	}
 	return u.Title
 }
 
-func (u *UnauthorizedError) GetType() any {
+func (u *UnauthorizedError) GetType() *string {
 	if u == nil {
 		return nil
 	}
 	return u.Type
 }
 
-func (u *UnauthorizedError) GetInstance() any {
+func (u *UnauthorizedError) GetInstance() string {
 	if u == nil {
-		return nil
+		return ""
 	}
 	return u.Instance
 }
 
-func (u *UnauthorizedError) GetDetail() any {
+func (u *UnauthorizedError) GetDetail() string {
 	if u == nil {
-		return nil
+		return ""
 	}
 	return u.Detail
 }

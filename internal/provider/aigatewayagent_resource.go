@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -28,6 +29,8 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
 )
 
@@ -84,17 +87,24 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 								ElementType: types.StringType,
 								Description: `List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.`,
 							},
+							"allow_when": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Allow the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + ` must be specified.`,
+							},
 							"deny": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access.`,
 							},
+							"deny_when": schema.ListAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `Deny the request if it matches any of these CEL boolean expressions evaluated against the request context (consumer, principal, HTTP attributes, consumer groups, etc.). Exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + ` must be specified.`,
+							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + `.`,
+						Description: `Access control rules. Configure exactly one of ` + "`" + `allow` + "`" + `, ` + "`" + `deny` + "`" + `, ` + "`" + `allow_when` + "`" + `, or ` + "`" + `deny_when` + "`" + `.`,
 					},
 					"auth_strategies": schema.ListAttribute{
 						Computed:    true,
@@ -120,14 +130,99 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 						},
 					},
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`Access control configuration for an agent.`,
+				Description: `Access control configuration for an agent.`,
 			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
+					"balancer": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"consistent_hashing": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"hash_on_header": schema.StringAttribute{
+										Required:    true,
+										Description: `The request header whose value selects the target. Requests without the header all hash to the same target.`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
+									},
+								},
+								Validators: []validator.Object{
+									objectvalidator.ConflictsWith(path.Expressions{
+										path.MatchRelative().AtParent().AtName("least_connections"),
+										path.MatchRelative().AtParent().AtName("lowest_latency"),
+										path.MatchRelative().AtParent().AtName("round_robin"),
+									}...),
+								},
+							},
+							"least_connections": schema.SingleNestedAttribute{
+								Optional: true,
+								Validators: []validator.Object{
+									objectvalidator.ConflictsWith(path.Expressions{
+										path.MatchRelative().AtParent().AtName("consistent_hashing"),
+										path.MatchRelative().AtParent().AtName("lowest_latency"),
+										path.MatchRelative().AtParent().AtName("round_robin"),
+									}...),
+								},
+							},
+							"lowest_latency": schema.SingleNestedAttribute{
+								Optional: true,
+								Validators: []validator.Object{
+									objectvalidator.ConflictsWith(path.Expressions{
+										path.MatchRelative().AtParent().AtName("consistent_hashing"),
+										path.MatchRelative().AtParent().AtName("least_connections"),
+										path.MatchRelative().AtParent().AtName("round_robin"),
+									}...),
+								},
+							},
+							"round_robin": schema.SingleNestedAttribute{
+								Optional: true,
+								Validators: []validator.Object{
+									objectvalidator.ConflictsWith(path.Expressions{
+										path.MatchRelative().AtParent().AtName("consistent_hashing"),
+										path.MatchRelative().AtParent().AtName("least_connections"),
+										path.MatchRelative().AtParent().AtName("lowest_latency"),
+									}...),
+								},
+							},
+						},
+						MarkdownDescription: `Load balancing configuration for ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+					},
+					"ca_certificates": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `CA certificates used to verify the TLS certificate of the upstream agent endpoint,` + "\n" +
+							`referenced by name. Each entry must be the ` + "`" + `name` + "`" + ` of an existing AI CA Certificate on the` + "\n" +
+							`same AI Gateway.` + "\n" +
+							`` + "\n" +
+							`The CA certificates build the trust store (` + "`" + `ca_certificates` + "`" + `) of the Kong Gateway Service` + "\n" +
+							`generated for this Agent, which proxies requests to ` + "`" + `config.url` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`If unset, the default trust store is used to verify the upstream's TLS certificate.`,
+					},
+					"certificates": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Client certificates used for mutual TLS (mTLS) authentication with the upstream agent` + "\n" +
+							`endpoint, referenced by name. Each entry must be the ` + "`" + `name` + "`" + ` of an existing AI Certificate` + "\n" +
+							`on the same AI Gateway.` + "\n" +
+							`` + "\n" +
+							`The certificates are applied to the Kong Gateway Service generated for this Agent, which` + "\n" +
+							`proxies requests to ` + "`" + `config.url` + "`" + `. The generated Service presents a single client` + "\n" +
+							`certificate (` + "`" + `client_certificate` + "`" + `) during the TLS handshake with the upstream, so at most` + "\n" +
+							`one certificate may be configured.` + "\n" +
+							`` + "\n" +
+							`If unset, no client certificate is presented to the upstream.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtMost(1),
+						},
+					},
 					"logging": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -148,10 +243,7 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 								Description: `Default: false`,
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`Configuration for AI Gateway logging.`,
+						Description: `Configuration for AI Gateway logging.`,
 					},
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
@@ -162,7 +254,24 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 							int64validator.Between(0, 2147483646),
 						},
 					},
+					"path": schema.StringAttribute{
+						Optional: true,
+						MarkdownDescription: `The path prefix of requests sent to the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+						Validators: []validator.String{
+							stringvalidator.RegexMatches(regexp.MustCompile(`^/`), "must match pattern "+regexp.MustCompile(`^/`).String()),
+						},
+					},
+					"protocol": schema.StringAttribute{
+						Optional: true,
+						MarkdownDescription: `The protocol used to reach the ` + "`" + `targets` + "`" + `. Only valid with ` + "`" + `targets` + "`" + `. If unset, the gateway uses ` + "`" + `https` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.` + "\n" +
+							`possible known values include one of ["http", "https"]`,
+					},
 					"proxy": schema.SingleNestedAttribute{
+						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"auth": schema.SingleNestedAttribute{
@@ -245,6 +354,7 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 							"hosts": schema.ListAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `A list of domain names that match this route. Note that the hosts value is case sensitive.`,
@@ -320,10 +430,48 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 								Description: `An optional set of strings associated with the route for grouping and filtering.`,
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
+						Description: `Configuration for an AI Gateway route.`,
+					},
+					"targets": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"address": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the ` + "`" + `port` + "`" + ` value will be overridden by the value from the DNS record. Each address must be unique within the agent. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.UTF8LengthAtLeast(1),
+									},
+								},
+								"failover": schema.BoolAttribute{
+									Computed:    true,
+									Optional:    true,
+									Default:     booldefault.StaticBool(false),
+									Description: `Whether to use this target only as backup or not. A failover target receives traffic only when all other targets are unhealthy, or when a request has failed on all of them. The gateway checks the health of each target with active and passive health checks. Failover targets are not supported with the ` + "`" + `consistent-hashing` + "`" + ` algorithm, and at least one target must not be a failover target. Default: false`,
+								},
+								"weight": schema.Int64Attribute{
+									Computed:    true,
+									Optional:    true,
+									Default:     int64default.StaticInt64(100),
+									Description: `The weight this target gets within the upstream loadbalancer (` + "`" + `0` + "`" + `-` + "`" + `65535` + "`" + `). If the hostname resolves to an SRV record, the ` + "`" + `weight` + "`" + ` value will be overridden by the value from the DNS record. Default: 100`,
+									Validators: []validator.Int64{
+										int64validator.Between(0, 65535),
+									},
+								},
+							},
+						},
+						MarkdownDescription: `List of targets the upstream load balances requests across.` + "\n" +
+							`Replaces ` + "`" + `url` + "`" + `: set exactly one of ` + "`" + `url` + "`" + ` or ` + "`" + `targets` + "`" + `.` + "\n" +
 							`` + "\n" +
-							`Configuration for an AI Gateway route.`,
+							`**Requires a minimum runtime version of ` + "`" + `2.4` + "`" + `**.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+						},
 					},
 					"upstream": schema.SingleNestedAttribute{
 						Computed: true,
@@ -371,27 +519,21 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 													`If not specified, the default AWS STS endpoint will be used.`,
 											},
 										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.` + "\n" +
-											`` + "\n" +
-											`AWS IAM (SigV4) authentication for the upstream service.`,
+										Description: `AWS IAM (SigV4) authentication for the upstream service.`,
 									},
 								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.` + "\n" +
-									`` + "\n" +
-									`Authentication to use when proxying to the upstream service.`,
+								Description: `Authentication to use when proxying to the upstream service.`,
 							},
 						},
-						MarkdownDescription: `**Pre-release Feature**` + "\n" +
-							`This feature is currently in beta and is subject to change.` + "\n" +
-							`` + "\n" +
-							`Configuration applied when proxying to the upstream service, including authentication.`,
+						Description: `Configuration applied when proxying to the upstream service, including authentication.`,
 					},
 					"url": schema.StringAttribute{
-						Required: true,
+						Optional: true,
 						MarkdownDescription: `Helper field to set protocol, host, port and path of the upstream A2A Agent using a URL.` + "\n" +
 							`This is the same as a Kong Gateway Service URL: ${scheme}://${host}:${port}/${path}`,
+						Validators: []validator.String{
+							stringvalidator.UTF8LengthAtLeast(1),
+						},
 					},
 				},
 				Description: `Configuration for the agent. The structure varies depending on the agent type.`,
@@ -443,17 +585,16 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 				ElementType: types.StringType,
 				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 					`` + "\n" +
-					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+					`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+					`Values must be 1–127 characters long and must not be empty.` + "\n" +
+					`Keys and values must not contain spaces or control characters.`,
 			},
 			"name": schema.StringAttribute{
-				Required: true,
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`A user-defined unique identifier for this agent, used as a stable human-readable reference. This value is immutable after creation.`,
+				Required:    true,
+				Description: `A user-defined unique identifier for this agent, used as a stable human-readable reference. This value is immutable after creation.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 256),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 				},
 			},
 			"policies": schema.ListAttribute{
@@ -523,7 +664,7 @@ func (r *AIGatewayAgentResource) Create(ctx context.Context, req resource.Create
 	}
 	res, err := r.client.AIGatewayAgents.CreateAiGatewayAgent(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -590,7 +731,7 @@ func (r *AIGatewayAgentResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 	res, err := r.client.AIGatewayAgents.GetAiGatewayAgent(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -644,7 +785,7 @@ func (r *AIGatewayAgentResource) Update(ctx context.Context, req resource.Update
 	}
 	res, err := r.client.AIGatewayAgents.UpdateAiGatewayAgent(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -704,7 +845,7 @@ func (r *AIGatewayAgentResource) Delete(ctx context.Context, req resource.Delete
 	}
 	res, err := r.client.AIGatewayAgents.DeleteAiGatewayAgent(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

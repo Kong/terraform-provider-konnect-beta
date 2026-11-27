@@ -125,15 +125,6 @@ func TestAIGateway(t *testing.T) {
 		))
 	})
 
-	t.Run("identity-providers", func(t *testing.T) {
-		resource.Test(t, aiGatewayCase(
-			resource.ComposeAggregateTestCheckFunc(
-				resource.TestCheckResourceAttr("konnect_ai_gateway_identity_provider.my_aigatewayidentityprovider", "name", "tf-test-key-auth-identity-provider"),
-				resource.TestCheckResourceAttr("konnect_ai_gateway_identity_provider.my_aigatewayidentityprovider_oidc", "name", "tf-test-openid-connect-identity-provider"),
-			),
-		))
-	})
-
 	t.Run("certificate", func(t *testing.T) {
 		resource.Test(t, aiGatewayCase(
 			resource.TestCheckResourceAttr("konnect_ai_gateway_certificate.my_aigatewaycertificate", "name", "tf-test-certificate"),

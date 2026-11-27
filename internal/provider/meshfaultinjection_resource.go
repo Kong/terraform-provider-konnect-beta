@@ -900,7 +900,7 @@ func (r *MeshFaultInjectionResource) Create(ctx context.Context, req resource.Cr
 	}
 	res, err := r.client.MeshFaultInjection.PutMeshFaultInjection(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -940,7 +940,7 @@ func (r *MeshFaultInjectionResource) Create(ctx context.Context, req resource.Cr
 	}
 	res1, err := r.client.MeshFaultInjection.GetMeshFaultInjection(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -1000,7 +1000,7 @@ func (r *MeshFaultInjectionResource) Read(ctx context.Context, req resource.Read
 	}
 	res, err := r.client.MeshFaultInjection.GetMeshFaultInjection(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1054,7 +1054,7 @@ func (r *MeshFaultInjectionResource) Update(ctx context.Context, req resource.Up
 	}
 	res, err := r.client.MeshFaultInjection.PutMeshFaultInjection(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -1094,7 +1094,7 @@ func (r *MeshFaultInjectionResource) Update(ctx context.Context, req resource.Up
 	}
 	res1, err := r.client.MeshFaultInjection.GetMeshFaultInjection(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -1154,7 +1154,7 @@ func (r *MeshFaultInjectionResource) Delete(ctx context.Context, req resource.De
 	}
 	res, err := r.client.MeshFaultInjection.DeleteMeshFaultInjection(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

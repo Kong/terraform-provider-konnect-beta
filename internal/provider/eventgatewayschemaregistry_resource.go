@@ -38,16 +38,16 @@ type EventGatewaySchemaRegistryResource struct {
 
 // EventGatewaySchemaRegistryResourceModel describes the resource data model.
 type EventGatewaySchemaRegistryResourceModel struct {
-	Config      *tfTypes.RawProviderConfig       `tfsdk:"config"`
-	Confluent   *tfTypes.SchemaRegistryConfluent `queryParam:"inline" tfsdk:"confluent"`
-	CreatedAt   types.String                     `tfsdk:"created_at"`
-	Description types.String                     `tfsdk:"description"`
-	GatewayID   types.String                     `tfsdk:"gateway_id"`
-	ID          types.String                     `tfsdk:"id"`
-	Labels      map[string]types.String          `tfsdk:"labels"`
-	Name        types.String                     `tfsdk:"name"`
-	Type        types.String                     `tfsdk:"type"`
-	UpdatedAt   types.String                     `tfsdk:"updated_at"`
+	Config      *tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig `tfsdk:"config"`
+	Confluent   *tfTypes.SchemaRegistryConfluent                                               `queryParam:"inline" tfsdk:"confluent"`
+	CreatedAt   types.String                                                                   `tfsdk:"created_at"`
+	Description types.String                                                                   `tfsdk:"description"`
+	GatewayID   types.String                                                                   `tfsdk:"gateway_id"`
+	ID          types.String                                                                   `tfsdk:"id"`
+	Labels      map[string]types.String                                                        `tfsdk:"labels"`
+	Name        types.String                                                                   `tfsdk:"name"`
+	Type        types.String                                                                   `tfsdk:"type"`
+	UpdatedAt   types.String                                                                   `tfsdk:"updated_at"`
 }
 
 func (r *EventGatewaySchemaRegistryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -75,7 +75,8 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"password": schema.StringAttribute{
-												Required: true,
+												Required:  true,
+												Sensitive: true,
 												MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
 													`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
 													`If provided as an expression, the expression itself is stored and returned by the API.`,
@@ -95,7 +96,8 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 										Description: `Basic authentication scheme for the schema registry with username and password.`,
 									},
 								},
-								Description: `The authentication configuration for the schema registry.`,
+								MarkdownDescription: `The authentication configuration for the schema registry.` + "\n" +
+									`The Event Gateway only requires read-only access to the schema registry to fetch schemas for validation, so we recommend using credentials with read-only scope.`,
 							},
 							"endpoint": schema.StringAttribute{
 								Required:    true,
@@ -106,7 +108,7 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 							},
 							"schema_type": schema.StringAttribute{
 								Required:    true,
-								Description: `The format of the message. possible known values include one of ["avro", "json"]`,
+								Description: `The format of the message. possible known values include one of ["avro", "json", "any"]`,
 							},
 							"timeout_seconds": schema.Int64Attribute{
 								Computed:    true,
@@ -228,6 +230,8 @@ func (r *EventGatewaySchemaRegistryResource) Create(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateEventGatewaySchemaRegistryRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -236,7 +240,7 @@ func (r *EventGatewaySchemaRegistryResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewaySchemaRegistries.CreateEventGatewaySchemaRegistry(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -288,6 +292,8 @@ func (r *EventGatewaySchemaRegistryResource) Read(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetEventGatewaySchemaRegistryRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -296,7 +302,7 @@ func (r *EventGatewaySchemaRegistryResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.EventGatewaySchemaRegistries.GetEventGatewaySchemaRegistry(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -342,6 +348,8 @@ func (r *EventGatewaySchemaRegistryResource) Update(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateEventGatewaySchemaRegistryRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -350,7 +358,7 @@ func (r *EventGatewaySchemaRegistryResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewaySchemaRegistries.UpdateEventGatewaySchemaRegistry(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -402,6 +410,8 @@ func (r *EventGatewaySchemaRegistryResource) Delete(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteEventGatewaySchemaRegistryRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -410,7 +420,7 @@ func (r *EventGatewaySchemaRegistryResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.EventGatewaySchemaRegistries.DeleteEventGatewaySchemaRegistry(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

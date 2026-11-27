@@ -17,15 +17,22 @@ resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatew
   provider = konnect-beta
   condition = "context.topic.name.endsWith(\"my_suffix\") && record.headers[\"x-flag\"] == \"a-value\""
   config = {
-    json = {
-      failure_mode          = "passthrough"
-      key_validation_action = "mark"
-      schema_registry = {
-        id = "74577697-03b2-4d40-bfe2-929c891c4254"
+    inline_schema = {
+      failure_mode = "reject"
+      key = {
+        json = {
+          schema = "...my_schema..."
+        }
       }
-      validate_key            = true
-      validate_value          = false
-      value_validation_action = "reject"
+      key_validation_action = "mark"
+      validate_key          = true
+      validate_value        = true
+      value = {
+        avro = {
+          schema = "...my_schema..."
+        }
+      }
+      value_validation_action = "mark"
     }
   }
   description = ""
@@ -71,6 +78,9 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 Optional:
 
 - `confluent_schema_registry` (Attributes) The configuration of the produce schema validation policy when using a schema registry. (see [below for nested schema](#nestedatt--config--confluent_schema_registry))
+- `inline_schema` (Attributes) The configuration of the produce schema validation policy when using an inline schema.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--config--inline_schema))
 - `json` (Attributes) The configuration of the produce schema validation policy when using JSON parsing without schema. (see [below for nested schema](#nestedatt--config--json))
 
 <a id="nestedatt--config--confluent_schema_registry"></a>
@@ -82,6 +92,9 @@ Optional:
 * `reject` - rejects the record batch.
 * `passthrough` - passes the record silently to the backend cluster even though policy execution failed.
 * `mark` - passes the record to the backend cluster but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+The header is stored with the record in the backend cluster, so every consumer of the topic sees it, including systems that never pass through the Event Gateway.
+The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets, and a producer with access to the topic can trigger policy failures on purpose to expose it.
+If you don't want to share this information, remove the header with a Modify Headers produce policy, or use a different failure mode.
 
 **Requires a minimum runtime version of `1.2`**.
 possible known values include one of ["reject", "passthrough", "mark"]
@@ -112,6 +125,103 @@ Required:
 
 
 
+<a id="nestedatt--config--inline_schema"></a>
+### Nested Schema for `config.inline_schema`
+
+Optional:
+
+- `failure_mode` (String) Describes how to handle a failure in a policy applied to produced records.
+* `reject` - rejects the record batch.
+* `passthrough` - passes the record silently to the backend cluster even though policy execution failed.
+* `mark` - passes the record to the backend cluster but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+The header is stored with the record in the backend cluster, so every consumer of the topic sees it, including systems that never pass through the Event Gateway.
+The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets, and a producer with access to the topic can trigger policy failures on purpose to expose it.
+If you don't want to share this information, remove the header with a Modify Headers produce policy, or use a different failure mode.
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["reject", "passthrough", "mark"]
+- `key` (Attributes) Defines the schema for a record key or value, inline.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--config--inline_schema--key))
+- `key_validation_action` (String) Defines a behavior when record key is not valid.
+* reject - rejects a batch for topic partition. Only available for produce.
+* mark - marks a record with kong/server header and client ID value
+  to help to identify the clients violating schema.
+possible known values include one of ["reject", "mark"]
+- `validate_key` (Boolean) If true, validate the record key.
+
+**Requires a minimum runtime version of `1.2`**.
+- `validate_value` (Boolean) If true, validate the record value.
+
+**Requires a minimum runtime version of `1.2`**.
+- `value` (Attributes) Defines the schema for a record key or value, inline.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--config--inline_schema--value))
+- `value_validation_action` (String) Defines a behavior when record value is not valid.
+* reject - rejects a batch for topic partition. Only available for produce.
+* mark - marks a record with kong/server header and client ID value
+  to help to identify the clients violating schema.
+possible known values include one of ["reject", "mark"]
+
+<a id="nestedatt--config--inline_schema--key"></a>
+### Nested Schema for `config.inline_schema.key`
+
+Optional:
+
+- `avro` (Attributes) The configuration of an inline schema when using Avro.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--config--inline_schema--key--avro))
+- `json` (Attributes) The configuration of an inline schema when using JSON.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--config--inline_schema--key--json))
+
+<a id="nestedatt--config--inline_schema--key--avro"></a>
+### Nested Schema for `config.inline_schema.key.avro`
+
+Required:
+
+- `schema` (String) A schema that applies according to `schema_type`.
+
+
+<a id="nestedatt--config--inline_schema--key--json"></a>
+### Nested Schema for `config.inline_schema.key.json`
+
+Required:
+
+- `schema` (String) A schema that applies according to `schema_type`.
+
+
+
+<a id="nestedatt--config--inline_schema--value"></a>
+### Nested Schema for `config.inline_schema.value`
+
+Optional:
+
+- `avro` (Attributes) The configuration of an inline schema when using Avro.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--config--inline_schema--value--avro))
+- `json` (Attributes) The configuration of an inline schema when using JSON.
+
+**Requires a minimum runtime version of `1.3`**. (see [below for nested schema](#nestedatt--config--inline_schema--value--json))
+
+<a id="nestedatt--config--inline_schema--value--avro"></a>
+### Nested Schema for `config.inline_schema.value.avro`
+
+Required:
+
+- `schema` (String) A schema that applies according to `schema_type`.
+
+
+<a id="nestedatt--config--inline_schema--value--json"></a>
+### Nested Schema for `config.inline_schema.value.json`
+
+Required:
+
+- `schema` (String) A schema that applies according to `schema_type`.
+
+
+
+
 <a id="nestedatt--config--json"></a>
 ### Nested Schema for `config.json`
 
@@ -121,6 +231,9 @@ Optional:
 * `reject` - rejects the record batch.
 * `passthrough` - passes the record silently to the backend cluster even though policy execution failed.
 * `mark` - passes the record to the backend cluster but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+The header is stored with the record in the backend cluster, so every consumer of the topic sees it, including systems that never pass through the Event Gateway.
+The failure reason can contain runtime-specific configuration details, such as schema IDs, registry URLs, field paths, KMS ARNs and key IDs, KMS error text, JWT issuer and audience data, or expression snippets, and a producer with access to the topic can trigger policy failures on purpose to expose it.
+If you don't want to share this information, remove the header with a Modify Headers produce policy, or use a different failure mode.
 
 **Requires a minimum runtime version of `1.2`**.
 possible known values include one of ["reject", "passthrough", "mark"]

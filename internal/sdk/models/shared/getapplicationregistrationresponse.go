@@ -142,8 +142,9 @@ type GetApplicationRegistrationResponse struct {
 	// The status of an application registration request. Each registration is linked to a single API, and application credentials will not grant access to the API until the registration is approved.
 	// Pending, revoked, and rejected registrations will not provide access to the API.
 	Status ApplicationRegistrationStatus `json:"status"`
-	// Developer-supplied responses to the `api_registration` form linked to the API publication, captured at registration time. `null` when no responses were recorded. Keyed by field `name` (lowercase slug; letters, digits, underscores, or hyphens).
-	AdditionalData map[string]FormResponseEntry `json:"additional_data,omitempty"`
+	// The developer's answers to the `api_registration` form linked to this API, captured when they registered.
+	//
+	AdditionalData any `json:"additional_data,omitempty"`
 	// Details about the API the application is registered to.
 	API API `json:"api"`
 	// Details about the application the registration is part of.
@@ -157,7 +158,7 @@ func (g GetApplicationRegistrationResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetApplicationRegistrationResponse) UnmarshalJSON(data []byte) error {
-	if out, err := utils.RunJQBytes(data, ". + { application_id: .application.id }"); err != nil {
+	if out, err := utils.RunJQBytes(data, ". + { application_id: .application.id } | .additional_data |= (if . == null then . else map_values(.value) end)"); err != nil {
 		return err
 	} else {
 		data = out
@@ -196,7 +197,7 @@ func (g *GetApplicationRegistrationResponse) GetStatus() ApplicationRegistration
 	return g.Status
 }
 
-func (g *GetApplicationRegistrationResponse) GetAdditionalData() map[string]FormResponseEntry {
+func (g *GetApplicationRegistrationResponse) GetAdditionalData() any {
 	if g == nil {
 		return nil
 	}

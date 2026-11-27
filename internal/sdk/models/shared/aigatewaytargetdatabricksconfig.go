@@ -6,10 +6,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayTargetDatabricksConfig - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Databricks-specific configuration for a model.
+// AIGatewayTargetDatabricksConfig - Databricks-specific configuration for a model.
 type AIGatewayTargetDatabricksConfig struct {
 	// The number of dimensions for embedding outputs.
 	EmbeddingsDimensions *int64 `json:"embeddings_dimensions,omitempty"`
@@ -23,6 +20,18 @@ type AIGatewayTargetDatabricksConfig struct {
 	CacheReadCost *float64 `json:"cache_read_cost,omitempty"`
 	// Cost per 1M cache-write prompt tokens for billing and cost tracking.
 	CacheWriteCost *float64 `json:"cache_write_cost,omitempty"`
+	// Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
+	InputCostList []AIGatewayModalCostList `json:"input_cost_list,omitempty"`
+	// Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
+	OutputCostList []AIGatewayModalCostList `json:"output_cost_list,omitempty"`
+	// Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
+	CacheReadCostList []AIGatewayModalCostList `json:"cache_read_cost_list,omitempty"`
 	// Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
 	CacheWriteCostList []AIGatewayCacheWriteCost `json:"cache_write_cost_list,omitempty"`
 	// Above an input-token threshold, scale input and output pricing by the corresponding factor.
@@ -37,6 +46,10 @@ type AIGatewayTargetDatabricksConfig struct {
 	TopP *float64 `json:"top_p,omitempty"`
 	// The upstream URL for the model endpoint.
 	UpstreamURL *string `json:"upstream_url,omitempty"`
+	// Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	UpstreamBaseURL *string `json:"upstream_base_url,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"databricks" json:"type"`
 	// The Databricks workspace instance ID.
@@ -96,6 +109,27 @@ func (a *AIGatewayTargetDatabricksConfig) GetCacheWriteCost() *float64 {
 	return a.CacheWriteCost
 }
 
+func (a *AIGatewayTargetDatabricksConfig) GetInputCostList() []AIGatewayModalCostList {
+	if a == nil {
+		return nil
+	}
+	return a.InputCostList
+}
+
+func (a *AIGatewayTargetDatabricksConfig) GetOutputCostList() []AIGatewayModalCostList {
+	if a == nil {
+		return nil
+	}
+	return a.OutputCostList
+}
+
+func (a *AIGatewayTargetDatabricksConfig) GetCacheReadCostList() []AIGatewayModalCostList {
+	if a == nil {
+		return nil
+	}
+	return a.CacheReadCostList
+}
+
 func (a *AIGatewayTargetDatabricksConfig) GetCacheWriteCostList() []AIGatewayCacheWriteCost {
 	if a == nil {
 		return nil
@@ -143,6 +177,13 @@ func (a *AIGatewayTargetDatabricksConfig) GetUpstreamURL() *string {
 		return nil
 	}
 	return a.UpstreamURL
+}
+
+func (a *AIGatewayTargetDatabricksConfig) GetUpstreamBaseURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamBaseURL
 }
 
 func (a *AIGatewayTargetDatabricksConfig) GetType() string {

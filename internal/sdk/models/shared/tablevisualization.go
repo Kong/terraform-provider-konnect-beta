@@ -33,7 +33,14 @@ func CreateTableVisualizationQueryPlatformUsage(platformUsage PlatformTabularQue
 	}
 }
 
-func (u *TableVisualizationQuery) UnmarshalJSON(data []byte) error {
+func (u *TableVisualizationQuery) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = TableVisualizationQuery{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Datasource string `json:"datasource"`

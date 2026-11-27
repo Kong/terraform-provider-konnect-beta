@@ -204,8 +204,16 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 												"value": schema.StringAttribute{
-													Optional:    true,
-													Description: `Value of xDS resource in YAML format to add or patch.`,
+													Optional: true,
+													MarkdownDescription: `Value of xDS resource in YAML format to add or patch.` + "\n" +
+														`` + "\n" +
+														`Patch merges the value into the matched cluster, and repeated fields are` + "\n" +
+														`appended to what the cluster already has. Circuit breaker thresholds are` + "\n" +
+														`the exception: Envoy resolves them by routing priority and ignores every` + "\n" +
+														`threshold after the first one of a given priority, so appending would be` + "\n" +
+														`dead config. They are merged into the existing threshold with the same` + "\n" +
+														`priority instead, and a value listing one priority twice keeps only the` + "\n" +
+														`first entry.`,
 												},
 											},
 											Description: `Cluster is a modification of Envoy's Cluster resource.`,
@@ -706,7 +714,7 @@ func (r *MeshProxyPatchResource) Create(ctx context.Context, req resource.Create
 	}
 	res, err := r.client.MeshProxyPatch.PutMeshProxyPatch(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -746,7 +754,7 @@ func (r *MeshProxyPatchResource) Create(ctx context.Context, req resource.Create
 	}
 	res1, err := r.client.MeshProxyPatch.GetMeshProxyPatch(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -806,7 +814,7 @@ func (r *MeshProxyPatchResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 	res, err := r.client.MeshProxyPatch.GetMeshProxyPatch(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -860,7 +868,7 @@ func (r *MeshProxyPatchResource) Update(ctx context.Context, req resource.Update
 	}
 	res, err := r.client.MeshProxyPatch.PutMeshProxyPatch(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -900,7 +908,7 @@ func (r *MeshProxyPatchResource) Update(ctx context.Context, req resource.Update
 	}
 	res1, err := r.client.MeshProxyPatch.GetMeshProxyPatch(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -960,7 +968,7 @@ func (r *MeshProxyPatchResource) Delete(ctx context.Context, req resource.Delete
 	}
 	res, err := r.client.MeshProxyPatch.DeleteMeshProxyPatch(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

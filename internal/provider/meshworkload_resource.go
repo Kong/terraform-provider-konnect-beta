@@ -39,17 +39,17 @@ type MeshWorkloadResource struct {
 
 // MeshWorkloadResourceModel describes the resource data model.
 type MeshWorkloadResourceModel struct {
-	CpID             types.String                `tfsdk:"cp_id"`
-	CreationTime     types.String                `tfsdk:"creation_time"`
-	Kri              types.String                `tfsdk:"kri"`
-	Labels           map[string]types.String     `tfsdk:"labels"`
-	Mesh             types.String                `tfsdk:"mesh"`
-	ModificationTime types.String                `tfsdk:"modification_time"`
-	Name             types.String                `tfsdk:"name"`
-	Spec             *tfTypes.RawProviderConfig  `tfsdk:"spec"`
-	Status           *tfTypes.WorkloadItemStatus `tfsdk:"status"`
-	Type             types.String                `tfsdk:"type"`
-	Warnings         []types.String              `tfsdk:"warnings"`
+	CpID             types.String                                                                   `tfsdk:"cp_id"`
+	CreationTime     types.String                                                                   `tfsdk:"creation_time"`
+	Kri              types.String                                                                   `tfsdk:"kri"`
+	Labels           map[string]types.String                                                        `tfsdk:"labels"`
+	Mesh             types.String                                                                   `tfsdk:"mesh"`
+	ModificationTime types.String                                                                   `tfsdk:"modification_time"`
+	Name             types.String                                                                   `tfsdk:"name"`
+	Spec             *tfTypes.AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig `tfsdk:"spec"`
+	Status           *tfTypes.WorkloadItemStatus                                                    `tfsdk:"status"`
+	Type             types.String                                                                   `tfsdk:"type"`
+	Warnings         []types.String                                                                 `tfsdk:"warnings"`
 }
 
 func (r *MeshWorkloadResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -198,7 +198,7 @@ func (r *MeshWorkloadResource) Create(ctx context.Context, req resource.CreateRe
 	}
 	res, err := r.client.Workload.PutWorkload(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -238,7 +238,7 @@ func (r *MeshWorkloadResource) Create(ctx context.Context, req resource.CreateRe
 	}
 	res1, err := r.client.Workload.GetWorkload(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -298,7 +298,7 @@ func (r *MeshWorkloadResource) Read(ctx context.Context, req resource.ReadReques
 	}
 	res, err := r.client.Workload.GetWorkload(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -352,7 +352,7 @@ func (r *MeshWorkloadResource) Update(ctx context.Context, req resource.UpdateRe
 	}
 	res, err := r.client.Workload.PutWorkload(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -392,7 +392,7 @@ func (r *MeshWorkloadResource) Update(ctx context.Context, req resource.UpdateRe
 	}
 	res1, err := r.client.Workload.GetWorkload(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res1 != nil && res1.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
 		}
@@ -452,7 +452,7 @@ func (r *MeshWorkloadResource) Delete(ctx context.Context, req resource.DeleteRe
 	}
 	res, err := r.client.Workload.DeleteWorkload(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

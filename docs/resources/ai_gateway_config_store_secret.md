@@ -29,15 +29,8 @@ resource "konnect_ai_gateway_config_store_secret" "my_aigatewayconfigstoresecret
 
 - `config_store_id` (String) The unique ID of the AI Gateway Config Store.
 - `gateway_id` (String) The unique ID of the AI Gateway.
-- `key` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-The unique key identifying the secret within the Config Store.
-Requires replacement if changed.
-- `value` (String, Sensitive) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-The secret value. Once stored, this value cannot be retrieved.
+- `key` (String) The unique key identifying the secret within the Config Store. Requires replacement if changed.
+- `value` (String, Sensitive) The secret value. Once stored, this value cannot be retrieved.
 
 ### Read-Only
 

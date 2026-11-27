@@ -73,6 +73,16 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 					"features": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
+							"ai_search": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Description: `Whether AI Search is enabled or not`,
+									},
+								},
+								Description: `AI Search config`,
+							},
 							"mcp_server": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
@@ -87,7 +97,26 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 								},
 								Description: `AI Features config`,
 							},
+							"portal_agent": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"audience": schema.StringAttribute{
+										Computed:    true,
+										Description: `The audience allowed to interact with the Portal Agent. ` + "`" + `all` + "`" + ` makes the Portal Agent available to every developer, including unauthenticated ones. ` + "`" + `authenticated` + "`" + ` restricts access to signed-in developers only.`,
+									},
+									"display_name": schema.StringAttribute{
+										Computed:    true,
+										Description: `The display name for the Portal Agent, shown to developers in the portal`,
+									},
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Description: `Whether the Portal Agent is enabled or not`,
+									},
+								},
+								Description: `Portal Agent config`,
+							},
 						},
+						Description: `AI features configuration. When top-level ` + "`" + `enabled` + "`" + ` is false, every feature toggle here is automatically reset to false.`,
 					},
 				},
 			},
@@ -444,7 +473,7 @@ func (r *PortalDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	}
 	res, err := r.client.Portals.ListPortals(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -104,7 +104,25 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 					r.Spec.TLS.Verification.CaCert = &tfTypes.CaCert{}
 					r.Spec.TLS.Verification.CaCert.Inline = types.StringPointerValue(resp.Spec.TLS.Verification.CaCert.Inline)
 					r.Spec.TLS.Verification.CaCert.InlineString = types.StringPointerValue(resp.Spec.TLS.Verification.CaCert.InlineString)
+					if resp.Spec.TLS.Verification.CaCert.InsecureInline == nil {
+						r.Spec.TLS.Verification.CaCert.InsecureInline = nil
+					} else {
+						r.Spec.TLS.Verification.CaCert.InsecureInline = &tfTypes.ExactList{}
+						r.Spec.TLS.Verification.CaCert.InsecureInline.Value = types.StringValue(resp.Spec.TLS.Verification.CaCert.InsecureInline.Value)
+					}
 					r.Spec.TLS.Verification.CaCert.Secret = types.StringPointerValue(resp.Spec.TLS.Verification.CaCert.Secret)
+					if resp.Spec.TLS.Verification.CaCert.SecretRef == nil {
+						r.Spec.TLS.Verification.CaCert.SecretRef = nil
+					} else {
+						r.Spec.TLS.Verification.CaCert.SecretRef = &tfTypes.MeshExternalServiceItemSpecTLSSecretRef{}
+						r.Spec.TLS.Verification.CaCert.SecretRef.Kind = types.StringValue(string(resp.Spec.TLS.Verification.CaCert.SecretRef.Kind))
+						r.Spec.TLS.Verification.CaCert.SecretRef.Name = types.StringValue(resp.Spec.TLS.Verification.CaCert.SecretRef.Name)
+					}
+					if resp.Spec.TLS.Verification.CaCert.Type != nil {
+						r.Spec.TLS.Verification.CaCert.Type = types.StringValue(string(*resp.Spec.TLS.Verification.CaCert.Type))
+					} else {
+						r.Spec.TLS.Verification.CaCert.Type = types.StringNull()
+					}
 				}
 				if resp.Spec.TLS.Verification.ClientCert == nil {
 					r.Spec.TLS.Verification.ClientCert = nil
@@ -112,7 +130,25 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 					r.Spec.TLS.Verification.ClientCert = &tfTypes.CaCert{}
 					r.Spec.TLS.Verification.ClientCert.Inline = types.StringPointerValue(resp.Spec.TLS.Verification.ClientCert.Inline)
 					r.Spec.TLS.Verification.ClientCert.InlineString = types.StringPointerValue(resp.Spec.TLS.Verification.ClientCert.InlineString)
+					if resp.Spec.TLS.Verification.ClientCert.InsecureInline == nil {
+						r.Spec.TLS.Verification.ClientCert.InsecureInline = nil
+					} else {
+						r.Spec.TLS.Verification.ClientCert.InsecureInline = &tfTypes.ExactList{}
+						r.Spec.TLS.Verification.ClientCert.InsecureInline.Value = types.StringValue(resp.Spec.TLS.Verification.ClientCert.InsecureInline.Value)
+					}
 					r.Spec.TLS.Verification.ClientCert.Secret = types.StringPointerValue(resp.Spec.TLS.Verification.ClientCert.Secret)
+					if resp.Spec.TLS.Verification.ClientCert.SecretRef == nil {
+						r.Spec.TLS.Verification.ClientCert.SecretRef = nil
+					} else {
+						r.Spec.TLS.Verification.ClientCert.SecretRef = &tfTypes.MeshExternalServiceItemSpecTLSSecretRef{}
+						r.Spec.TLS.Verification.ClientCert.SecretRef.Kind = types.StringValue(string(resp.Spec.TLS.Verification.ClientCert.SecretRef.Kind))
+						r.Spec.TLS.Verification.ClientCert.SecretRef.Name = types.StringValue(resp.Spec.TLS.Verification.ClientCert.SecretRef.Name)
+					}
+					if resp.Spec.TLS.Verification.ClientCert.Type != nil {
+						r.Spec.TLS.Verification.ClientCert.Type = types.StringValue(string(*resp.Spec.TLS.Verification.ClientCert.Type))
+					} else {
+						r.Spec.TLS.Verification.ClientCert.Type = types.StringNull()
+					}
 				}
 				if resp.Spec.TLS.Verification.ClientKey == nil {
 					r.Spec.TLS.Verification.ClientKey = nil
@@ -120,7 +156,25 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 					r.Spec.TLS.Verification.ClientKey = &tfTypes.CaCert{}
 					r.Spec.TLS.Verification.ClientKey.Inline = types.StringPointerValue(resp.Spec.TLS.Verification.ClientKey.Inline)
 					r.Spec.TLS.Verification.ClientKey.InlineString = types.StringPointerValue(resp.Spec.TLS.Verification.ClientKey.InlineString)
+					if resp.Spec.TLS.Verification.ClientKey.InsecureInline == nil {
+						r.Spec.TLS.Verification.ClientKey.InsecureInline = nil
+					} else {
+						r.Spec.TLS.Verification.ClientKey.InsecureInline = &tfTypes.ExactList{}
+						r.Spec.TLS.Verification.ClientKey.InsecureInline.Value = types.StringValue(resp.Spec.TLS.Verification.ClientKey.InsecureInline.Value)
+					}
 					r.Spec.TLS.Verification.ClientKey.Secret = types.StringPointerValue(resp.Spec.TLS.Verification.ClientKey.Secret)
+					if resp.Spec.TLS.Verification.ClientKey.SecretRef == nil {
+						r.Spec.TLS.Verification.ClientKey.SecretRef = nil
+					} else {
+						r.Spec.TLS.Verification.ClientKey.SecretRef = &tfTypes.MeshExternalServiceItemSpecTLSSecretRef{}
+						r.Spec.TLS.Verification.ClientKey.SecretRef.Kind = types.StringValue(string(resp.Spec.TLS.Verification.ClientKey.SecretRef.Kind))
+						r.Spec.TLS.Verification.ClientKey.SecretRef.Name = types.StringValue(resp.Spec.TLS.Verification.ClientKey.SecretRef.Name)
+					}
+					if resp.Spec.TLS.Verification.ClientKey.Type != nil {
+						r.Spec.TLS.Verification.ClientKey.Type = types.StringValue(string(*resp.Spec.TLS.Verification.ClientKey.Type))
+					} else {
+						r.Spec.TLS.Verification.ClientKey.Type = types.StringNull()
+					}
 				}
 				if resp.Spec.TLS.Verification.Mode != nil {
 					r.Spec.TLS.Verification.Mode = types.StringValue(string(*resp.Spec.TLS.Verification.Mode))
@@ -386,16 +440,45 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 				} else {
 					inlineString = nil
 				}
+				var insecureInline *shared.MeshExternalServiceItemSpecTLSInsecureInline
+				if r.Spec.TLS.Verification.CaCert.InsecureInline != nil {
+					var value string
+					value = r.Spec.TLS.Verification.CaCert.InsecureInline.Value.ValueString()
+
+					insecureInline = &shared.MeshExternalServiceItemSpecTLSInsecureInline{
+						Value: value,
+					}
+				}
 				secret := new(string)
 				if !r.Spec.TLS.Verification.CaCert.Secret.IsUnknown() && !r.Spec.TLS.Verification.CaCert.Secret.IsNull() {
 					*secret = r.Spec.TLS.Verification.CaCert.Secret.ValueString()
 				} else {
 					secret = nil
 				}
+				var secretRef *shared.MeshExternalServiceItemSpecTLSSecretRef
+				if r.Spec.TLS.Verification.CaCert.SecretRef != nil {
+					kind := shared.MeshExternalServiceItemKind(r.Spec.TLS.Verification.CaCert.SecretRef.Kind.ValueString())
+					var name1 string
+					name1 = r.Spec.TLS.Verification.CaCert.SecretRef.Name.ValueString()
+
+					secretRef = &shared.MeshExternalServiceItemSpecTLSSecretRef{
+						Kind: kind,
+						Name: name1,
+					}
+				}
+				typeVar3 := new(shared.MeshExternalServiceItemSpecTLSType)
+				if !r.Spec.TLS.Verification.CaCert.Type.IsUnknown() && !r.Spec.TLS.Verification.CaCert.Type.IsNull() {
+					*typeVar3 = shared.MeshExternalServiceItemSpecTLSType(r.Spec.TLS.Verification.CaCert.Type.ValueString())
+				} else {
+					typeVar3 = nil
+				}
 				caCert = &shared.CaCert{
-					Inline:       inline,
-					InlineString: inlineString,
-					Secret:       secret,
+					Inline:         inline,
+					InlineString:   inlineString,
+					InsecureInline: insecureInline,
+					Secret:         secret,
+					SecretRef:      secretRef,
+					Type:           typeVar3,
 				}
 			}
 			var clientCert *shared.ClientCert
@@ -412,16 +495,45 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 				} else {
 					inlineString1 = nil
 				}
+				var insecureInline1 *shared.MeshExternalServiceItemInsecureInline
+				if r.Spec.TLS.Verification.ClientCert.InsecureInline != nil {
+					var value1 string
+					value1 = r.Spec.TLS.Verification.ClientCert.InsecureInline.Value.ValueString()
+
+					insecureInline1 = &shared.MeshExternalServiceItemInsecureInline{
+						Value: value1,
+					}
+				}
 				secret1 := new(string)
 				if !r.Spec.TLS.Verification.ClientCert.Secret.IsUnknown() && !r.Spec.TLS.Verification.ClientCert.Secret.IsNull() {
 					*secret1 = r.Spec.TLS.Verification.ClientCert.Secret.ValueString()
 				} else {
 					secret1 = nil
 				}
+				var secretRef1 *shared.MeshExternalServiceItemSecretRef
+				if r.Spec.TLS.Verification.ClientCert.SecretRef != nil {
+					kind1 := shared.MeshExternalServiceItemSpecKind(r.Spec.TLS.Verification.ClientCert.SecretRef.Kind.ValueString())
+					var name2 string
+					name2 = r.Spec.TLS.Verification.ClientCert.SecretRef.Name.ValueString()
+
+					secretRef1 = &shared.MeshExternalServiceItemSecretRef{
+						Kind: kind1,
+						Name: name2,
+					}
+				}
+				typeVar4 := new(shared.MeshExternalServiceItemSpecTLSVerificationType)
+				if !r.Spec.TLS.Verification.ClientCert.Type.IsUnknown() && !r.Spec.TLS.Verification.ClientCert.Type.IsNull() {
+					*typeVar4 = shared.MeshExternalServiceItemSpecTLSVerificationType(r.Spec.TLS.Verification.ClientCert.Type.ValueString())
+				} else {
+					typeVar4 = nil
+				}
 				clientCert = &shared.ClientCert{
-					Inline:       inline1,
-					InlineString: inlineString1,
-					Secret:       secret1,
+					Inline:         inline1,
+					InlineString:   inlineString1,
+					InsecureInline: insecureInline1,
+					Secret:         secret1,
+					SecretRef:      secretRef1,
+					Type:           typeVar4,
 				}
 			}
 			var clientKey *shared.ClientKey
@@ -438,16 +550,45 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 				} else {
 					inlineString2 = nil
 				}
+				var insecureInline2 *shared.MeshExternalServiceItemSpecInsecureInline
+				if r.Spec.TLS.Verification.ClientKey.InsecureInline != nil {
+					var value2 string
+					value2 = r.Spec.TLS.Verification.ClientKey.InsecureInline.Value.ValueString()
+
+					insecureInline2 = &shared.MeshExternalServiceItemSpecInsecureInline{
+						Value: value2,
+					}
+				}
 				secret2 := new(string)
 				if !r.Spec.TLS.Verification.ClientKey.Secret.IsUnknown() && !r.Spec.TLS.Verification.ClientKey.Secret.IsNull() {
 					*secret2 = r.Spec.TLS.Verification.ClientKey.Secret.ValueString()
 				} else {
 					secret2 = nil
 				}
+				var secretRef2 *shared.MeshExternalServiceItemSpecSecretRef
+				if r.Spec.TLS.Verification.ClientKey.SecretRef != nil {
+					kind2 := shared.MeshExternalServiceItemSpecTLSKind(r.Spec.TLS.Verification.ClientKey.SecretRef.Kind.ValueString())
+					var name3 string
+					name3 = r.Spec.TLS.Verification.ClientKey.SecretRef.Name.ValueString()
+
+					secretRef2 = &shared.MeshExternalServiceItemSpecSecretRef{
+						Kind: kind2,
+						Name: name3,
+					}
+				}
+				typeVar5 := new(shared.MeshExternalServiceItemSpecTLSVerificationClientKeyType)
+				if !r.Spec.TLS.Verification.ClientKey.Type.IsUnknown() && !r.Spec.TLS.Verification.ClientKey.Type.IsNull() {
+					*typeVar5 = shared.MeshExternalServiceItemSpecTLSVerificationClientKeyType(r.Spec.TLS.Verification.ClientKey.Type.ValueString())
+				} else {
+					typeVar5 = nil
+				}
 				clientKey = &shared.ClientKey{
-					Inline:       inline2,
-					InlineString: inlineString2,
-					Secret:       secret2,
+					Inline:         inline2,
+					InlineString:   inlineString2,
+					InsecureInline: insecureInline2,
+					Secret:         secret2,
+					SecretRef:      secretRef2,
+					Type:           typeVar5,
 				}
 			}
 			mode := new(shared.MeshExternalServiceItemMode)
@@ -464,18 +605,18 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 			}
 			subjectAltNames := make([]shared.SubjectAltNames, 0, len(r.Spec.TLS.Verification.SubjectAltNames))
 			for subjectAltNamesIndex := range r.Spec.TLS.Verification.SubjectAltNames {
-				type1 := new(shared.MeshExternalServiceItemSpecTLSType)
+				type1 := new(shared.MeshExternalServiceItemSpecTLSVerificationSubjectAltNamesType)
 				if !r.Spec.TLS.Verification.SubjectAltNames[subjectAltNamesIndex].Type.IsUnknown() && !r.Spec.TLS.Verification.SubjectAltNames[subjectAltNamesIndex].Type.IsNull() {
-					*type1 = shared.MeshExternalServiceItemSpecTLSType(r.Spec.TLS.Verification.SubjectAltNames[subjectAltNamesIndex].Type.ValueString())
+					*type1 = shared.MeshExternalServiceItemSpecTLSVerificationSubjectAltNamesType(r.Spec.TLS.Verification.SubjectAltNames[subjectAltNamesIndex].Type.ValueString())
 				} else {
 					type1 = nil
 				}
-				var value string
-				value = r.Spec.TLS.Verification.SubjectAltNames[subjectAltNamesIndex].Value.ValueString()
+				var value3 string
+				value3 = r.Spec.TLS.Verification.SubjectAltNames[subjectAltNamesIndex].Value.ValueString()
 
 				subjectAltNames = append(subjectAltNames, shared.SubjectAltNames{
 					Type:  type1,
-					Value: value,
+					Value: value3,
 				})
 			}
 			verification = &shared.Verification{

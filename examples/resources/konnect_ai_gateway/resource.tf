@@ -6,7 +6,11 @@ resource "konnect_ai_gateway" "my_aigateway" {
   labels = {
     key = "value"
   }
-  name = "my-ai-gateway"
+  managed_by = {
+    key = "value"
+  }
+  min_runtime_version = "2.0"
+  name                = "my-ai-gateway"
   proxy_urls = [
     {
       host     = "...my_host..."
@@ -14,4 +18,5 @@ resource "konnect_ai_gateway" "my_aigateway" {
       protocol = "...my_protocol..."
     }
   ]
+  runtime_auto_upgrade = true
 }

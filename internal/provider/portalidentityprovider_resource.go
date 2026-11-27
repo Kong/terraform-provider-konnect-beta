@@ -7,7 +7,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -20,10 +22,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/boolplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -66,6 +70,42 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 					"oidc_identity_provider_config": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"backchannel_logout": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed: true,
+										Default:  booldefault.StaticBool(false),
+										MarkdownDescription: `Indicates whether back-channel logout is enabled. When enabled, the identity provider can notify` + "\n" +
+											`the portal to end a user's session when they log out of the identity provider.` + "\n" +
+											`` + "\n" +
+											`Configure your identity provider's back-channel logout URL as your portal's URL followed by` + "\n" +
+											`` + "`" + `/api/v3/developer/backchannel-logout` + "`" + `, for example` + "\n" +
+											`` + "`" + `https://my-portal.example.com/api/v3/developer/backchannel-logout` + "`" + `.` + "\n" +
+											`Default: false`,
+									},
+									"session_supported": schema.BoolAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.Bool{
+											speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+										},
+										MarkdownDescription: `Indicates whether the OpenID Provider advertises that it includes the ` + "`" + `sid` + "`" + ` claim in logout tokens` + "\n" +
+											`(` + "`" + `backchannel_logout_session_supported` + "`" + ` in its discovery metadata). A provider that omits the value does` + "\n" +
+											`not include it. Null when the discovery metadata could not be retrieved or validated, in which case` + "\n" +
+											`support is unknown.`,
+									},
+									"supported": schema.BoolAttribute{
+										Computed: true,
+										PlanModifiers: []planmodifier.Bool{
+											speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+										},
+										MarkdownDescription: `Indicates whether the OpenID Provider advertises support for back-channel logout` + "\n" +
+											`(` + "`" + `backchannel_logout_supported` + "`" + ` in its discovery metadata). Null when the discovery metadata could not` + "\n" +
+											`be retrieved or validated, in which case support is unknown.`,
+									},
+								},
+								Description: `The back-channel logout settings to update. Only the provided properties are updated.`,
+							},
 							"claim_mappings": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -75,18 +115,30 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 										Optional:    true,
 										Default:     stringdefault.StaticString(`email`),
 										Description: `The claim mapping for the user's email address. Default: "email"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+											stringvalidator.RegexMatches(regexp.MustCompile(`\S`), "must match pattern "+regexp.MustCompile(`\S`).String()),
+										},
 									},
 									"groups": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`groups`),
 										Description: `The claim mapping for the user's group membership information. Default: "groups"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+											stringvalidator.RegexMatches(regexp.MustCompile(`\S`), "must match pattern "+regexp.MustCompile(`\S`).String()),
+										},
 									},
 									"name": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`name`),
 										Description: `The claim mapping for the user's name. Default: "name"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+											stringvalidator.RegexMatches(regexp.MustCompile(`\S`), "must match pattern "+regexp.MustCompile(`\S`).String()),
+										},
 									},
 								},
 								MarkdownDescription: `Defines the mappings between OpenID Connect (OIDC) claims and local claims used by your application for ` + "\n" +
@@ -98,6 +150,8 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								Description: `The client ID assigned to your application by the identity provider. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
+									stringvalidator.RegexMatches(regexp.MustCompile(`\S`), "must match pattern "+regexp.MustCompile(`\S`).String()),
 								},
 							},
 							"client_secret": schema.StringAttribute{
@@ -106,7 +160,12 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.UseConfigValue(),
 								},
-								Description: `The Client Secret assigned to your application by the identity provider.`,
+								Description: `The Client Secret assigned to your application by the identity provider. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
+									stringvalidator.RegexMatches(regexp.MustCompile(`\S`), "must match pattern "+regexp.MustCompile(`\S`).String()),
+								},
 							},
 							"issuer_url": schema.StringAttribute{
 								Computed:    true,
@@ -114,6 +173,8 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								Description: `The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained. Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
+									stringvalidator.RegexMatches(regexp.MustCompile(`^https?://\S+$`), "must match pattern "+regexp.MustCompile(`^https?://\S+$`).String()),
 								},
 							},
 							"scopes": schema.ListAttribute{
@@ -125,10 +186,14 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 									types.StringValue("profile"),
 								})),
 								ElementType: types.StringType,
-								Description: `The scopes requested by your application when authenticating with the identity provider. Default: ["email","openid","profile"]`,
+								Description: `The scopes requested by your application when authenticating with the identity provider. Must include ` + "`" + `openid` + "`" + `. Default: ["email","openid","profile"]`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
 							},
 						},
-						Description: `The identity provider that contains configuration data for the OIDC authentication integration.`,
+						MarkdownDescription: `The properties of an OIDC identity provider to update. Only the provided properties are updated. When` + "\n" +
+							`provided, ` + "`" + `scopes` + "`" + ` must include ` + "`" + `openid` + "`" + `.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("saml_identity_provider_config"),
@@ -149,6 +214,9 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								Computed:    true,
 								Optional:    true,
 								Description: `The identity provider's metadata URL where the identity provider's metadata can be obtained.`,
+								Validators: []validator.String{
+									stringvalidator.RegexMatches(regexp.MustCompile(`^(https?://\S+)?$`), "must match pattern "+regexp.MustCompile(`^(https?://\S+)?$`).String()),
+								},
 							},
 							"idp_metadata_xml": schema.StringAttribute{
 								Computed:    true,
@@ -169,7 +237,8 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 								},
 							},
 						},
-						Description: `The identity provider that contains configuration data for the SAML authentication integration.`,
+						MarkdownDescription: `The properties of a SAML identity provider to update. Exactly one of ` + "`" + `idp_metadata_url` + "`" + ` or` + "\n" +
+							`` + "`" + `idp_metadata_xml` + "`" + ` must be provided with a non-empty value. An empty string is treated as not provided.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("oidc_identity_provider_config"),
@@ -177,6 +246,7 @@ func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resourc
 						},
 					},
 				},
+				Description: `The configuration data for creating an authentication integration.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -262,6 +332,8 @@ func (r *PortalIdentityProviderResource) Create(ctx context.Context, req resourc
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreatePortalIdentityProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -270,7 +342,7 @@ func (r *PortalIdentityProviderResource) Create(ctx context.Context, req resourc
 	}
 	res, err := r.client.PortalAuthSettings.CreatePortalIdentityProvider(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -329,6 +401,8 @@ func (r *PortalIdentityProviderResource) Read(ctx context.Context, req resource.
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetPortalIdentityProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -337,7 +411,7 @@ func (r *PortalIdentityProviderResource) Read(ctx context.Context, req resource.
 	}
 	res, err := r.client.PortalAuthSettings.GetPortalIdentityProvider(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -383,6 +457,8 @@ func (r *PortalIdentityProviderResource) Update(ctx context.Context, req resourc
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdatePortalIdentityProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -391,7 +467,7 @@ func (r *PortalIdentityProviderResource) Update(ctx context.Context, req resourc
 	}
 	res, err := r.client.PortalAuthSettings.UpdatePortalIdentityProvider(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -443,6 +519,8 @@ func (r *PortalIdentityProviderResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeletePortalIdentityProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -451,7 +529,7 @@ func (r *PortalIdentityProviderResource) Delete(ctx context.Context, req resourc
 	}
 	res, err := r.client.PortalAuthSettings.DeletePortalIdentityProvider(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

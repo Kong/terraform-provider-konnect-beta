@@ -51,7 +51,9 @@ type PortalApplicationResourceModel struct {
 	DcrClientID       types.String                     `tfsdk:"dcr_client_id"`
 	DcrProvider       *tfTypes.SchemaRegistryReference `tfsdk:"dcr_provider"`
 	Description       types.String                     `tfsdk:"description"`
+	EnvironmentID     types.String                     `tfsdk:"environment_id"`
 	GrantedScopes     []types.String                   `tfsdk:"granted_scopes"`
+	GroupID           types.String                     `tfsdk:"group_id"`
 	ID                types.String                     `tfsdk:"id"`
 	Labels            map[string]types.String          `tfsdk:"labels"`
 	Name              types.String                     `tfsdk:"name"`
@@ -215,8 +217,17 @@ func (r *PortalApplicationResource) Schema(ctx context.Context, req resource.Sch
 				},
 				Description: `A description of the application. Requires replacement if changed.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(255),
+					stringvalidator.UTF8LengthBetween(1, 255),
 				},
+			},
+			"environment_id": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				MarkdownDescription: `UUID of the organization environment to bind this application to. When` + "\n" +
+					`omitted, the organization default environment is used.` + "\n" +
+					`Requires replacement if changed.`,
 			},
 			"granted_scopes": schema.ListAttribute{
 				Computed: true,
@@ -225,6 +236,16 @@ func (r *PortalApplicationResource) Schema(ctx context.Context, req resource.Sch
 				},
 				ElementType: types.StringType,
 				Description: `List of granted scopes for the application. Null if application type does not support returning granted scopes.`,
+			},
+			"group_id": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				MarkdownDescription: `UUID of an existing application group to join. When omitted, a new 1:1` + "\n" +
+					`application group is created for this application. Membership is immutable` + "\n" +
+					`after creation.` + "\n" +
+					`Requires replacement if changed.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -256,7 +277,7 @@ func (r *PortalApplicationResource) Schema(ctx context.Context, req resource.Sch
 				},
 				Description: `The name of the application. Requires replacement if changed.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(255),
+					stringvalidator.UTF8LengthBetween(1, 255),
 				},
 			},
 			"owner": schema.SingleNestedAttribute{
@@ -356,7 +377,7 @@ func (r *PortalApplicationResource) Create(ctx context.Context, req resource.Cre
 	}
 	res, err := r.client.Applications.CreateApplication(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -416,7 +437,7 @@ func (r *PortalApplicationResource) Read(ctx context.Context, req resource.ReadR
 	}
 	res, err := r.client.Applications.GetApplication(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -470,7 +491,7 @@ func (r *PortalApplicationResource) Update(ctx context.Context, req resource.Upd
 	}
 	res, err := r.client.Applications.UpdateApplication(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -530,7 +551,7 @@ func (r *PortalApplicationResource) Delete(ctx context.Context, req resource.Del
 	}
 	res, err := r.client.Applications.DeleteApplication(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

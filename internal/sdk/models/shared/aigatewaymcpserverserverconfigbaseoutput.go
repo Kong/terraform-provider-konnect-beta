@@ -11,7 +11,7 @@ type AIGatewayMCPServerServerConfigBaseClient struct {
 	// The secrets that are used in session encryption. Required when the strategy is 'client'.
 	// The first secret is used for encryption, while all secrets are used for decryption to support key rotation.
 	//
-	Secrets []string `json:"secrets"`
+	Secrets []string `json:"secrets,omitempty"`
 }
 
 func (a AIGatewayMCPServerServerConfigBaseClient) MarshalJSON() ([]byte, error) {
@@ -32,20 +32,20 @@ func (a *AIGatewayMCPServerServerConfigBaseClient) GetSecrets() []string {
 	return a.Secrets
 }
 
-// Strategy - The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database.
-type Strategy string
+// AIGatewayMCPServerServerConfigBaseStrategy - The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database.
+type AIGatewayMCPServerServerConfigBaseStrategy string
 
 const (
-	StrategyClient Strategy = "client"
-	StrategyRedis  Strategy = "redis"
+	AIGatewayMCPServerServerConfigBaseStrategyClient AIGatewayMCPServerServerConfigBaseStrategy = "client"
+	AIGatewayMCPServerServerConfigBaseStrategyRedis  AIGatewayMCPServerServerConfigBaseStrategy = "redis"
 )
 
-func (e Strategy) ToPointer() *Strategy {
+func (e AIGatewayMCPServerServerConfigBaseStrategy) ToPointer() *AIGatewayMCPServerServerConfigBaseStrategy {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Strategy) IsExact() bool {
+func (e *AIGatewayMCPServerServerConfigBaseStrategy) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "client", "redis":
@@ -59,18 +59,15 @@ func (e *Strategy) IsExact() bool {
 // This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 type AIGatewayMCPServerServerConfigBaseSession struct {
 	// The configuration for client-side session storage.
-	Client *AIGatewayMCPServerServerConfigBaseClient `json:"client"`
+	Client *AIGatewayMCPServerServerConfigBaseClient `json:"client,omitempty"`
 	// If enabled, Kong will maintain managed sessions with the MCP server.
 	Managed *bool `default:"true" json:"managed"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Config for connecting to a Cloud Provider's Redis instance.
 	Redis *AIGatewayRedisCloudConfigurationOutput `json:"redis,omitempty"`
 	// The time-to-live (TTL) for each session in seconds.
 	SessionTTL *int64 `default:"86400" json:"session_ttl"`
 	// The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database.
-	Strategy *Strategy `json:"strategy,omitempty"`
+	Strategy *AIGatewayMCPServerServerConfigBaseStrategy `json:"strategy,omitempty"`
 }
 
 func (a AIGatewayMCPServerServerConfigBaseSession) MarshalJSON() ([]byte, error) {
@@ -112,24 +109,21 @@ func (a *AIGatewayMCPServerServerConfigBaseSession) GetSessionTTL() *int64 {
 	return a.SessionTTL
 }
 
-func (a *AIGatewayMCPServerServerConfigBaseSession) GetStrategy() *Strategy {
+func (a *AIGatewayMCPServerServerConfigBaseSession) GetStrategy() *AIGatewayMCPServerServerConfigBaseStrategy {
 	if a == nil {
 		return nil
 	}
 	return a.Strategy
 }
 
-// AIGatewayMCPServerServerConfigBaseOutput - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Server-side configuration for the MCP Server.
+// AIGatewayMCPServerServerConfigBaseOutput - Server-side configuration for the MCP Server.
 type AIGatewayMCPServerServerConfigBaseOutput struct {
 	// Whether to forward the client request headers to the upstream server when calling the tools.
 	ForwardClientHeaders *bool `default:"true" json:"forward_client_headers"`
 	// Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
 	// This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 	//
-	Session *AIGatewayMCPServerServerConfigBaseSession `json:"session"`
+	Session *AIGatewayMCPServerServerConfigBaseSession `json:"session,omitempty"`
 	// The timeout for calling the tools in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 }
@@ -170,18 +164,15 @@ func (a *AIGatewayMCPServerServerConfigBaseOutput) GetTimeout() *int64 {
 // This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 type Session struct {
 	// The configuration for client-side session storage.
-	Client *AIGatewayMCPServerServerConfigBaseClient `json:"client"`
+	Client *AIGatewayMCPServerServerConfigBaseClient `json:"client,omitempty"`
 	// If enabled, Kong will maintain managed sessions with the MCP server.
 	Managed *bool `default:"true" json:"managed"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Config for connecting to a Cloud Provider's Redis instance.
 	Redis *AIGatewayRedisCloudConfiguration `json:"redis,omitempty"`
 	// The time-to-live (TTL) for each session in seconds.
 	SessionTTL *int64 `default:"86400" json:"session_ttl"`
 	// The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database.
-	Strategy *Strategy `json:"strategy,omitempty"`
+	Strategy *AIGatewayMCPServerServerConfigBaseStrategy `json:"strategy,omitempty"`
 }
 
 func (s Session) MarshalJSON() ([]byte, error) {
@@ -223,24 +214,21 @@ func (s *Session) GetSessionTTL() *int64 {
 	return s.SessionTTL
 }
 
-func (s *Session) GetStrategy() *Strategy {
+func (s *Session) GetStrategy() *AIGatewayMCPServerServerConfigBaseStrategy {
 	if s == nil {
 		return nil
 	}
 	return s.Strategy
 }
 
-// AIGatewayMCPServerServerConfigBase - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Server-side configuration for the MCP Server.
+// AIGatewayMCPServerServerConfigBase - Server-side configuration for the MCP Server.
 type AIGatewayMCPServerServerConfigBase struct {
 	// Whether to forward the client request headers to the upstream server when calling the tools.
 	ForwardClientHeaders *bool `default:"true" json:"forward_client_headers"`
 	// Enable managed session when Kong responds as MCP server in listener, conversion-listener, or upstream-server modes.
 	// This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
 	//
-	Session *Session `json:"session"`
+	Session *Session `json:"session,omitempty"`
 	// The timeout for calling the tools in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 }

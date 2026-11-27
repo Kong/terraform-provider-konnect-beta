@@ -3,6 +3,6 @@
 package types
 
 type SaslAwsIam struct {
-	AssumeRole           *BackendClusterAuthenticationSaslAwsIamAssumeRole `queryParam:"inline" tfsdk:"assume_role"`
-	DefaultProviderChain *RawProviderConfig                                `queryParam:"inline" tfsdk:"default_provider_chain"`
+	AssumeRole           *BackendClusterAuthenticationSaslAwsIamAssumeRole                      `queryParam:"inline" tfsdk:"assume_role"`
+	DefaultProviderChain *AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig `queryParam:"inline" tfsdk:"default_provider_chain"`
 }

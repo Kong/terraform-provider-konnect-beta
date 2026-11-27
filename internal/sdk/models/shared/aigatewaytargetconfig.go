@@ -14,16 +14,19 @@ type AIGatewayTargetConfigType string
 const (
 	AIGatewayTargetConfigTypeAnthropic   AIGatewayTargetConfigType = "anthropic"
 	AIGatewayTargetConfigTypeAzure       AIGatewayTargetConfigType = "azure"
+	AIGatewayTargetConfigTypeBaseten     AIGatewayTargetConfigType = "baseten"
 	AIGatewayTargetConfigTypeBedrock     AIGatewayTargetConfigType = "bedrock"
 	AIGatewayTargetConfigTypeCerebras    AIGatewayTargetConfigType = "cerebras"
 	AIGatewayTargetConfigTypeCohere      AIGatewayTargetConfigType = "cohere"
 	AIGatewayTargetConfigTypeDashscope   AIGatewayTargetConfigType = "dashscope"
 	AIGatewayTargetConfigTypeDatabricks  AIGatewayTargetConfigType = "databricks"
 	AIGatewayTargetConfigTypeDeepseek    AIGatewayTargetConfigType = "deepseek"
+	AIGatewayTargetConfigTypeFireworks   AIGatewayTargetConfigType = "fireworks"
 	AIGatewayTargetConfigTypeGemini      AIGatewayTargetConfigType = "gemini"
 	AIGatewayTargetConfigTypeHuggingface AIGatewayTargetConfigType = "huggingface"
 	AIGatewayTargetConfigTypeKimi        AIGatewayTargetConfigType = "kimi"
 	AIGatewayTargetConfigTypeLlama2      AIGatewayTargetConfigType = "llama2"
+	AIGatewayTargetConfigTypeMeta        AIGatewayTargetConfigType = "meta"
 	AIGatewayTargetConfigTypeMistral     AIGatewayTargetConfigType = "mistral"
 	AIGatewayTargetConfigTypeOllama      AIGatewayTargetConfigType = "ollama"
 	AIGatewayTargetConfigTypeOpenai      AIGatewayTargetConfigType = "openai"
@@ -31,25 +34,27 @@ const (
 	AIGatewayTargetConfigTypeVllm        AIGatewayTargetConfigType = "vllm"
 	AIGatewayTargetConfigTypeXai         AIGatewayTargetConfigType = "xai"
 	AIGatewayTargetConfigTypeSagemaker   AIGatewayTargetConfigType = "sagemaker"
+	AIGatewayTargetConfigTypeTogetherai  AIGatewayTargetConfigType = "togetherai"
+	AIGatewayTargetConfigTypeTypesafe    AIGatewayTargetConfigType = "typesafe"
 )
 
-// AIGatewayTargetConfig - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Configuration for a target model.
+// AIGatewayTargetConfig - Configuration for a target model.
 type AIGatewayTargetConfig struct {
 	AIGatewayTargetAnthropicConfig   *AIGatewayTargetAnthropicConfig   `queryParam:"inline" union:"member"`
 	AIGatewayTargetAzureConfig       *AIGatewayTargetAzureConfig       `queryParam:"inline" union:"member"`
+	AIGatewayTargetBasetenConfig     *AIGatewayTargetBasetenConfig     `queryParam:"inline" union:"member"`
 	AIGatewayTargetBedrockConfig     *AIGatewayTargetBedrockConfig     `queryParam:"inline" union:"member"`
 	AIGatewayTargetCerebrasConfig    *AIGatewayTargetCerebrasConfig    `queryParam:"inline" union:"member"`
 	AIGatewayTargetCohereConfig      *AIGatewayTargetCohereConfig      `queryParam:"inline" union:"member"`
 	AIGatewayTargetDashscopeConfig   *AIGatewayTargetDashscopeConfig   `queryParam:"inline" union:"member"`
 	AIGatewayTargetDatabricksConfig  *AIGatewayTargetDatabricksConfig  `queryParam:"inline" union:"member"`
 	AIGatewayTargetDeepseekConfig    *AIGatewayTargetDeepseekConfig    `queryParam:"inline" union:"member"`
+	AIGatewayTargetFireworksConfig   *AIGatewayTargetFireworksConfig   `queryParam:"inline" union:"member"`
 	AIGatewayTargetGeminiConfig      *AIGatewayTargetGeminiConfig      `queryParam:"inline" union:"member"`
 	AIGatewayTargetHuggingfaceConfig *AIGatewayTargetHuggingfaceConfig `queryParam:"inline" union:"member"`
 	AIGatewayTargetKimiConfig        *AIGatewayTargetKimiConfig        `queryParam:"inline" union:"member"`
 	AIGatewayTargetLlama2Config      *AIGatewayTargetLlama2Config      `queryParam:"inline" union:"member"`
+	AIGatewayTargetMetaConfig        *AIGatewayTargetMetaConfig        `queryParam:"inline" union:"member"`
 	AIGatewayTargetMistralConfig     *AIGatewayTargetMistralConfig     `queryParam:"inline" union:"member"`
 	AIGatewayTargetOllamaConfig      *AIGatewayTargetOllamaConfig      `queryParam:"inline" union:"member"`
 	AIGatewayTargetOpenaiConfig      *AIGatewayTargetOpenaiConfig      `queryParam:"inline" union:"member"`
@@ -57,6 +62,8 @@ type AIGatewayTargetConfig struct {
 	AIGatewayTargetVllmConfig        *AIGatewayTargetVllmConfig        `queryParam:"inline" union:"member"`
 	AIGatewayTargetXaiConfig         *AIGatewayTargetXaiConfig         `queryParam:"inline" union:"member"`
 	AIGatewayTargetSagemakerConfig   *AIGatewayTargetSagemakerConfig   `queryParam:"inline" union:"member"`
+	AIGatewayTargetTogetheraiConfig  *AIGatewayTargetTogetheraiConfig  `queryParam:"inline" union:"member"`
+	AIGatewayTargetTypesafeConfig    *AIGatewayTargetTypesafeConfig    `queryParam:"inline" union:"member"`
 
 	Type AIGatewayTargetConfigType
 }
@@ -76,6 +83,15 @@ func CreateAIGatewayTargetConfigAzure(azure AIGatewayTargetAzureConfig) AIGatewa
 	return AIGatewayTargetConfig{
 		AIGatewayTargetAzureConfig: &azure,
 		Type:                       typ,
+	}
+}
+
+func CreateAIGatewayTargetConfigBaseten(baseten AIGatewayTargetBasetenConfig) AIGatewayTargetConfig {
+	typ := AIGatewayTargetConfigTypeBaseten
+
+	return AIGatewayTargetConfig{
+		AIGatewayTargetBasetenConfig: &baseten,
+		Type:                         typ,
 	}
 }
 
@@ -133,6 +149,15 @@ func CreateAIGatewayTargetConfigDeepseek(deepseek AIGatewayTargetDeepseekConfig)
 	}
 }
 
+func CreateAIGatewayTargetConfigFireworks(fireworks AIGatewayTargetFireworksConfig) AIGatewayTargetConfig {
+	typ := AIGatewayTargetConfigTypeFireworks
+
+	return AIGatewayTargetConfig{
+		AIGatewayTargetFireworksConfig: &fireworks,
+		Type:                           typ,
+	}
+}
+
 func CreateAIGatewayTargetConfigGemini(gemini AIGatewayTargetGeminiConfig) AIGatewayTargetConfig {
 	typ := AIGatewayTargetConfigTypeGemini
 
@@ -166,6 +191,15 @@ func CreateAIGatewayTargetConfigLlama2(llama2 AIGatewayTargetLlama2Config) AIGat
 	return AIGatewayTargetConfig{
 		AIGatewayTargetLlama2Config: &llama2,
 		Type:                        typ,
+	}
+}
+
+func CreateAIGatewayTargetConfigMeta(meta AIGatewayTargetMetaConfig) AIGatewayTargetConfig {
+	typ := AIGatewayTargetConfigTypeMeta
+
+	return AIGatewayTargetConfig{
+		AIGatewayTargetMetaConfig: &meta,
+		Type:                      typ,
 	}
 }
 
@@ -232,7 +266,32 @@ func CreateAIGatewayTargetConfigSagemaker(sagemaker AIGatewayTargetSagemakerConf
 	}
 }
 
-func (u *AIGatewayTargetConfig) UnmarshalJSON(data []byte) error {
+func CreateAIGatewayTargetConfigTogetherai(togetherai AIGatewayTargetTogetheraiConfig) AIGatewayTargetConfig {
+	typ := AIGatewayTargetConfigTypeTogetherai
+
+	return AIGatewayTargetConfig{
+		AIGatewayTargetTogetheraiConfig: &togetherai,
+		Type:                            typ,
+	}
+}
+
+func CreateAIGatewayTargetConfigTypesafe(typesafe AIGatewayTargetTypesafeConfig) AIGatewayTargetConfig {
+	typ := AIGatewayTargetConfigTypeTypesafe
+
+	return AIGatewayTargetConfig{
+		AIGatewayTargetTypesafeConfig: &typesafe,
+		Type:                          typ,
+	}
+}
+
+func (u *AIGatewayTargetConfig) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayTargetConfig{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`
@@ -261,6 +320,15 @@ func (u *AIGatewayTargetConfig) UnmarshalJSON(data []byte) error {
 
 		u.AIGatewayTargetAzureConfig = aiGatewayTargetAzureConfig
 		u.Type = AIGatewayTargetConfigTypeAzure
+		return nil
+	case "baseten":
+		aiGatewayTargetBasetenConfig := new(AIGatewayTargetBasetenConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayTargetBasetenConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == baseten) type AIGatewayTargetBasetenConfig within AIGatewayTargetConfig: %w", string(data), err)
+		}
+
+		u.AIGatewayTargetBasetenConfig = aiGatewayTargetBasetenConfig
+		u.Type = AIGatewayTargetConfigTypeBaseten
 		return nil
 	case "bedrock":
 		aiGatewayTargetBedrockConfig := new(AIGatewayTargetBedrockConfig)
@@ -316,6 +384,15 @@ func (u *AIGatewayTargetConfig) UnmarshalJSON(data []byte) error {
 		u.AIGatewayTargetDeepseekConfig = aiGatewayTargetDeepseekConfig
 		u.Type = AIGatewayTargetConfigTypeDeepseek
 		return nil
+	case "fireworks":
+		aiGatewayTargetFireworksConfig := new(AIGatewayTargetFireworksConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayTargetFireworksConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == fireworks) type AIGatewayTargetFireworksConfig within AIGatewayTargetConfig: %w", string(data), err)
+		}
+
+		u.AIGatewayTargetFireworksConfig = aiGatewayTargetFireworksConfig
+		u.Type = AIGatewayTargetConfigTypeFireworks
+		return nil
 	case "gemini":
 		aiGatewayTargetGeminiConfig := new(AIGatewayTargetGeminiConfig)
 		if err := utils.UnmarshalJSON(data, &aiGatewayTargetGeminiConfig, "", true, nil); err != nil {
@@ -351,6 +428,15 @@ func (u *AIGatewayTargetConfig) UnmarshalJSON(data []byte) error {
 
 		u.AIGatewayTargetLlama2Config = aiGatewayTargetLlama2Config
 		u.Type = AIGatewayTargetConfigTypeLlama2
+		return nil
+	case "meta":
+		aiGatewayTargetMetaConfig := new(AIGatewayTargetMetaConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayTargetMetaConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == meta) type AIGatewayTargetMetaConfig within AIGatewayTargetConfig: %w", string(data), err)
+		}
+
+		u.AIGatewayTargetMetaConfig = aiGatewayTargetMetaConfig
+		u.Type = AIGatewayTargetConfigTypeMeta
 		return nil
 	case "mistral":
 		aiGatewayTargetMistralConfig := new(AIGatewayTargetMistralConfig)
@@ -415,6 +501,24 @@ func (u *AIGatewayTargetConfig) UnmarshalJSON(data []byte) error {
 		u.AIGatewayTargetSagemakerConfig = aiGatewayTargetSagemakerConfig
 		u.Type = AIGatewayTargetConfigTypeSagemaker
 		return nil
+	case "togetherai":
+		aiGatewayTargetTogetheraiConfig := new(AIGatewayTargetTogetheraiConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayTargetTogetheraiConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == togetherai) type AIGatewayTargetTogetheraiConfig within AIGatewayTargetConfig: %w", string(data), err)
+		}
+
+		u.AIGatewayTargetTogetheraiConfig = aiGatewayTargetTogetheraiConfig
+		u.Type = AIGatewayTargetConfigTypeTogetherai
+		return nil
+	case "typesafe":
+		aiGatewayTargetTypesafeConfig := new(AIGatewayTargetTypesafeConfig)
+		if err := utils.UnmarshalJSON(data, &aiGatewayTargetTypesafeConfig, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == typesafe) type AIGatewayTargetTypesafeConfig within AIGatewayTargetConfig: %w", string(data), err)
+		}
+
+		u.AIGatewayTargetTypesafeConfig = aiGatewayTargetTypesafeConfig
+		u.Type = AIGatewayTargetConfigTypeTypesafe
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AIGatewayTargetConfig", string(data))
@@ -427,6 +531,10 @@ func (u AIGatewayTargetConfig) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayTargetAzureConfig != nil {
 		return utils.MarshalJSON(u.AIGatewayTargetAzureConfig, "", true)
+	}
+
+	if u.AIGatewayTargetBasetenConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayTargetBasetenConfig, "", true)
 	}
 
 	if u.AIGatewayTargetBedrockConfig != nil {
@@ -453,6 +561,10 @@ func (u AIGatewayTargetConfig) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.AIGatewayTargetDeepseekConfig, "", true)
 	}
 
+	if u.AIGatewayTargetFireworksConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayTargetFireworksConfig, "", true)
+	}
+
 	if u.AIGatewayTargetGeminiConfig != nil {
 		return utils.MarshalJSON(u.AIGatewayTargetGeminiConfig, "", true)
 	}
@@ -467,6 +579,10 @@ func (u AIGatewayTargetConfig) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayTargetLlama2Config != nil {
 		return utils.MarshalJSON(u.AIGatewayTargetLlama2Config, "", true)
+	}
+
+	if u.AIGatewayTargetMetaConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayTargetMetaConfig, "", true)
 	}
 
 	if u.AIGatewayTargetMistralConfig != nil {
@@ -495,6 +611,14 @@ func (u AIGatewayTargetConfig) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayTargetSagemakerConfig != nil {
 		return utils.MarshalJSON(u.AIGatewayTargetSagemakerConfig, "", true)
+	}
+
+	if u.AIGatewayTargetTogetheraiConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayTargetTogetheraiConfig, "", true)
+	}
+
+	if u.AIGatewayTargetTypesafeConfig != nil {
+		return utils.MarshalJSON(u.AIGatewayTargetTypesafeConfig, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type AIGatewayTargetConfig: all fields are null")

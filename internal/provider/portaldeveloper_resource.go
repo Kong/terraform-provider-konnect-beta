@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -38,14 +39,15 @@ type PortalDeveloperResource struct {
 
 // PortalDeveloperResourceModel describes the resource data model.
 type PortalDeveloperResourceModel struct {
-	CreatedAt           types.String `tfsdk:"created_at"`
-	Email               types.String `tfsdk:"email"`
-	FullName            types.String `tfsdk:"full_name"`
-	ID                  types.String `tfsdk:"id"`
-	PortalID            types.String `tfsdk:"portal_id"`
-	SendInvitationEmail types.Bool   `tfsdk:"send_invitation_email"`
-	Status              types.String `tfsdk:"status"`
-	UpdatedAt           types.String `tfsdk:"updated_at"`
+	AdditionalData      jsontypes.Normalized `tfsdk:"additional_data"`
+	CreatedAt           types.String         `tfsdk:"created_at"`
+	Email               types.String         `tfsdk:"email"`
+	FullName            types.String         `tfsdk:"full_name"`
+	ID                  types.String         `tfsdk:"id"`
+	PortalID            types.String         `tfsdk:"portal_id"`
+	SendInvitationEmail types.Bool           `tfsdk:"send_invitation_email"`
+	Status              types.String         `tfsdk:"status"`
+	UpdatedAt           types.String         `tfsdk:"updated_at"`
 }
 
 func (r *PortalDeveloperResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -56,6 +58,16 @@ func (r *PortalDeveloperResource) Schema(ctx context.Context, req resource.Schem
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "PortalDeveloper Resource",
 		Attributes: map[string]schema.Attribute{
+			"additional_data": schema.StringAttribute{
+				CustomType: jsontypes.NormalizedType{},
+				Computed:   true,
+				Optional:   true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `The developer's answers to the portal's ` + "`" + `developer_registration` + "`" + ` form, if it has one, as a map from each field's ` + "`" + `name` + "`" + ` to its value. Optional. Built-in fields like ` + "`" + `full_name` + "`" + ` and ` + "`" + `email` + "`" + ` go in their own top-level properties, not here. Ignored if the portal doesn't have a ` + "`" + `developer_registration` + "`" + ` form. Requires replacement if changed.; Parsed as JSON.`,
+			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
@@ -167,7 +179,7 @@ func (r *PortalDeveloperResource) Create(ctx context.Context, req resource.Creat
 	}
 	res, err := r.client.PortalDevelopers.CreateDeveloper(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -234,7 +246,7 @@ func (r *PortalDeveloperResource) Read(ctx context.Context, req resource.ReadReq
 	}
 	res, err := r.client.PortalDevelopers.GetDeveloper(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -288,7 +300,7 @@ func (r *PortalDeveloperResource) Update(ctx context.Context, req resource.Updat
 	}
 	res, err := r.client.PortalDevelopers.UpdateDeveloper(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -348,7 +360,7 @@ func (r *PortalDeveloperResource) Delete(ctx context.Context, req resource.Delet
 	}
 	res, err := r.client.PortalDevelopers.DeleteDeveloper(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

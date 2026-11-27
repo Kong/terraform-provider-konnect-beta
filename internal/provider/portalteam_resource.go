@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -81,7 +82,8 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"konnect_managed": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Indicates whether the team is managed by Konnect.`,
+				Default:     booldefault.StaticBool(false),
+				Description: `Whether the team's membership is managed by Konnect instead of being synced from an identity provider's team mappings. Set to ` + "`" + `false` + "`" + ` (default) to let identity provider team mappings keep syncing members into this team. Set to ` + "`" + `true` + "`" + ` to manage membership directly in Konnect and prevent identity provider team mappings from syncing to this team. Default: false`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
@@ -151,7 +153,7 @@ func (r *PortalTeamResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 	res, err := r.client.PortalTeams.CreatePortalTeam(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -211,7 +213,7 @@ func (r *PortalTeamResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 	res, err := r.client.PortalTeams.GetPortalTeam(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -265,7 +267,7 @@ func (r *PortalTeamResource) Update(ctx context.Context, req resource.UpdateRequ
 	}
 	res, err := r.client.PortalTeams.UpdatePortalTeam(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -325,7 +327,7 @@ func (r *PortalTeamResource) Delete(ctx context.Context, req resource.DeleteRequ
 	}
 	res, err := r.client.PortalTeams.DeletePortalTeam(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

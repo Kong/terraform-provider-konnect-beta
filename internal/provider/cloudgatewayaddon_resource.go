@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -351,7 +352,8 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 									`- ` + "`" + `me` + "`" + ` — Middle East` + "\n" +
 									`- ` + "`" + `in` + "`" + ` — India` + "\n" +
 									`- ` + "`" + `sg` + "`" + ` — Singapore` + "\n" +
-									`possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.`,
+									`- ` + "`" + `uk` + "`" + ` — United Kingdom` + "\n" +
+									`possible known values include one of ["us", "eu", "au", "me", "in", "sg", "uk"]; Not Null; Requires replacement if changed.`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
@@ -366,6 +368,20 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
+							},
+							"type": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								Default:  stringdefault.StaticString(`api`),
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								MarkdownDescription: `**Pre-release Feature**` + "\n" +
+									`This feature is currently in beta and is subject to change.` + "\n" +
+									`` + "\n" +
+									`Type of gateway that owns the add-on: ` + "`" + `api` + "`" + ` for an API Gateway or ` + "`" + `ai` + "`" + ` for an` + "\n" +
+									`AI Gateway. Defaults to ` + "`" + `api` + "`" + ` when omitted.` + "\n" +
+									`possible known values include one of ["api", "ai"]; Default: "api"; Requires replacement if changed.`,
 							},
 						},
 						Description: `Control Plane is the owner for the add-on. Requires replacement if changed.`,
@@ -394,7 +410,8 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 									`- ` + "`" + `me` + "`" + ` — Middle East` + "\n" +
 									`- ` + "`" + `in` + "`" + ` — India` + "\n" +
 									`- ` + "`" + `sg` + "`" + ` — Singapore` + "\n" +
-									`possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.`,
+									`- ` + "`" + `uk` + "`" + ` — United Kingdom` + "\n" +
+									`possible known values include one of ["us", "eu", "au", "me", "in", "sg", "uk"]; Not Null; Requires replacement if changed.`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
@@ -488,7 +505,7 @@ func (r *CloudGatewayAddonResource) Create(ctx context.Context, req resource.Cre
 	}
 	res, err := r.client.CloudGateways.CreateAddOn(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -555,7 +572,7 @@ func (r *CloudGatewayAddonResource) Read(ctx context.Context, req resource.ReadR
 	}
 	res, err := r.client.CloudGateways.GetAddOn(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -609,7 +626,7 @@ func (r *CloudGatewayAddonResource) Update(ctx context.Context, req resource.Upd
 	}
 	res, err := r.client.CloudGateways.UpdateAddOn(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -669,7 +686,7 @@ func (r *CloudGatewayAddonResource) Delete(ctx context.Context, req resource.Del
 	}
 	res, err := r.client.CloudGateways.DeleteAddOn(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

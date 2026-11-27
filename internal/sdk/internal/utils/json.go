@@ -7,13 +7,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"math/big"
 	"reflect"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"time"
 	"unsafe"
 
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/optionalnullable"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/types"
 )
 
@@ -142,6 +145,39 @@ func MarshalJSON(v interface{}, tag reflect.StructTag, topLevel bool) ([]byte, e
 	}
 }
 
+var preservedNumbers atomic.Int32
+
+// PreserveJSONNumbers makes UnmarshalJSON decode numbers held by untyped
+// values (interface{} fields, maps and slices) as json.Number instead of
+// float64 until the returned function is called. The setting is process-wide.
+func PreserveJSONNumbers() (restore func()) {
+	preservedNumbers.Add(1)
+	var released atomic.Bool
+	return func() {
+		if released.CompareAndSwap(false, true) {
+			preservedNumbers.Add(-1)
+		}
+	}
+}
+
+func decodeJSON(b []byte, v interface{}) error {
+	if preservedNumbers.Load() == 0 {
+		return json.Unmarshal(b, v)
+	}
+	dec := json.NewDecoder(bytes.NewReader(b))
+	dec.UseNumber()
+	if err := dec.Decode(v); err != nil {
+		return err
+	}
+	if _, err := dec.Token(); err != io.EOF {
+		if err == nil {
+			err = errors.New("invalid character after top-level value")
+		}
+		return err
+	}
+	return nil
+}
+
 func UnmarshalJSON(b []byte, v interface{}, tag reflect.StructTag, topLevel bool, requiredFields []string) error {
 	if reflect.TypeOf(v).Kind() != reflect.Ptr {
 		return errors.New("v must be a pointer")
@@ -157,7 +193,7 @@ func UnmarshalJSON(b []byte, v interface{}, tag reflect.StructTag, topLevel bool
 		// When topLevel=true, only use json.Unmarshal if the type has a custom UnmarshalJSON
 		// to ensure nested structs with custom tags (like integer:"string") are handled correctly
 		if topLevel && implementsJSONUnmarshaler(reflect.TypeOf(v)) {
-			return json.Unmarshal(b, v)
+			return decodeJSON(b, v)
 		}
 
 		var unmarshaled map[string]json.RawMessage
@@ -203,6 +239,10 @@ func UnmarshalJSON(b []byte, v interface{}, tag reflect.StructTag, topLevel bool
 			// If we receive a value for a const field ignore it but mark it as unmarshaled
 			if field.Tag.Get("const") != "" {
 				if r, ok := unmarshaled[fieldName]; ok {
+					if isContainerKind(field.Type) && bytes.Equal(bytes.TrimSpace(r), []byte("null")) {
+						delete(unmarshaled, fieldName)
+						continue
+					}
 					val := string(r)
 
 					if strings.HasPrefix(val, `"`) && strings.HasSuffix(val, `"`) {
@@ -213,7 +253,11 @@ func UnmarshalJSON(b []byte, v interface{}, tag reflect.StructTag, topLevel bool
 						}
 					}
 					constValue := field.Tag.Get("const")
-					if val != constValue {
+					matches := val == constValue
+					if isContainerKind(field.Type) {
+						matches = constJSONValuesEqual(r, constValue)
+					}
+					if !matches {
 						return fmt.Errorf("const field `%s` does not match expected value `%s` got `%s`", fieldName, constValue, val)
 					}
 
@@ -319,7 +363,26 @@ func marshalValue(v interface{}, tag reflect.StructTag) (json.RawMessage, error)
 			return []byte("null"), nil
 		}
 
-		// Check if the map implements json.Marshaler (like optionalnullable.OptionalNullable[T])
+		// optionalnullable.OptionalNullable[T] must be unwrapped here rather than
+		// delegated to its own MarshalJSON, so tag-driven wire formats on the field
+		// (e.g. bigint:"string", decimal:"number") reach the inner value. The
+		// stored *T is redispatched as-is so pointer-receiver marshalers on T
+		// stay reachable.
+		if optionalnullable.IsOptionalNullableType(typ) {
+			for _, key := range val.MapKeys() {
+				if key.Bool() {
+					if inner := val.MapIndex(key); !inner.IsNil() {
+						if _, innerVal := dereferencePointers(inner.Type(), inner); innerVal.IsValid() {
+							return marshalValue(inner.Interface(), tag)
+						}
+					}
+					break
+				}
+			}
+			return []byte("null"), nil
+		}
+
+		// Check if the map implements json.Marshaler
 		if marshaler, ok := val.Interface().(json.Marshaler); ok {
 			return marshaler.MarshalJSON()
 		}
@@ -413,12 +476,88 @@ func implementsJSONMarshaler(v interface{}) bool {
 	return reflect.PtrTo(vType).Implements(marshalerType)
 }
 
+func isContainerKind(typ reflect.Type) bool {
+	typ = dereferenceTypePointer(typ)
+	if optionalnullable.IsOptionalNullableType(typ) {
+		typ = dereferenceTypePointer(typ.Elem())
+	}
+	switch typ.Kind() {
+	case reflect.Slice, reflect.Map:
+		return true
+	default:
+		return false
+	}
+}
+
+func constJSONValuesEqual(received json.RawMessage, constValue string) bool {
+	got, err := decodeJSONWithNumbers(received)
+	if err != nil {
+		return false
+	}
+	want, err := decodeJSONWithNumbers([]byte(constValue))
+	if err != nil {
+		return false
+	}
+	return jsonValuesEqual(got, want)
+}
+
+func decodeJSONWithNumbers(data []byte) (interface{}, error) {
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.UseNumber()
+	var value interface{}
+	if err := decoder.Decode(&value); err != nil {
+		return nil, err
+	}
+	return value, nil
+}
+
+func jsonValuesEqual(a, b interface{}) bool {
+	switch av := a.(type) {
+	case json.Number:
+		bv, ok := b.(json.Number)
+		if !ok {
+			return false
+		}
+		ar, aok := new(big.Rat).SetString(av.String())
+		br, bok := new(big.Rat).SetString(bv.String())
+		return aok && bok && ar.Cmp(br) == 0
+	case map[string]interface{}:
+		bv, ok := b.(map[string]interface{})
+		if !ok || len(av) != len(bv) {
+			return false
+		}
+		for key, value := range av {
+			other, ok := bv[key]
+			if !ok || !jsonValuesEqual(value, other) {
+				return false
+			}
+		}
+		return true
+	case []interface{}:
+		bv, ok := b.([]interface{})
+		if !ok || len(av) != len(bv) {
+			return false
+		}
+		for i := range av {
+			if !jsonValuesEqual(av[i], bv[i]) {
+				return false
+			}
+		}
+		return true
+	default:
+		return reflect.DeepEqual(a, b)
+	}
+}
+
 func handleDefaultConstValue(tagValue string, val interface{}, tag reflect.StructTag) json.RawMessage {
 	if tagValue == "null" {
 		return []byte("null")
 	}
 
 	typ := dereferenceTypePointer(reflect.TypeOf(val))
+	if optionalnullable.IsOptionalNullableType(typ) {
+		typ = dereferenceTypePointer(typ.Elem())
+	}
 	switch typ {
 	case reflect.TypeOf(time.Time{}):
 		return []byte(fmt.Sprintf(`"%s"`, tagValue))
@@ -512,18 +651,39 @@ func unmarshalValue(value json.RawMessage, v reflect.Value, tag reflect.StructTa
 			return nil
 		}
 	case reflect.Map:
+		// optionalnullable.OptionalNullable[T] is unwrapped like on the marshal
+		// side, so tag-driven wire formats reach the inner value. A JSON null
+		// never gets this far: it is handled at the top of this function, where
+		// the wrapper's own UnmarshalJSON records the explicit null state.
+		if optionalnullable.IsOptionalNullableType(typ) {
+			innerPtr := reflect.New(typ.Elem().Elem())
+
+			if err := unmarshalValue(value, innerPtr, tag); err != nil {
+				return err
+			}
+
+			if v.Kind() == reflect.Ptr {
+				if v.IsNil() {
+					v.Set(reflect.New(typ))
+				}
+				v = v.Elem()
+			}
+			v.Set(optionalnullable.FromReflect(typ, innerPtr))
+			return nil
+		}
+
 		if implementsJSONUnmarshaler(v.Type()) {
 			if v.CanAddr() {
-				return json.Unmarshal(value, v.Addr().Interface())
+				return decodeJSON(value, v.Addr().Interface())
 			}
-			return json.Unmarshal(value, v.Interface())
+			return decodeJSON(value, v.Interface())
 		}
 
 		if bytes.Equal(value, []byte("null")) || !isComplexValueType(dereferenceTypePointer(typ.Elem())) {
 			if v.CanAddr() {
-				return json.Unmarshal(value, v.Addr().Interface())
+				return decodeJSON(value, v.Addr().Interface())
 			} else {
-				return json.Unmarshal(value, v.Interface())
+				return decodeJSON(value, v.Interface())
 			}
 		}
 
@@ -695,7 +855,7 @@ func unmarshalValue(value json.RawMessage, v reflect.Value, tag reflect.StructTa
 		val = v.Interface()
 	}
 
-	return json.Unmarshal(value, val)
+	return decodeJSON(value, val)
 }
 
 func implementsJSONUnmarshaler(typ reflect.Type) bool {

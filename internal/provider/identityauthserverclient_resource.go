@@ -129,7 +129,7 @@ func (r *IdentityAuthServerClientResource) Schema(ctx context.Context, req resou
 				},
 				Description: `The OAuth 2.0 client ID. Requires replacement if changed.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 36),
+					stringvalidator.UTF8LengthBetween(1, 48),
 					stringvalidator.RegexMatches(regexp.MustCompile(`[-_\w]+`), "must match pattern "+regexp.MustCompile(`[-_\w]+`).String()),
 				},
 			},
@@ -151,8 +151,11 @@ func (r *IdentityAuthServerClientResource) Schema(ctx context.Context, req resou
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"login_uri": schema.StringAttribute{
-				Optional:    true,
-				Description: `The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).`,
+				Optional: true,
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
@@ -185,7 +188,7 @@ func (r *IdentityAuthServerClientResource) Schema(ctx context.Context, req resou
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`client_secret_post`),
-				Description: `Requested authentication method for OAuth 2.0 endpoints. possible known values include one of ["private_key_jwt", "client_secret_post", "none"]; Default: "client_secret_post"`,
+				Description: `Requested authentication method for OAuth 2.0 endpoints. possible known values include one of ["private_key_jwt", "client_secret_basic", "client_secret_post", "none"]; Default: "client_secret_post"`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -244,7 +247,7 @@ func (r *IdentityAuthServerClientResource) Create(ctx context.Context, req resou
 	}
 	res, err := r.client.AuthServerClients.CreateAuthServerClient(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -311,7 +314,7 @@ func (r *IdentityAuthServerClientResource) Read(ctx context.Context, req resourc
 	}
 	res, err := r.client.AuthServerClients.GetAuthServerClient(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -365,7 +368,7 @@ func (r *IdentityAuthServerClientResource) Update(ctx context.Context, req resou
 	}
 	res, err := r.client.AuthServerClients.ReplaceAuthServerClient(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -428,7 +431,7 @@ func (r *IdentityAuthServerClientResource) Delete(ctx context.Context, req resou
 	}
 	res, err := r.client.AuthServerClients.DeleteAuthServerClient(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

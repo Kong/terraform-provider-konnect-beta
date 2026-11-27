@@ -42,7 +42,14 @@ func CreateMeshGatewayItemProtocolInteger(integer int64) MeshGatewayItemProtocol
 	}
 }
 
-func (u *MeshGatewayItemProtocol) UnmarshalJSON(data []byte) error {
+func (u *MeshGatewayItemProtocol) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshGatewayItemProtocol{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -258,7 +265,14 @@ func CreateCertificatesDataSourceSecret(dataSourceSecret DataSourceSecret) Certi
 	}
 }
 
-func (u *Certificates) UnmarshalJSON(data []byte) error {
+func (u *Certificates) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = Certificates{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 
@@ -379,7 +393,14 @@ func CreateMeshGatewayItemModeInteger(integer int64) MeshGatewayItemMode {
 	}
 }
 
-func (u *MeshGatewayItemMode) UnmarshalJSON(data []byte) error {
+func (u *MeshGatewayItemMode) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MeshGatewayItemMode{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

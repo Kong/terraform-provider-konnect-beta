@@ -13,13 +13,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	speakeasy_boolvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/boolvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 )
 
@@ -59,6 +59,7 @@ type PortalResourceModel struct {
 	NotificationsDeveloperPiiVisibilityEnabled types.Bool              `tfsdk:"notifications_developer_pii_visibility_enabled"`
 	RbacEnabled                                types.Bool              `tfsdk:"rbac_enabled"`
 	SiprEnabled                                types.Bool              `tfsdk:"sipr_enabled"`
+	ThemeName                                  types.String            `tfsdk:"theme_name"`
 	UpdatedAt                                  types.String            `tfsdk:"updated_at"`
 }
 
@@ -77,15 +78,26 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					"enabled": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Is AI enabled?. Not Null`,
-						Validators: []validator.Bool{
-							speakeasy_boolvalidators.NotNull(),
-						},
+						Default:     booldefault.StaticBool(false),
+						Description: `Is AI enabled?. Default: false`,
 					},
 					"features": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"ai_search": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether AI Search is enabled or not. Default: false`,
+									},
+								},
+								Description: `AI Search config`,
+							},
 							"mcp_server": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
@@ -93,27 +105,48 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 									"enabled": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Whether the MCP Server is enabled or not. Not Null`,
-										Validators: []validator.Bool{
-											speakeasy_boolvalidators.NotNull(),
-										},
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether the MCP Server is enabled or not. Default: false`,
 									},
 									"write_operations_enabled": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Whether write operations are enabled or not for the Portal MCP Server enabled. Not Null`,
-										Validators: []validator.Bool{
-											speakeasy_boolvalidators.NotNull(),
-										},
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether write operations are enabled or not for the Portal MCP Server enabled. Default: false`,
 									},
 								},
-								Description: `AI Features config. Not Null`,
-								Validators: []validator.Object{
-									speakeasy_objectvalidators.NotNull(),
+								Description: `AI Features config`,
+							},
+							"portal_agent": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"audience": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`all`),
+										Description: `The audience allowed to interact with the Portal Agent. ` + "`" + `all` + "`" + ` makes the Portal Agent available to every developer, including unauthenticated ones. ` + "`" + `authenticated` + "`" + ` restricts access to signed-in developers only. possible known values include one of ["all", "authenticated"]; Default: "all"`,
+									},
+									"display_name": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`AI`),
+										Description: `The display name for the Portal Agent, shown to developers in the portal. Default: "AI"`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthBetween(1, 30),
+										},
+									},
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `Whether the Portal Agent is enabled or not. Default: false`,
+									},
 								},
+								Description: `Portal Agent config`,
 							},
 						},
-						Description: `Not Null`,
+						Description: `AI features configuration. When top-level ` + "`" + `enabled` + "`" + ` is false, every feature toggle here is automatically reset to false. Not Null`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -254,6 +287,13 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Default:     booldefault.StaticBool(false),
 				Description: `Whether ip allow list is enabled for the portal. Default: false`,
 			},
+			"theme_name": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Name of the theme to use for the default content created upon creation of this portal. Must match an available theme name; if omitted or unrecognized, the default theme is used. Only applies when ` + "`" + `create_default_content` + "`" + ` is true. Requires replacement if changed.`,
+			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
@@ -311,7 +351,7 @@ func (r *PortalResource) Create(ctx context.Context, req resource.CreateRequest,
 	}
 	res, err := r.client.Portals.CreatePortal(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -371,7 +411,7 @@ func (r *PortalResource) Read(ctx context.Context, req resource.ReadRequest, res
 	}
 	res, err := r.client.Portals.GetPortal(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -425,7 +465,7 @@ func (r *PortalResource) Update(ctx context.Context, req resource.UpdateRequest,
 	}
 	res, err := r.client.Portals.UpdatePortal(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -485,7 +525,7 @@ func (r *PortalResource) Delete(ctx context.Context, req resource.DeleteRequest,
 	}
 	res, err := r.client.Portals.DeletePortal(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

@@ -31,9 +31,6 @@ func newAIGatewaySNIs(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration, h
 }
 
 // CreateAiGatewaySni - Create an AI Gateway SNI
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates a new SNI for the AI Gateway.
 func (s *AIGatewaySNIs) CreateAiGatewaySni(ctx context.Context, request operations.CreateAiGatewaySniRequest, opts ...operations.Option) (*operations.CreateAiGatewaySniResponse, error) {
 	o := operations.Options{}
@@ -372,9 +369,6 @@ func (s *AIGatewaySNIs) CreateAiGatewaySni(ctx context.Context, request operatio
 }
 
 // GetAiGatewaySni - Get an AI Gateway SNI
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Returns the details of a specific AI Gateway SNI.
 func (s *AIGatewaySNIs) GetAiGatewaySni(ctx context.Context, request operations.GetAiGatewaySniRequest, opts ...operations.Option) (*operations.GetAiGatewaySniResponse, error) {
 	o := operations.Options{}
@@ -664,9 +658,6 @@ func (s *AIGatewaySNIs) GetAiGatewaySni(ctx context.Context, request operations.
 }
 
 // UpdateAiGatewaySni - Update an AI Gateway SNI
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Updates an existing AI Gateway SNI.
 func (s *AIGatewaySNIs) UpdateAiGatewaySni(ctx context.Context, request operations.UpdateAiGatewaySniRequest, opts ...operations.Option) (*operations.UpdateAiGatewaySniResponse, error) {
 	o := operations.Options{}
@@ -984,9 +975,6 @@ func (s *AIGatewaySNIs) UpdateAiGatewaySni(ctx context.Context, request operatio
 }
 
 // DeleteAiGatewaySni - Delete an AI Gateway SNI
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Removes a specific AI Gateway SNI.
 func (s *AIGatewaySNIs) DeleteAiGatewaySni(ctx context.Context, request operations.DeleteAiGatewaySniRequest, opts ...operations.Option) (*operations.DeleteAiGatewaySniResponse, error) {
 	o := operations.Options{}

@@ -15,10 +15,7 @@ const (
 	AIGatewayUpstreamConfigAuthOutputTypeAws AIGatewayUpstreamConfigAuthOutputType = "aws"
 )
 
-// AIGatewayUpstreamConfigAuthOutput - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Authentication to use when proxying to the upstream service.
+// AIGatewayUpstreamConfigAuthOutput - Authentication to use when proxying to the upstream service.
 type AIGatewayUpstreamConfigAuthOutput struct {
 	AIGatewayUpstreamAuthAWSOutput *AIGatewayUpstreamAuthAWSOutput `queryParam:"inline" union:"member"`
 
@@ -34,7 +31,14 @@ func CreateAIGatewayUpstreamConfigAuthOutputAws(aws AIGatewayUpstreamAuthAWSOutp
 	}
 }
 
-func (u *AIGatewayUpstreamConfigAuthOutput) UnmarshalJSON(data []byte) error {
+func (u *AIGatewayUpstreamConfigAuthOutput) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = AIGatewayUpstreamConfigAuthOutput{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`
@@ -68,27 +72,10 @@ func (u AIGatewayUpstreamConfigAuthOutput) MarshalJSON() ([]byte, error) {
 	return nil, errors.New("could not marshal union type AIGatewayUpstreamConfigAuthOutput: all fields are null")
 }
 
-// AIGatewayUpstreamConfigOutput - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// Configuration applied when proxying to the upstream service, including authentication.
+// AIGatewayUpstreamConfigOutput - Configuration applied when proxying to the upstream service, including authentication.
 type AIGatewayUpstreamConfigOutput struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Authentication to use when proxying to the upstream service.
 	Auth *AIGatewayUpstreamConfigAuthOutput `json:"auth,omitempty"`
-}
-
-func (a AIGatewayUpstreamConfigOutput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AIGatewayUpstreamConfigOutput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (a *AIGatewayUpstreamConfigOutput) GetAuth() *AIGatewayUpstreamConfigAuthOutput {

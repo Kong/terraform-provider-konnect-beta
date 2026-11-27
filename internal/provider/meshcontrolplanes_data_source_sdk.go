@@ -71,7 +71,7 @@ func (r *MeshControlPlanesDataSourceModel) ToOperationsListMeshControlPlanesRequ
 
 	var filter *shared.MeshControlPlaneFilterParameters
 	if r.Filter != nil {
-		var name *shared.Name
+		var name *shared.MeshControlPlaneFilterParametersName
 		if r.Filter.Name != nil {
 			eq := new(string)
 			if !r.Filter.Name.Eq.IsUnknown() && !r.Filter.Name.Eq.IsNull() {
@@ -85,7 +85,7 @@ func (r *MeshControlPlanesDataSourceModel) ToOperationsListMeshControlPlanesRequ
 			} else {
 				contains = nil
 			}
-			name = &shared.Name{
+			name = &shared.MeshControlPlaneFilterParametersName{
 				Eq:       eq,
 				Contains: contains,
 			}

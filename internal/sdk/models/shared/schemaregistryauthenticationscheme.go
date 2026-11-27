@@ -16,6 +16,7 @@ const (
 )
 
 // SchemaRegistryAuthenticationScheme - The authentication configuration for the schema registry.
+// The Event Gateway only requires read-only access to the schema registry to fetch schemas for validation, so we recommend using credentials with read-only scope.
 type SchemaRegistryAuthenticationScheme struct {
 	SchemaRegistryAuthenticationBasic *SchemaRegistryAuthenticationBasic `queryParam:"inline" union:"member"`
 
@@ -31,7 +32,14 @@ func CreateSchemaRegistryAuthenticationSchemeBasic(basic SchemaRegistryAuthentic
 	}
 }
 
-func (u *SchemaRegistryAuthenticationScheme) UnmarshalJSON(data []byte) error {
+func (u *SchemaRegistryAuthenticationScheme) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = SchemaRegistryAuthenticationScheme{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

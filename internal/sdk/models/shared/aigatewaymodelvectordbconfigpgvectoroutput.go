@@ -29,21 +29,21 @@ func (e *DistanceMetric) IsExact() bool {
 	return false
 }
 
-// Version - the ssl version to use for the pgvector database
-type Version string
+// AIGatewayModelVectorDBConfigPgVectorVersion - the ssl version to use for the pgvector database
+type AIGatewayModelVectorDBConfigPgVectorVersion string
 
 const (
-	VersionAny    Version = "any"
-	VersionTlsv12 Version = "tlsv1_2"
-	VersionTlsv13 Version = "tlsv1_3"
+	AIGatewayModelVectorDBConfigPgVectorVersionAny    AIGatewayModelVectorDBConfigPgVectorVersion = "any"
+	AIGatewayModelVectorDBConfigPgVectorVersionTlsv12 AIGatewayModelVectorDBConfigPgVectorVersion = "tlsv1_2"
+	AIGatewayModelVectorDBConfigPgVectorVersionTlsv13 AIGatewayModelVectorDBConfigPgVectorVersion = "tlsv1_3"
 )
 
-func (e Version) ToPointer() *Version {
+func (e AIGatewayModelVectorDBConfigPgVectorVersion) ToPointer() *AIGatewayModelVectorDBConfigPgVectorVersion {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Version) IsExact() bool {
+func (e *AIGatewayModelVectorDBConfigPgVectorVersion) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "any", "tlsv1_2", "tlsv1_3":
@@ -57,15 +57,15 @@ type Ssl struct {
 	// whether to use ssl for the pgvector database
 	Enabled *bool `default:"true" json:"enabled"`
 	// the path of ssl cert to use for the pgvector database
-	Cert *string `default:"null" json:"cert"`
+	Cert *string `json:"cert,omitempty"`
 	// the path of ssl cert key to use for the pgvector database
-	CertKey *string `default:"null" json:"cert_key"`
+	CertKey *string `json:"cert_key,omitempty"`
 	// whether ssl is required for the pgvector database
 	Required *bool `default:"true" json:"required"`
 	// whether to verify ssl for the pgvector database
 	Verify *bool `default:"true" json:"verify"`
 	// the ssl version to use for the pgvector database
-	Version *Version `default:"tlsv1_2" json:"version"`
+	Version *AIGatewayModelVectorDBConfigPgVectorVersion `default:"tlsv1_2" json:"version"`
 }
 
 func (s Ssl) MarshalJSON() ([]byte, error) {
@@ -114,15 +114,13 @@ func (s *Ssl) GetVerify() *bool {
 	return s.Verify
 }
 
-func (s *Ssl) GetVersion() *Version {
+func (s *Ssl) GetVersion() *AIGatewayModelVectorDBConfigPgVectorVersion {
 	if s == nil {
 		return nil
 	}
 	return s.Version
 }
 
-// AIGatewayModelVectorDBConfigPgVectorOutput - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type AIGatewayModelVectorDBConfigPgVectorOutput struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"pgvector" json:"type"`
@@ -131,14 +129,14 @@ type AIGatewayModelVectorDBConfigPgVectorOutput struct {
 	// the distance metric to use for vector searches
 	DistanceMetric DistanceMetric `json:"distance_metric"`
 	// the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
-	Threshold *float64 `default:"null" json:"threshold"`
+	Threshold *float64 `json:"threshold,omitempty"`
 	// the database of the pgvector database
 	Database *string `default:"kong-pgvector" json:"database"`
 	// the host of the pgvector database
 	Host *string `default:"127.0.0.1" json:"host"`
 	// the port of the pgvector database
 	Port *int64 `default:"5432" json:"port"`
-	Ssl  *Ssl   `json:"ssl"`
+	Ssl  *Ssl   `json:"ssl,omitempty"`
 	// the timeout of the pgvector database
 	Timeout *float64 `default:"5000" json:"timeout"`
 	// the user of the pgvector database
@@ -225,8 +223,6 @@ func (a *AIGatewayModelVectorDBConfigPgVectorOutput) GetUser() *string {
 	return a.User
 }
 
-// AIGatewayModelVectorDBConfigPgVector - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type AIGatewayModelVectorDBConfigPgVector struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"pgvector" json:"type"`
@@ -235,7 +231,7 @@ type AIGatewayModelVectorDBConfigPgVector struct {
 	// the distance metric to use for vector searches
 	DistanceMetric DistanceMetric `json:"distance_metric"`
 	// the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
-	Threshold *float64 `default:"null" json:"threshold"`
+	Threshold *float64 `json:"threshold,omitempty"`
 	// the database of the pgvector database
 	Database *string `default:"kong-pgvector" json:"database"`
 	// the host of the pgvector database
@@ -243,10 +239,10 @@ type AIGatewayModelVectorDBConfigPgVector struct {
 	// the password of the pgvector database
 	// This field is [referenceable](https://developer.konghq.com/gateway/entities/vault/#how-do-i-reference-secrets-stored-in-a-vault).
 	//
-	Password *string `default:"null" json:"password"`
+	Password *string `json:"password,omitempty"`
 	// the port of the pgvector database
 	Port *int64 `default:"5432" json:"port"`
-	Ssl  *Ssl   `json:"ssl"`
+	Ssl  *Ssl   `json:"ssl,omitempty"`
 	// the timeout of the pgvector database
 	Timeout *float64 `default:"5000" json:"timeout"`
 	// the user of the pgvector database

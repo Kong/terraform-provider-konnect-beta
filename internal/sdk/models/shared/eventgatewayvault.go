@@ -88,24 +88,24 @@ func (e *EventGatewayVaultEventGatewayKonnectVault) GetID() string {
 	return e.ID
 }
 
-// EventGatewayEnvVaultEventGatewayVaultConfig - The configuration of the environment vault.
-type EventGatewayEnvVaultEventGatewayVaultConfig struct {
+// EventGatewayEnvVaultConfig - The configuration of the environment vault.
+type EventGatewayEnvVaultConfig struct {
 	// The optional prefix for environment variables.
 	Prefix string `json:"prefix"`
 }
 
-func (e EventGatewayEnvVaultEventGatewayVaultConfig) MarshalJSON() ([]byte, error) {
+func (e EventGatewayEnvVaultConfig) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(e, "", false)
 }
 
-func (e *EventGatewayEnvVaultEventGatewayVaultConfig) UnmarshalJSON(data []byte) error {
+func (e *EventGatewayEnvVaultConfig) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayEnvVaultEventGatewayVaultConfig) GetPrefix() string {
+func (e *EventGatewayEnvVaultConfig) GetPrefix() string {
 	if e == nil {
 		return ""
 	}
@@ -130,7 +130,7 @@ type EventGatewayVaultEventGatewayEnvVault struct {
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
 	// The configuration of the environment vault.
-	Config EventGatewayEnvVaultEventGatewayVaultConfig `json:"config"`
+	Config EventGatewayEnvVaultConfig `json:"config"`
 	// The unique identifier of the vault.
 	ID string `json:"id"`
 }
@@ -185,9 +185,9 @@ func (e *EventGatewayVaultEventGatewayEnvVault) GetLabels() map[string]*string {
 	return e.Labels
 }
 
-func (e *EventGatewayVaultEventGatewayEnvVault) GetConfig() EventGatewayEnvVaultEventGatewayVaultConfig {
+func (e *EventGatewayVaultEventGatewayEnvVault) GetConfig() EventGatewayEnvVaultConfig {
 	if e == nil {
-		return EventGatewayEnvVaultEventGatewayVaultConfig{}
+		return EventGatewayEnvVaultConfig{}
 	}
 	return e.Config
 }
@@ -231,7 +231,14 @@ func CreateEventGatewayVaultKonnect(konnect EventGatewayVaultEventGatewayKonnect
 	}
 }
 
-func (u *EventGatewayVault) UnmarshalJSON(data []byte) error {
+func (u *EventGatewayVault) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = EventGatewayVault{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`

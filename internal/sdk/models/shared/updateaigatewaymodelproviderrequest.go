@@ -14,16 +14,19 @@ type UpdateAIGatewayModelProviderRequestType string
 const (
 	UpdateAIGatewayModelProviderRequestTypeAnthropic   UpdateAIGatewayModelProviderRequestType = "anthropic"
 	UpdateAIGatewayModelProviderRequestTypeAzure       UpdateAIGatewayModelProviderRequestType = "azure"
+	UpdateAIGatewayModelProviderRequestTypeBaseten     UpdateAIGatewayModelProviderRequestType = "baseten"
 	UpdateAIGatewayModelProviderRequestTypeBedrock     UpdateAIGatewayModelProviderRequestType = "bedrock"
 	UpdateAIGatewayModelProviderRequestTypeCerebras    UpdateAIGatewayModelProviderRequestType = "cerebras"
 	UpdateAIGatewayModelProviderRequestTypeCohere      UpdateAIGatewayModelProviderRequestType = "cohere"
 	UpdateAIGatewayModelProviderRequestTypeDashscope   UpdateAIGatewayModelProviderRequestType = "dashscope"
 	UpdateAIGatewayModelProviderRequestTypeDatabricks  UpdateAIGatewayModelProviderRequestType = "databricks"
 	UpdateAIGatewayModelProviderRequestTypeDeepseek    UpdateAIGatewayModelProviderRequestType = "deepseek"
+	UpdateAIGatewayModelProviderRequestTypeFireworks   UpdateAIGatewayModelProviderRequestType = "fireworks"
 	UpdateAIGatewayModelProviderRequestTypeGemini      UpdateAIGatewayModelProviderRequestType = "gemini"
 	UpdateAIGatewayModelProviderRequestTypeHuggingface UpdateAIGatewayModelProviderRequestType = "huggingface"
 	UpdateAIGatewayModelProviderRequestTypeKimi        UpdateAIGatewayModelProviderRequestType = "kimi"
 	UpdateAIGatewayModelProviderRequestTypeLlama2      UpdateAIGatewayModelProviderRequestType = "llama2"
+	UpdateAIGatewayModelProviderRequestTypeMeta        UpdateAIGatewayModelProviderRequestType = "meta"
 	UpdateAIGatewayModelProviderRequestTypeMistral     UpdateAIGatewayModelProviderRequestType = "mistral"
 	UpdateAIGatewayModelProviderRequestTypeOllama      UpdateAIGatewayModelProviderRequestType = "ollama"
 	UpdateAIGatewayModelProviderRequestTypeOpenai      UpdateAIGatewayModelProviderRequestType = "openai"
@@ -31,23 +34,26 @@ const (
 	UpdateAIGatewayModelProviderRequestTypeVllm        UpdateAIGatewayModelProviderRequestType = "vllm"
 	UpdateAIGatewayModelProviderRequestTypeXai         UpdateAIGatewayModelProviderRequestType = "xai"
 	UpdateAIGatewayModelProviderRequestTypeSagemaker   UpdateAIGatewayModelProviderRequestType = "sagemaker"
+	UpdateAIGatewayModelProviderRequestTypeTogetherai  UpdateAIGatewayModelProviderRequestType = "togetherai"
+	UpdateAIGatewayModelProviderRequestTypeTypesafe    UpdateAIGatewayModelProviderRequestType = "typesafe"
 )
 
-// UpdateAIGatewayModelProviderRequest - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type UpdateAIGatewayModelProviderRequest struct {
 	AIGatewayModelProviderAnthropic   *AIGatewayModelProviderAnthropic   `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderAzure       *AIGatewayModelProviderAzure       `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderBaseten     *AIGatewayModelProviderBaseten     `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderBedrock     *AIGatewayModelProviderBedrock     `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderCerebras    *AIGatewayModelProviderCerebras    `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderCohere      *AIGatewayModelProviderCohere      `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderDashscope   *AIGatewayModelProviderDashscope   `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderDatabricks  *AIGatewayModelProviderDatabricks  `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderDeepseek    *AIGatewayModelProviderDeepseek    `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderFireworks   *AIGatewayModelProviderFireworks   `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderGemini      *AIGatewayModelProviderGemini      `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderHuggingface *AIGatewayModelProviderHuggingface `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderKimi        *AIGatewayModelProviderKimi        `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderLlama2      *AIGatewayModelProviderLlama2      `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderMeta        *AIGatewayModelProviderMeta        `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderMistral     *AIGatewayModelProviderMistral     `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderOllama      *AIGatewayModelProviderOllama      `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderOpenai      *AIGatewayModelProviderOpenai      `queryParam:"inline" union:"member"`
@@ -55,6 +61,8 @@ type UpdateAIGatewayModelProviderRequest struct {
 	AIGatewayModelProviderVllm        *AIGatewayModelProviderVllm        `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderXai         *AIGatewayModelProviderXai         `queryParam:"inline" union:"member"`
 	AIGatewayModelProviderSagemaker   *AIGatewayModelProviderSagemaker   `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderTogetherai  *AIGatewayModelProviderTogetherai  `queryParam:"inline" union:"member"`
+	AIGatewayModelProviderTypesafe    *AIGatewayModelProviderTypesafe    `queryParam:"inline" union:"member"`
 
 	Type UpdateAIGatewayModelProviderRequestType
 }
@@ -74,6 +82,15 @@ func CreateUpdateAIGatewayModelProviderRequestAzure(azure AIGatewayModelProvider
 	return UpdateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderAzure: &azure,
 		Type:                        typ,
+	}
+}
+
+func CreateUpdateAIGatewayModelProviderRequestBaseten(baseten AIGatewayModelProviderBaseten) UpdateAIGatewayModelProviderRequest {
+	typ := UpdateAIGatewayModelProviderRequestTypeBaseten
+
+	return UpdateAIGatewayModelProviderRequest{
+		AIGatewayModelProviderBaseten: &baseten,
+		Type:                          typ,
 	}
 }
 
@@ -131,6 +148,15 @@ func CreateUpdateAIGatewayModelProviderRequestDeepseek(deepseek AIGatewayModelPr
 	}
 }
 
+func CreateUpdateAIGatewayModelProviderRequestFireworks(fireworks AIGatewayModelProviderFireworks) UpdateAIGatewayModelProviderRequest {
+	typ := UpdateAIGatewayModelProviderRequestTypeFireworks
+
+	return UpdateAIGatewayModelProviderRequest{
+		AIGatewayModelProviderFireworks: &fireworks,
+		Type:                            typ,
+	}
+}
+
 func CreateUpdateAIGatewayModelProviderRequestGemini(gemini AIGatewayModelProviderGemini) UpdateAIGatewayModelProviderRequest {
 	typ := UpdateAIGatewayModelProviderRequestTypeGemini
 
@@ -164,6 +190,15 @@ func CreateUpdateAIGatewayModelProviderRequestLlama2(llama2 AIGatewayModelProvid
 	return UpdateAIGatewayModelProviderRequest{
 		AIGatewayModelProviderLlama2: &llama2,
 		Type:                         typ,
+	}
+}
+
+func CreateUpdateAIGatewayModelProviderRequestMeta(meta AIGatewayModelProviderMeta) UpdateAIGatewayModelProviderRequest {
+	typ := UpdateAIGatewayModelProviderRequestTypeMeta
+
+	return UpdateAIGatewayModelProviderRequest{
+		AIGatewayModelProviderMeta: &meta,
+		Type:                       typ,
 	}
 }
 
@@ -230,7 +265,32 @@ func CreateUpdateAIGatewayModelProviderRequestSagemaker(sagemaker AIGatewayModel
 	}
 }
 
-func (u *UpdateAIGatewayModelProviderRequest) UnmarshalJSON(data []byte) error {
+func CreateUpdateAIGatewayModelProviderRequestTogetherai(togetherai AIGatewayModelProviderTogetherai) UpdateAIGatewayModelProviderRequest {
+	typ := UpdateAIGatewayModelProviderRequestTypeTogetherai
+
+	return UpdateAIGatewayModelProviderRequest{
+		AIGatewayModelProviderTogetherai: &togetherai,
+		Type:                             typ,
+	}
+}
+
+func CreateUpdateAIGatewayModelProviderRequestTypesafe(typesafe AIGatewayModelProviderTypesafe) UpdateAIGatewayModelProviderRequest {
+	typ := UpdateAIGatewayModelProviderRequestTypeTypesafe
+
+	return UpdateAIGatewayModelProviderRequest{
+		AIGatewayModelProviderTypesafe: &typesafe,
+		Type:                           typ,
+	}
+}
+
+func (u *UpdateAIGatewayModelProviderRequest) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = UpdateAIGatewayModelProviderRequest{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	type discriminator struct {
 		Type string `json:"type"`
@@ -259,6 +319,15 @@ func (u *UpdateAIGatewayModelProviderRequest) UnmarshalJSON(data []byte) error {
 
 		u.AIGatewayModelProviderAzure = aiGatewayModelProviderAzure
 		u.Type = UpdateAIGatewayModelProviderRequestTypeAzure
+		return nil
+	case "baseten":
+		aiGatewayModelProviderBaseten := new(AIGatewayModelProviderBaseten)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderBaseten, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == baseten) type AIGatewayModelProviderBaseten within UpdateAIGatewayModelProviderRequest: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderBaseten = aiGatewayModelProviderBaseten
+		u.Type = UpdateAIGatewayModelProviderRequestTypeBaseten
 		return nil
 	case "bedrock":
 		aiGatewayModelProviderBedrock := new(AIGatewayModelProviderBedrock)
@@ -314,6 +383,15 @@ func (u *UpdateAIGatewayModelProviderRequest) UnmarshalJSON(data []byte) error {
 		u.AIGatewayModelProviderDeepseek = aiGatewayModelProviderDeepseek
 		u.Type = UpdateAIGatewayModelProviderRequestTypeDeepseek
 		return nil
+	case "fireworks":
+		aiGatewayModelProviderFireworks := new(AIGatewayModelProviderFireworks)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderFireworks, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == fireworks) type AIGatewayModelProviderFireworks within UpdateAIGatewayModelProviderRequest: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderFireworks = aiGatewayModelProviderFireworks
+		u.Type = UpdateAIGatewayModelProviderRequestTypeFireworks
+		return nil
 	case "gemini":
 		aiGatewayModelProviderGemini := new(AIGatewayModelProviderGemini)
 		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderGemini, "", true, nil); err != nil {
@@ -349,6 +427,15 @@ func (u *UpdateAIGatewayModelProviderRequest) UnmarshalJSON(data []byte) error {
 
 		u.AIGatewayModelProviderLlama2 = aiGatewayModelProviderLlama2
 		u.Type = UpdateAIGatewayModelProviderRequestTypeLlama2
+		return nil
+	case "meta":
+		aiGatewayModelProviderMeta := new(AIGatewayModelProviderMeta)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderMeta, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == meta) type AIGatewayModelProviderMeta within UpdateAIGatewayModelProviderRequest: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderMeta = aiGatewayModelProviderMeta
+		u.Type = UpdateAIGatewayModelProviderRequestTypeMeta
 		return nil
 	case "mistral":
 		aiGatewayModelProviderMistral := new(AIGatewayModelProviderMistral)
@@ -413,6 +500,24 @@ func (u *UpdateAIGatewayModelProviderRequest) UnmarshalJSON(data []byte) error {
 		u.AIGatewayModelProviderSagemaker = aiGatewayModelProviderSagemaker
 		u.Type = UpdateAIGatewayModelProviderRequestTypeSagemaker
 		return nil
+	case "togetherai":
+		aiGatewayModelProviderTogetherai := new(AIGatewayModelProviderTogetherai)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderTogetherai, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == togetherai) type AIGatewayModelProviderTogetherai within UpdateAIGatewayModelProviderRequest: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderTogetherai = aiGatewayModelProviderTogetherai
+		u.Type = UpdateAIGatewayModelProviderRequestTypeTogetherai
+		return nil
+	case "typesafe":
+		aiGatewayModelProviderTypesafe := new(AIGatewayModelProviderTypesafe)
+		if err := utils.UnmarshalJSON(data, &aiGatewayModelProviderTypesafe, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == typesafe) type AIGatewayModelProviderTypesafe within UpdateAIGatewayModelProviderRequest: %w", string(data), err)
+		}
+
+		u.AIGatewayModelProviderTypesafe = aiGatewayModelProviderTypesafe
+		u.Type = UpdateAIGatewayModelProviderRequestTypeTypesafe
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for UpdateAIGatewayModelProviderRequest", string(data))
@@ -425,6 +530,10 @@ func (u UpdateAIGatewayModelProviderRequest) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayModelProviderAzure != nil {
 		return utils.MarshalJSON(u.AIGatewayModelProviderAzure, "", true)
+	}
+
+	if u.AIGatewayModelProviderBaseten != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderBaseten, "", true)
 	}
 
 	if u.AIGatewayModelProviderBedrock != nil {
@@ -451,6 +560,10 @@ func (u UpdateAIGatewayModelProviderRequest) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.AIGatewayModelProviderDeepseek, "", true)
 	}
 
+	if u.AIGatewayModelProviderFireworks != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderFireworks, "", true)
+	}
+
 	if u.AIGatewayModelProviderGemini != nil {
 		return utils.MarshalJSON(u.AIGatewayModelProviderGemini, "", true)
 	}
@@ -465,6 +578,10 @@ func (u UpdateAIGatewayModelProviderRequest) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayModelProviderLlama2 != nil {
 		return utils.MarshalJSON(u.AIGatewayModelProviderLlama2, "", true)
+	}
+
+	if u.AIGatewayModelProviderMeta != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderMeta, "", true)
 	}
 
 	if u.AIGatewayModelProviderMistral != nil {
@@ -493,6 +610,14 @@ func (u UpdateAIGatewayModelProviderRequest) MarshalJSON() ([]byte, error) {
 
 	if u.AIGatewayModelProviderSagemaker != nil {
 		return utils.MarshalJSON(u.AIGatewayModelProviderSagemaker, "", true)
+	}
+
+	if u.AIGatewayModelProviderTogetherai != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderTogetherai, "", true)
+	}
+
+	if u.AIGatewayModelProviderTypesafe != nil {
+		return utils.MarshalJSON(u.AIGatewayModelProviderTypesafe, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type UpdateAIGatewayModelProviderRequest: all fields are null")

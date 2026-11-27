@@ -4,6 +4,8 @@ resource "konnect_portal_application" "my_portalapplication" {
   client_id        = "...my_client_id..."
   dcr_client_id    = "...my_dcr_client_id..."
   description      = "...my_description..."
+  environment_id   = "2747d1e5-8246-4f65-a939-b392f1ee17f8"
+  group_id         = "2747d1e5-8246-4f65-a939-b392f1ee17f8"
   labels = {
     key = "value"
   }

@@ -3,6 +3,6 @@
 package types
 
 type MeshGlobalRateLimitItemHeaders struct {
-	Add []MeshGlobalRateLimitItemAdd `tfsdk:"add"`
-	Set []MeshGlobalRateLimitItemAdd `tfsdk:"set"`
+	Add []KongPrincipalIdentityOIDCClaim `tfsdk:"add"`
+	Set []KongPrincipalIdentityOIDCClaim `tfsdk:"set"`
 }

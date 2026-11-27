@@ -7,14 +7,8 @@ import (
 	"time"
 )
 
-// AIGatewayCertificate - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
-//
-// A certificate holds a PEM-encoded certificate and its matching private key, used to terminate or originate TLS connections.
+// AIGatewayCertificate - A certificate holds a PEM-encoded certificate and its matching private key, used to terminate or originate TLS connections.
 type AIGatewayCertificate struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this certificate, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// PEM-encoded public certificate chain.
@@ -30,7 +24,9 @@ type AIGatewayCertificate struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
 	// Contains a unique identifier used for this resource.
@@ -39,6 +35,8 @@ type AIGatewayCertificate struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
+	// An immutable read-only flag to identify resource managed by Konnect services.
+	KonnectManaged *bool `json:"konnect_managed,omitempty"`
 }
 
 func (a AIGatewayCertificate) MarshalJSON() ([]byte, error) {
@@ -106,4 +104,11 @@ func (a *AIGatewayCertificate) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return a.UpdatedAt
+}
+
+func (a *AIGatewayCertificate) GetKonnectManaged() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.KonnectManaged
 }

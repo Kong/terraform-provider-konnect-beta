@@ -6,39 +6,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// PlatformFilterField - The field to filter.
-type PlatformFilterField string
-
-const (
-	PlatformFilterFieldControlPlane         PlatformFilterField = "control_plane"
-	PlatformFilterFieldDataPlaneNodeVersion PlatformFilterField = "data_plane_node_version"
-	PlatformFilterFieldEnv                  PlatformFilterField = "env"
-	PlatformFilterFieldGatewayService       PlatformFilterField = "gateway_service"
-	PlatformFilterFieldHostname             PlatformFilterField = "hostname"
-	PlatformFilterFieldPlugin               PlatformFilterField = "plugin"
-	PlatformFilterFieldPluginName           PlatformFilterField = "plugin_name"
-	PlatformFilterFieldPluginScope          PlatformFilterField = "plugin_scope"
-	PlatformFilterFieldRealm                PlatformFilterField = "realm"
-	PlatformFilterFieldRegion               PlatformFilterField = "region"
-	PlatformFilterFieldRoute                PlatformFilterField = "route"
-	PlatformFilterFieldTeam                 PlatformFilterField = "team"
-)
-
-func (e PlatformFilterField) ToPointer() *PlatformFilterField {
-	return &e
-}
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *PlatformFilterField) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "control_plane", "data_plane_node_version", "env", "gateway_service", "hostname", "plugin", "plugin_name", "plugin_scope", "realm", "region", "route", "team":
-			return true
-		}
-	}
-	return false
-}
-
 type PlatformFilterOperator string
 
 const (

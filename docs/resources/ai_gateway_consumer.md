@@ -39,10 +39,7 @@ resource "konnect_ai_gateway_consumer" "my_aigatewayconsumer" {
 
 - `display_name` (String) The display name for this consumer instance.
 - `gateway_id` (String) The unique ID of the AI Gateway.
-- `name` (String) **Pre-release Feature**
-This feature is currently in beta and is subject to change.
-
-A user-defined unique identifier for this consumer, used as a stable human-readable reference. This value is immutable after creation.
+- `name` (String) A user-defined unique identifier for this consumer, used as a stable human-readable reference. This value is immutable after creation.
 - `type` (String) The type of the consumer. possible known values include one of ["api-key", "oauth"]
 
 ### Optional
@@ -55,7 +52,9 @@ Public labels are intended to store **PUBLIC** metadata.
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 
-Keys must be 1–63 characters long and start with an alphanumeric character.
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 - `policies` (List of String) List of policy references.
 
 ### Read-Only

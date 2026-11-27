@@ -39,18 +39,7 @@ func (p *Portals) GetDisplayName() string {
 
 type Icon struct {
 	// The relative API path for retrieving the raw the icon image.
-	URI *string `default:"null" json:"uri"`
-}
-
-func (i Icon) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(i, "", false)
-}
-
-func (i *Icon) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
-		return err
-	}
-	return nil
+	URI *string `json:"uri,omitempty"`
 }
 
 func (i *Icon) GetURI() *string {
@@ -61,7 +50,7 @@ func (i *Icon) GetURI() *string {
 }
 
 type Images struct {
-	Icon *Icon `json:"icon"`
+	Icon *Icon `json:"icon,omitempty"`
 }
 
 func (i *Images) GetIcon() *Icon {
@@ -100,7 +89,7 @@ type APIResponseSchema struct {
 	//
 	Labels map[string]*string `json:"labels"`
 	// the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
-	ImplementationMode *string `default:"null" json:"implementation_mode"`
+	ImplementationMode *string `json:"implementation_mode,omitempty"`
 	// A set of attributes that describe the API
 	Attributes any `json:"attributes,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -108,13 +97,11 @@ type APIResponseSchema struct {
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
 	Images    *Images   `json:"images,omitempty"`
-	// Map of this API's associated environments, keyed by environment name. Each entry
-	// includes the API's current version in that environment. A single-environment API
-	// has exactly one key (its sole association, which may or may not be the
-	// organization default). A multi-environment API has one key per association.
-	// Clients can infer mode from the number of keys.
+	// The API's associated environments. Versions can differ per environment. A single-environment API has one element; a
+	// multi-environment API has one element per association. Clients can infer mode
+	// from the array length.
 	//
-	Environments map[string]APIEnvironmentVersionSummary `json:"environments,omitempty"`
+	Environments []APIEnvironmentSummary `json:"environments,omitempty"`
 }
 
 func (a APIResponseSchema) MarshalJSON() ([]byte, error) {
@@ -226,7 +213,7 @@ func (a *APIResponseSchema) GetImages() *Images {
 	return a.Images
 }
 
-func (a *APIResponseSchema) GetEnvironments() map[string]APIEnvironmentVersionSummary {
+func (a *APIResponseSchema) GetEnvironments() []APIEnvironmentSummary {
 	if a == nil {
 		return nil
 	}

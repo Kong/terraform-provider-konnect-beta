@@ -6,45 +6,12 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type FailoverCriteria string
-
-const (
-	FailoverCriteriaError         FailoverCriteria = "error"
-	FailoverCriteriaHttp403       FailoverCriteria = "http_403"
-	FailoverCriteriaHttp404       FailoverCriteria = "http_404"
-	FailoverCriteriaHttp429       FailoverCriteria = "http_429"
-	FailoverCriteriaHttp500       FailoverCriteria = "http_500"
-	FailoverCriteriaHttp502       FailoverCriteria = "http_502"
-	FailoverCriteriaHttp503       FailoverCriteria = "http_503"
-	FailoverCriteriaHttp504       FailoverCriteria = "http_504"
-	FailoverCriteriaInvalidHeader FailoverCriteria = "invalid_header"
-	FailoverCriteriaNonIdempotent FailoverCriteria = "non_idempotent"
-	FailoverCriteriaTimeout       FailoverCriteria = "timeout"
-)
-
-func (e FailoverCriteria) ToPointer() *FailoverCriteria {
-	return &e
-}
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *FailoverCriteria) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "error", "http_403", "http_404", "http_429", "http_500", "http_502", "http_503", "http_504", "invalid_header", "non_idempotent", "timeout":
-			return true
-		}
-	}
-	return false
-}
-
-// AIGatewayModelBalancerConsistentHashingConfig - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type AIGatewayModelBalancerConsistentHashingConfig struct {
 	ConnectTimeout *int64 `default:"60000" json:"connect_timeout"`
 	// The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`.
 	FailTimeout *int64 `default:"10000" json:"fail_timeout"`
 	// Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream
-	FailoverCriteria []FailoverCriteria `json:"failover_criteria,omitempty"`
+	FailoverCriteria []AIGatewayFailoverCriteria `json:"failover_criteria,omitempty"`
 	// Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts.
 	MaxFails    *int64 `default:"0" json:"max_fails"`
 	ReadTimeout *int64 `default:"60000" json:"read_timeout"`
@@ -84,7 +51,7 @@ func (a *AIGatewayModelBalancerConsistentHashingConfig) GetFailTimeout() *int64 
 	return a.FailTimeout
 }
 
-func (a *AIGatewayModelBalancerConsistentHashingConfig) GetFailoverCriteria() []FailoverCriteria {
+func (a *AIGatewayModelBalancerConsistentHashingConfig) GetFailoverCriteria() []AIGatewayFailoverCriteria {
 	if a == nil {
 		return nil
 	}

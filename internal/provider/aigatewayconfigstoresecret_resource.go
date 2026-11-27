@@ -73,11 +73,7 @@ func (r *AIGatewayConfigStoreSecretResource) Schema(ctx context.Context, req res
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`The unique key identifying the secret within the Config Store.` + "\n" +
-					`Requires replacement if changed.`,
+				Description: `The unique key identifying the secret within the Config Store. Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 512),
 				},
@@ -95,12 +91,9 @@ func (r *AIGatewayConfigStoreSecretResource) Schema(ctx context.Context, req res
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.UseConfigValue(),
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`The secret value. Once stored, this value cannot be retrieved.`,
+				Description: `The secret value. Once stored, this value cannot be retrieved.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(5120),
+					stringvalidator.UTF8LengthBetween(1, 8192),
 				},
 			},
 		},
@@ -145,6 +138,8 @@ func (r *AIGatewayConfigStoreSecretResource) Create(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan)
+
 	request, requestDiags := data.ToOperationsCreateAiGatewayConfigStoreSecretRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -153,7 +148,7 @@ func (r *AIGatewayConfigStoreSecretResource) Create(ctx context.Context, req res
 	}
 	res, err := r.client.AIGatewayConfigStores.CreateAiGatewayConfigStoreSecret(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -212,6 +207,8 @@ func (r *AIGatewayConfigStoreSecretResource) Read(ctx context.Context, req resou
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsGetAiGatewayConfigStoreSecretRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -220,7 +217,7 @@ func (r *AIGatewayConfigStoreSecretResource) Read(ctx context.Context, req resou
 	}
 	res, err := r.client.AIGatewayConfigStores.GetAiGatewayConfigStoreSecret(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -266,6 +263,8 @@ func (r *AIGatewayConfigStoreSecretResource) Update(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.Config, req.Plan, req.State)
+
 	request, requestDiags := data.ToOperationsUpdateAiGatewayConfigStoreSecretRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -274,7 +273,7 @@ func (r *AIGatewayConfigStoreSecretResource) Update(ctx context.Context, req res
 	}
 	res, err := r.client.AIGatewayConfigStores.UpdateAiGatewayConfigStoreSecret(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -326,6 +325,8 @@ func (r *AIGatewayConfigStoreSecretResource) Delete(ctx context.Context, req res
 		return
 	}
 
+	ctx = withSensitiveValues(ctx, req.State)
+
 	request, requestDiags := data.ToOperationsDeleteAiGatewayConfigStoreSecretRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
@@ -334,7 +335,7 @@ func (r *AIGatewayConfigStoreSecretResource) Delete(ctx context.Context, req res
 	}
 	res, err := r.client.AIGatewayConfigStores.DeleteAiGatewayConfigStoreSecret(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

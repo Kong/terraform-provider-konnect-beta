@@ -94,6 +94,9 @@ func (r *AIGatewayConsumerCredentialResource) Schema(ctx context.Context, req re
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `The display name for this credential instance. Requires replacement if changed.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"gateway_id": schema.StringAttribute{
 				Required: true,
@@ -134,7 +137,9 @@ func (r *AIGatewayConsumerCredentialResource) Schema(ctx context.Context, req re
 				ElementType: types.StringType,
 				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 					`` + "\n" +
-					`Keys must be 1–63 characters long and start with an alphanumeric character.` + "\n" +
+					`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+					`Values must be 1–127 characters long and must not be empty.` + "\n" +
+					`Keys and values must not contain spaces or control characters.` + "\n" +
 					`Requires replacement if changed.`,
 			},
 			"name": schema.StringAttribute{
@@ -143,14 +148,10 @@ func (r *AIGatewayConsumerCredentialResource) Schema(ctx context.Context, req re
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`A user-defined unique identifier for this credential, used as a stable human-readable reference. This value is immutable after creation.` + "\n" +
-					`Requires replacement if changed.`,
+				Description: `A user-defined unique identifier for this credential, used as a stable human-readable reference. This value is immutable after creation. Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 256),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 				},
 			},
 			"ttl": schema.Int64Attribute{
@@ -231,7 +232,7 @@ func (r *AIGatewayConsumerCredentialResource) Create(ctx context.Context, req re
 	}
 	res, err := r.client.AIGatewayConsumers.CreateAiGatewayConsumerCredential(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -298,7 +299,7 @@ func (r *AIGatewayConsumerCredentialResource) Read(ctx context.Context, req reso
 	}
 	res, err := r.client.AIGatewayConsumers.GetAiGatewayConsumerCredential(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -376,7 +377,7 @@ func (r *AIGatewayConsumerCredentialResource) Delete(ctx context.Context, req re
 	}
 	res, err := r.client.AIGatewayConsumers.DeleteAiGatewayConsumerCredential(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

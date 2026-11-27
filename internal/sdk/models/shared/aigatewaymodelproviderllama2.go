@@ -8,10 +8,8 @@ import (
 
 // AIGatewayModelProviderLlama2Config - Configuration for the model provider.
 type AIGatewayModelProviderLlama2Config struct {
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Basic auth config for an upstream model provider.
+	//
 	Auth AIGatewayModelProviderConfigAuthBasic `json:"auth"`
 }
 
@@ -36,16 +34,19 @@ func (a *AIGatewayModelProviderLlama2Config) GetAuth() AIGatewayModelProviderCon
 // #region class-body-aigatewaymodelproviderllama2config
 // #endregion class-body-aigatewaymodelproviderllama2config
 
-// AIGatewayModelProviderLlama2 - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayModelProviderLlama2 - Configuration for an upstream `llama2` model provider.
+//
+// Deprecated: the `llama2` provider is deprecated and will be removed in 3.0. Migrate each
+// target by its `format` value: `ollama` maps to the `ollama` provider, `openai` maps to the
+// `openai` provider with `upstream_url` set on the target, or to the `vllm` provider; `raw`
+// has no replacement provider.
+//
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 type AIGatewayModelProviderLlama2 struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"llama2" json:"type"`
 	// The display name for this model provider instance.
 	DisplayName string `json:"display_name"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// A user-defined unique identifier for this model provider instance, used as a stable human-readable reference. This value is immutable after creation.
 	Name string `json:"name"`
 	// Public labels store information about an entity that can be used for filtering a list of objects.
@@ -57,9 +58,28 @@ type AIGatewayModelProviderLlama2 struct {
 	Labels map[string]string `json:"labels,omitempty"`
 	// Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
 	//
-	// Keys must be 1–63 characters long and start with an alphanumeric character.
+	// Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+	// Values must be 1–127 characters long and must not be empty.
+	// Keys and values must not contain spaces or control characters.
 	//
 	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	// The Token Vault Datastore holding this entity's credential storage: the directory credentials
+	// are written to, and the encryption keys that seal them. Required when `token_vault` is set
+	// (on an auth strategy, when its credential manager is enabled), and the referenced Datastore
+	// must have type `token-vault`. Only one Datastore can be referenced.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	Datastores []AIGatewayDatastoreRef `json:"datastores,omitempty"`
+	// Resolves an upstream credential per request via Kong's Token Vault instead of sending a static
+	// credential. The directory credentials live in, and the keys that encrypt them, come from the
+	// `token-vault` Datastore this entity references, and are returned read-only in `storage`.
+	//
+	// Callers must enroll with the configured Token Vault provider before the credential can be
+	// resolved. Until enrollment completes, an MCP Server serves virtual `authenticate` and
+	// `check_authentication_status` tools that guide the caller through the enrollment flow.
+	//
+	// **Requires a minimum runtime version of `2.3`**.
+	TokenVault *AIGatewayTokenVault `json:"token_vault,omitempty"`
 	// Configuration for the model provider.
 	Config AIGatewayModelProviderLlama2Config `json:"config"`
 }
@@ -105,6 +125,20 @@ func (a *AIGatewayModelProviderLlama2) GetManagedBy() map[string]string {
 		return nil
 	}
 	return a.ManagedBy
+}
+
+func (a *AIGatewayModelProviderLlama2) GetDatastores() []AIGatewayDatastoreRef {
+	if a == nil {
+		return nil
+	}
+	return a.Datastores
+}
+
+func (a *AIGatewayModelProviderLlama2) GetTokenVault() *AIGatewayTokenVault {
+	if a == nil {
+		return nil
+	}
+	return a.TokenVault
 }
 
 func (a *AIGatewayModelProviderLlama2) GetConfig() AIGatewayModelProviderLlama2Config {

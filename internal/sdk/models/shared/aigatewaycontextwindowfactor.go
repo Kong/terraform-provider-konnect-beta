@@ -6,8 +6,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// AIGatewayContextWindowFactor - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
 type AIGatewayContextWindowFactor struct {
 	// Input-token threshold above which the factors apply, e.g. "128k" or "1m".
 	Above string `json:"above"`

@@ -163,7 +163,14 @@ func CreateMetricsNetworkFilterByFieldMetricsNetworkFilterByFieldEmptyFilters(me
 	}
 }
 
-func (u *MetricsNetworkFilterByField) UnmarshalJSON(data []byte) error {
+func (u *MetricsNetworkFilterByField) UnmarshalJSON(data []byte) (err error) {
+	previous := *u
+	*u = MetricsNetworkFilterByField{}
+	defer func() {
+		if err != nil {
+			*u = previous
+		}
+	}()
 
 	var candidates []utils.UnionCandidate
 

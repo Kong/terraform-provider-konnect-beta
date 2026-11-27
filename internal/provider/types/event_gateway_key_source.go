@@ -3,6 +3,6 @@
 package types
 
 type EventGatewayKeySource struct {
-	Aws    *RawProviderConfig `queryParam:"inline" tfsdk:"aws"`
-	Static *RawProviderConfig `queryParam:"inline" tfsdk:"static"`
+	Aws    *AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig `queryParam:"inline" tfsdk:"aws"`
+	Static *AIGatewayAgentBalancerAIGatewayUpstreamBalancerLeastConnectionsConfig `queryParam:"inline" tfsdk:"static"`
 }

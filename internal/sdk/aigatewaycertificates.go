@@ -32,9 +32,6 @@ func newAIGatewayCertificates(rootSDK *KonnectBeta, sdkConfig config.SDKConfigur
 }
 
 // CreateAiGatewayCertificate - Create an AI Gateway Certificate
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates a new certificate for the AI Gateway.
 func (s *AIGatewayCertificates) CreateAiGatewayCertificate(ctx context.Context, request operations.CreateAiGatewayCertificateRequest, opts ...operations.Option) (*operations.CreateAiGatewayCertificateResponse, error) {
 	o := operations.Options{}
@@ -373,9 +370,6 @@ func (s *AIGatewayCertificates) CreateAiGatewayCertificate(ctx context.Context, 
 }
 
 // GetAiGatewayCertificate - Get an AI Gateway Certificate
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Returns the details of a specific AI Gateway certificate.
 func (s *AIGatewayCertificates) GetAiGatewayCertificate(ctx context.Context, request operations.GetAiGatewayCertificateRequest, opts ...operations.Option) (*operations.GetAiGatewayCertificateResponse, error) {
 	o := operations.Options{}
@@ -665,9 +659,6 @@ func (s *AIGatewayCertificates) GetAiGatewayCertificate(ctx context.Context, req
 }
 
 // UpdateAiGatewayCertificate - Update an AI Gateway Certificate
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Updates an existing AI Gateway certificate.
 func (s *AIGatewayCertificates) UpdateAiGatewayCertificate(ctx context.Context, request operations.UpdateAiGatewayCertificateRequest, opts ...operations.Option) (*operations.UpdateAiGatewayCertificateResponse, error) {
 	o := operations.Options{}
@@ -985,9 +976,6 @@ func (s *AIGatewayCertificates) UpdateAiGatewayCertificate(ctx context.Context, 
 }
 
 // DeleteAiGatewayCertificate - Delete an AI Gateway Certificate
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Removes a specific AI Gateway certificate.
 func (s *AIGatewayCertificates) DeleteAiGatewayCertificate(ctx context.Context, request operations.DeleteAiGatewayCertificateRequest, opts ...operations.Option) (*operations.DeleteAiGatewayCertificateResponse, error) {
 	o := operations.Options{}
@@ -1211,6 +1199,27 @@ func (s *AIGatewayCertificates) DeleteAiGatewayCertificate(ctx context.Context, 
 			}
 
 			res.NotFoundError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 409:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.ConflictError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.ConflictError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

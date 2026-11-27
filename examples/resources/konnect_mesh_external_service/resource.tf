@@ -30,17 +30,41 @@ resource "konnect_mesh_external_service" "my_meshexternalservice" {
         ca_cert = {
           inline        = "...my_inline..."
           inline_string = "...my_inline_string..."
-          secret        = "...my_secret..."
+          insecure_inline = {
+            value = "...my_value..."
+          }
+          secret = "...my_secret..."
+          secret_ref = {
+            kind = "Secret"
+            name = "...my_name..."
+          }
+          type = "Secret"
         }
         client_cert = {
           inline        = "...my_inline..."
           inline_string = "...my_inline_string..."
-          secret        = "...my_secret..."
+          insecure_inline = {
+            value = "...my_value..."
+          }
+          secret = "...my_secret..."
+          secret_ref = {
+            kind = "Secret"
+            name = "...my_name..."
+          }
+          type = "InsecureInline"
         }
         client_key = {
           inline        = "...my_inline..."
           inline_string = "...my_inline_string..."
-          secret        = "...my_secret..."
+          insecure_inline = {
+            value = "...my_value..."
+          }
+          secret = "...my_secret..."
+          secret_ref = {
+            kind = "Secret"
+            name = "...my_name..."
+          }
+          type = "EnvVar"
         }
         mode        = "Secured"
         server_name = "...my_server_name..."

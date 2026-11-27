@@ -21,9 +21,6 @@ type AIGatewayTarget struct {
 	AllowAuthOverride *bool `default:"false" json:"allow_auth_override"`
 	// Reference to a model provider instance by name.
 	Provider string `json:"provider"`
-	// **Pre-release Feature**
-	// This feature is currently in beta and is subject to change.
-	//
 	// Configuration for a target model.
 	Config AIGatewayTargetConfig `json:"config"`
 }
@@ -89,6 +86,10 @@ func (a *AIGatewayTarget) GetConfigAzure() *AIGatewayTargetAzureConfig {
 	return a.GetConfig().AIGatewayTargetAzureConfig
 }
 
+func (a *AIGatewayTarget) GetConfigBaseten() *AIGatewayTargetBasetenConfig {
+	return a.GetConfig().AIGatewayTargetBasetenConfig
+}
+
 func (a *AIGatewayTarget) GetConfigBedrock() *AIGatewayTargetBedrockConfig {
 	return a.GetConfig().AIGatewayTargetBedrockConfig
 }
@@ -113,6 +114,10 @@ func (a *AIGatewayTarget) GetConfigDeepseek() *AIGatewayTargetDeepseekConfig {
 	return a.GetConfig().AIGatewayTargetDeepseekConfig
 }
 
+func (a *AIGatewayTarget) GetConfigFireworks() *AIGatewayTargetFireworksConfig {
+	return a.GetConfig().AIGatewayTargetFireworksConfig
+}
+
 func (a *AIGatewayTarget) GetConfigGemini() *AIGatewayTargetGeminiConfig {
 	return a.GetConfig().AIGatewayTargetGeminiConfig
 }
@@ -127,6 +132,10 @@ func (a *AIGatewayTarget) GetConfigKimi() *AIGatewayTargetKimiConfig {
 
 func (a *AIGatewayTarget) GetConfigLlama2() *AIGatewayTargetLlama2Config {
 	return a.GetConfig().AIGatewayTargetLlama2Config
+}
+
+func (a *AIGatewayTarget) GetConfigMeta() *AIGatewayTargetMetaConfig {
+	return a.GetConfig().AIGatewayTargetMetaConfig
 }
 
 func (a *AIGatewayTarget) GetConfigMistral() *AIGatewayTargetMistralConfig {
@@ -155,4 +164,12 @@ func (a *AIGatewayTarget) GetConfigXai() *AIGatewayTargetXaiConfig {
 
 func (a *AIGatewayTarget) GetConfigSagemaker() *AIGatewayTargetSagemakerConfig {
 	return a.GetConfig().AIGatewayTargetSagemakerConfig
+}
+
+func (a *AIGatewayTarget) GetConfigTogetherai() *AIGatewayTargetTogetheraiConfig {
+	return a.GetConfig().AIGatewayTargetTogetheraiConfig
+}
+
+func (a *AIGatewayTarget) GetConfigTypesafe() *AIGatewayTargetTypesafeConfig {
+	return a.GetConfig().AIGatewayTargetTypesafeConfig
 }

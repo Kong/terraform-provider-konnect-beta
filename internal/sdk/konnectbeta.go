@@ -2,14 +2,17 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.932.9
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.968.17
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/config"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/hooks"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/errors"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/retry"
 	"net/http"
@@ -74,6 +77,8 @@ type KonnectBeta struct {
 	PortalAuthSettings *PortalAuthSettings
 	// APIs related to configuration of Konnect Developer Portal developer teams.
 	PortalTeams *PortalTeams
+	// APIs related to Konnect Developer Portal developer team membership.
+	PortalTeamMembership *PortalTeamMembership
 	// APIs related to Konnect Developer Portal developer team roles.
 	PortalTeamRoles *PortalTeamRoles
 	// APIs related to Konnect Developer Portal developers.
@@ -81,6 +86,7 @@ type KonnectBeta struct {
 	PortalAuditLogs  *PortalAuditLogs
 	// APIs related to Konnect Portal IP Allow List.
 	PortalsIPAllowList        *PortalsIPAllowList
+	PortalForms               *PortalForms
 	API                       *API
 	APIDocumentation          *APIDocumentation
 	APISpecification          *APISpecification
@@ -134,6 +140,8 @@ type KonnectBeta struct {
 	AuthServerTrustedIDPs *AuthServerTrustedIDPs
 	Dashboards            *Dashboards
 	PersonalAccessTokens  *PersonalAccessTokens
+	// API related to the management of Konnect Organizations
+	Organizations *Organizations
 	// Create an Event Gateway Control Plane, used to store Event Gateway configuration
 	//
 	EventGateways *EventGateways
@@ -192,6 +200,32 @@ type KonnectBeta struct {
 	// directories can be used across multiple control planes.
 	//
 	KongIdentityDirectories *KongIdentityDirectories
+	// Principals represent identities within a directory that can be authenticated and authorized.
+	// Each principal can have associated metadata and API keys for authentication purposes.
+	//
+	KongPrincipal *KongPrincipal
+	// Identities represent external authentication associations for a principal. Each identity links a principal
+	// to an external system such as an OIDC provider, an auth server client, a control plane consumer, or a custom identifier.
+	//
+	KongPrincipalIdentity *KongPrincipalIdentity
+	// Credentials are authentication secrets associated with principals. Supported credential types are
+	// API keys (system-generated or imported) and basic auth username/password pairs.
+	//
+	KongPrincipalCredential *KongPrincipalCredential
+	// Trusted IdPs configure the external identity providers a token-vault enabled directory trusts when
+	// validating tokens. A directory can trust several IdPs, each with a distinct issuer.
+	//
+	TrustedIDPs *TrustedIDPs
+	// Groups organize principals, or other groups, within a directory for authorization purposes.
+	//
+	PrincipalGroup *PrincipalGroup
+	// Vault providers configure credential providers for token-vault enabled directories.
+	//
+	TokenVaultProviders *TokenVaultProviders
+	// Vault keys are the public encryption keys used to protect token vault data for
+	// a token-vault enabled directory.
+	//
+	TokenVaultKeys *TokenVaultKeys
 	// API related to the management of Konnect AI Gateway resources.
 	AIGateways *AIGateways
 	// API related to the management of AI Gateway DataPlane Certificates.
@@ -205,6 +239,8 @@ type KonnectBeta struct {
 	AIGatewayVaults *AIGatewayVaults
 	// Policies that control security, rate-limiting, and guardrail behavior for the AI Gateway.
 	AIGatewayPolicies *AIGatewayPolicies
+	// Custom policies that let you bring your own Lua plugin schema and handler to the AI Gateway.
+	AIGatewayCustomPolicies *AIGatewayCustomPolicies
 	// Models that define routing, capabilities, and backend targets for the AI Gateway.
 	AIGatewayModels *AIGatewayModels
 	// AI Agents registered with the AI Gateway.
@@ -217,12 +253,12 @@ type KonnectBeta struct {
 	AIGatewayMCPServers *AIGatewayMCPServers
 	// Model providers that define the backend AI service connections for the AI Gateway.
 	AIGatewayModelProviders *AIGatewayModelProviders
-	// Deprecated in favor of AI Gateway Auth Strategies. Identity providers for authenticating users and accessing AI Gateway resources.
-	AIGatewayIdentityProviders *AIGatewayIdentityProviders
 	// Auth strategies for authenticating clients accessing AI Gateway resources.
 	AIGatewayAuthStrategies *AIGatewayAuthStrategies
 	// API related to the management of AI Gateway Config Stores.
 	AIGatewayConfigStores *AIGatewayConfigStores
+	// Datastores that back AI Gateway policies and models, such as Redis and vector database connections.
+	AIGatewayDatastores *AIGatewayDatastores
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -300,8 +336,11 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk := &KonnectBeta{
 		SDKVersion: "0.22.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 0.22.0 2.932.9 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
-			ServerList: ServerList,
+			UserAgent:         "speakeasy-sdk/terraform 0.22.0 2.968.17 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			SDKVersion:        "0.22.0",
+			GenVersion:        "2.968.17",
+			OpenAPIDocVersion: "2.0.0",
+			ServerList:        ServerList,
 		},
 		hooks: hooks.New(),
 	}
@@ -331,10 +370,12 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.ApplicationRegistrations = newApplicationRegistrations(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalTeamMembership = newPortalTeamMembership(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeamRoles = newPortalTeamRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalDevelopers = newPortalDevelopers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuditLogs = newPortalAuditLogs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalsIPAllowList = newPortalsIPAllowList(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalForms = newPortalForms(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.API = newAPI(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIDocumentation = newAPIDocumentation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APISpecification = newAPISpecification(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -383,6 +424,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.AuthServerTrustedIDPs = newAuthServerTrustedIDPs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Dashboards = newDashboards(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PersonalAccessTokens = newPersonalAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Organizations = newOrganizations(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGateways = newEventGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayListeners = newEventGatewayListeners(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusters = newEventGatewayVirtualClusters(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -398,6 +440,13 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.EventGatewayVirtualClusterPolicies = newEventGatewayVirtualClusterPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CloudGateways = newCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.KongIdentityDirectories = newKongIdentityDirectories(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.KongPrincipal = newKongPrincipal(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.KongPrincipalIdentity = newKongPrincipalIdentity(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.KongPrincipalCredential = newKongPrincipalCredential(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.TrustedIDPs = newTrustedIDPs(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PrincipalGroup = newPrincipalGroup(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.TokenVaultProviders = newTokenVaultProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.TokenVaultKeys = newTokenVaultKeys(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGateways = newAIGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayDataPlaneCertificates = newAIGatewayDataPlaneCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayCACertificates = newAIGatewayCACertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -405,15 +454,292 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.AIGatewaySNIs = newAIGatewaySNIs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayVaults = newAIGatewayVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayPolicies = newAIGatewayPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayCustomPolicies = newAIGatewayCustomPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayModels = newAIGatewayModels(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayAgents = newAIGatewayAgents(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayConsumers = newAIGatewayConsumers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayConsumerGroups = newAIGatewayConsumerGroups(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayMCPServers = newAIGatewayMCPServers(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayModelProviders = newAIGatewayModelProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.AIGatewayIdentityProviders = newAIGatewayIdentityProviders(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayAuthStrategies = newAIGatewayAuthStrategies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AIGatewayConfigStores = newAIGatewayConfigStores(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGatewayDatastores = newAIGatewayDatastores(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
+}
+
+// ResetOrganizationVpceIDAllowList - Reset organization VPCE ID allow list
+// Disable the VPCE ID allow list.
+func (s *KonnectBeta) ResetOrganizationVpceIDAllowList(ctx context.Context, request operations.ResetOrganizationVpceIDAllowListRequest, opts ...operations.Option) (*operations.ResetOrganizationVpceIDAllowListResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionRetries,
+		operations.SupportedOptionTimeout,
+		operations.SupportedOptionAcceptHeaderOverride,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	baseURL := utils.ReplaceParameters(operations.ResetOrganizationVpceIDAllowListServerList[0], map[string]string{})
+	if o.ServerURL != nil {
+		baseURL = *o.ServerURL
+	}
+
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/organizations/{organizationId}/vpce-id-allow-list", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		SDK:              s,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "reset-organization-vpce-id-allow-list",
+		OAuth2Scopes:     nil,
+		SecuritySource:   s.sdkConfiguration.Security,
+	}
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "RequestBody", "json", `request:"mediaType=application/json"`)
+	if err != nil {
+		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	if o.AcceptHeaderOverride != nil {
+		req.Header.Set("Accept", string(*o.AcceptHeaderOverride))
+	} else {
+		req.Header.Set("Accept", "application/json;q=1, application/problem+json;q=0")
+	}
+
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
+	}
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	globalRetryConfig := s.sdkConfiguration.RetryConfig
+	retryConfig := o.Retries
+	if retryConfig == nil {
+		if globalRetryConfig != nil {
+			retryConfig = globalRetryConfig
+		} else {
+			retryConfig = &retry.Config{
+				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
+					InitialInterval: 500,
+					MaxInterval:     60000,
+					Exponent:        1.5,
+					MaxElapsedTime:  3600000,
+				},
+				RetryConnectionErrors: true,
+			}
+		}
+	}
+
+	var httpRes *http.Response
+	if retryConfig != nil {
+		httpRes, err = utils.Retry(ctx, utils.Retries{
+			Config: retryConfig,
+			StatusCodes: []string{
+				"429",
+			},
+		}, func() (*http.Response, error) {
+			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
+				copyBody, err := req.GetBody()
+
+				if err != nil {
+					return nil, err
+				}
+
+				req.Body = copyBody
+			}
+
+			req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+			if err != nil {
+				if retry.IsPermanentError(err) || retry.IsTemporaryError(err) {
+					return nil, err
+				}
+
+				return nil, retry.Permanent(err)
+			}
+
+			httpRes, err := s.sdkConfiguration.Client.Do(req)
+			if err != nil || httpRes == nil {
+				if err != nil {
+					err = fmt.Errorf("error sending request: %w", err)
+				} else {
+					err = fmt.Errorf("error sending request: no response")
+				}
+
+				_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+			}
+			return httpRes, err
+		})
+
+		if err != nil {
+			return nil, err
+		} else {
+			httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+			if err != nil {
+				return nil, err
+			}
+		}
+	} else {
+		req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+		if err != nil {
+			return nil, err
+		}
+
+		httpRes, err = s.sdkConfiguration.Client.Do(req)
+		if err != nil || httpRes == nil {
+			if err != nil {
+				err = fmt.Errorf("error sending request: %w", err)
+			} else {
+				err = fmt.Errorf("error sending request: no response")
+			}
+
+			_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+			return nil, err
+		} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+			_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+			if err != nil {
+				return nil, err
+			} else if _httpRes != nil {
+				httpRes = _httpRes
+			}
+		} else {
+			httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+
+	res := &operations.ResetOrganizationVpceIDAllowListResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.OrganizationVpceIDRestriction
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.OrganizationVpceIDRestriction = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 400:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.BadRequestError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.BadRequestError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 401:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.UnauthorizedError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.UnauthorizedError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 403:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.ForbiddenError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.ForbiddenError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
+	default:
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
 }

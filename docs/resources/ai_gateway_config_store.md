@@ -18,7 +18,13 @@ resource "konnect_ai_gateway_config_store" "my_aigatewayconfigstore" {
   display_name = "my-config-store"
   force        = false
   gateway_id   = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
-  name         = "my-config-store"
+  labels = {
+    key = "value"
+  }
+  managed_by = {
+    key = "value"
+  }
+  name = "my-config-store"
 }
 ```
 
@@ -34,6 +40,16 @@ resource "konnect_ai_gateway_config_store" "my_aigatewayconfigstore" {
 
 - `display_name` (String) The display name of the Config Store.
 - `force` (Boolean) If true, delete the Config Store and all its secrets. If false, deletion is rejected when secrets are still linked to the Config Store. Default: false
+- `labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
+
+Public labels are intended to store **PUBLIC** metadata. 
+
+Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+- `managed_by` (Map of String) Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (`-`), underscores (`_`), and dots (`.`).
+Values must be 1–127 characters long and must not be empty.
+Keys and values must not contain spaces or control characters.
 
 ### Read-Only
 

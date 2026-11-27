@@ -96,17 +96,16 @@ func (r *AIGatewayConsumerGroupResource) Schema(ctx context.Context, req resourc
 				ElementType: types.StringType,
 				MarkdownDescription: `Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, ` + "`" + `terraform` + "`" + `).` + "\n" +
 					`` + "\n" +
-					`Keys must be 1–63 characters long and start with an alphanumeric character.`,
+					`Keys must be 1–63 characters long, start and end with an alphanumeric character, and may contain dashes (` + "`" + `-` + "`" + `), underscores (` + "`" + `_` + "`" + `), and dots (` + "`" + `.` + "`" + `).` + "\n" +
+					`Values must be 1–127 characters long and must not be empty.` + "\n" +
+					`Keys and values must not contain spaces or control characters.`,
 			},
 			"name": schema.StringAttribute{
-				Required: true,
-				MarkdownDescription: `**Pre-release Feature**` + "\n" +
-					`This feature is currently in beta and is subject to change.` + "\n" +
-					`` + "\n" +
-					`A user-defined unique identifier for this consumer group, used as a stable human-readable reference. This value is immutable after creation.`,
+				Required:    true,
+				Description: `A user-defined unique identifier for this consumer group, used as a stable human-readable reference. This value is immutable after creation.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 256),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:-]{1,256}$`).String()),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._:@-]{1,256}$`).String()),
 				},
 			},
 			"policies": schema.ListAttribute{
@@ -172,7 +171,7 @@ func (r *AIGatewayConsumerGroupResource) Create(ctx context.Context, req resourc
 	}
 	res, err := r.client.AIGatewayConsumerGroups.CreateAiGatewayConsumerGroup(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -239,7 +238,7 @@ func (r *AIGatewayConsumerGroupResource) Read(ctx context.Context, req resource.
 	}
 	res, err := r.client.AIGatewayConsumerGroups.GetAiGatewayConsumerGroup(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -293,7 +292,7 @@ func (r *AIGatewayConsumerGroupResource) Update(ctx context.Context, req resourc
 	}
 	res, err := r.client.AIGatewayConsumerGroups.UpdateAiGatewayConsumerGroup(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}
@@ -353,7 +352,7 @@ func (r *AIGatewayConsumerGroupResource) Delete(ctx context.Context, req resourc
 	}
 	res, err := r.client.AIGatewayConsumerGroups.DeleteAiGatewayConsumerGroup(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("failure to invoke API", redactSensitiveValues(ctx, err.Error()))
 		if res != nil && res.RawResponse != nil {
 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
 		}

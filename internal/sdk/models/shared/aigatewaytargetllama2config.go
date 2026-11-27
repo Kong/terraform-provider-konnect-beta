@@ -30,10 +30,13 @@ func (e *Format) IsExact() bool {
 	return false
 }
 
-// AIGatewayTargetLlama2Config - **Pre-release Feature**
-// This feature is currently in beta and is subject to change.
+// AIGatewayTargetLlama2Config - Llama2-specific configuration for a model.
 //
-// Llama2-specific configuration for a model.
+// Deprecated: the `llama2` provider is deprecated and will be removed in 3.0. Migrate by the
+// `format` value: `ollama` maps to the `ollama` provider, `openai` maps to the `openai` provider
+// with `upstream_url` set, or to the `vllm` provider; `raw` has no replacement provider.
+//
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 type AIGatewayTargetLlama2Config struct {
 	// The number of dimensions for embedding outputs.
 	EmbeddingsDimensions *int64 `json:"embeddings_dimensions,omitempty"`
@@ -47,6 +50,18 @@ type AIGatewayTargetLlama2Config struct {
 	CacheReadCost *float64 `json:"cache_read_cost,omitempty"`
 	// Cost per 1M cache-write prompt tokens for billing and cost tracking.
 	CacheWriteCost *float64 `json:"cache_write_cost,omitempty"`
+	// Per-modality override of `input_cost`, in cost per 1M prompt tokens. Set it for models that price each modality separately.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
+	InputCostList []AIGatewayModalCostList `json:"input_cost_list,omitempty"`
+	// Per-modality override of `output_cost`, in cost per 1M output tokens. Set it for models that price each modality separately.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
+	OutputCostList []AIGatewayModalCostList `json:"output_cost_list,omitempty"`
+	// Per-modality override of `cache_read_cost`, in cost per 1M cache-read prompt tokens. Set it for models that price each modality separately.
+	//
+	// **Requires a minimum runtime version of `2.1`**.
+	CacheReadCostList []AIGatewayModalCostList `json:"cache_read_cost_list,omitempty"`
 	// Per-cache-TTL cache-write pricing; overrides cache_write_cost per TTL. Configure this when the upstream provider charges differently for different cache TTLs.
 	CacheWriteCostList []AIGatewayCacheWriteCost `json:"cache_write_cost_list,omitempty"`
 	// Above an input-token threshold, scale input and output pricing by the corresponding factor.
@@ -61,6 +76,10 @@ type AIGatewayTargetLlama2Config struct {
 	TopP *float64 `json:"top_p,omitempty"`
 	// The upstream URL for the model endpoint.
 	UpstreamURL string `json:"upstream_url"`
+	// Base URL used instead of the provider's default upstream endpoint, for regional or private endpoints. It overrides only the scheme, host, and base path; the gateway appends the path of each capability the target serves, so a single target can serve several capabilities from the same base. Mutually exclusive with `upstream_url`, which replaces the full URL. Providers without a default upstream URL ignore it.
+	//
+	// **Requires a minimum runtime version of `2.4`**.
+	UpstreamBaseURL *string `json:"upstream_base_url,omitempty"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"llama2" json:"type"`
 	// The request format to use when communicating with the Llama2 model.
@@ -120,6 +139,27 @@ func (a *AIGatewayTargetLlama2Config) GetCacheWriteCost() *float64 {
 	return a.CacheWriteCost
 }
 
+func (a *AIGatewayTargetLlama2Config) GetInputCostList() []AIGatewayModalCostList {
+	if a == nil {
+		return nil
+	}
+	return a.InputCostList
+}
+
+func (a *AIGatewayTargetLlama2Config) GetOutputCostList() []AIGatewayModalCostList {
+	if a == nil {
+		return nil
+	}
+	return a.OutputCostList
+}
+
+func (a *AIGatewayTargetLlama2Config) GetCacheReadCostList() []AIGatewayModalCostList {
+	if a == nil {
+		return nil
+	}
+	return a.CacheReadCostList
+}
+
 func (a *AIGatewayTargetLlama2Config) GetCacheWriteCostList() []AIGatewayCacheWriteCost {
 	if a == nil {
 		return nil
@@ -167,6 +207,13 @@ func (a *AIGatewayTargetLlama2Config) GetUpstreamURL() string {
 		return ""
 	}
 	return a.UpstreamURL
+}
+
+func (a *AIGatewayTargetLlama2Config) GetUpstreamBaseURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamBaseURL
 }
 
 func (a *AIGatewayTargetLlama2Config) GetType() string {

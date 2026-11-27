@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"github.com/hashicorp/go-cleanhttp"
 	"github.com/hashicorp/terraform-plugin-framework/action"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
@@ -131,14 +132,14 @@ func (p *KonnectBetaProvider) Configure(ctx context.Context, req provider.Config
 	if !data.ServiceAccessToken.IsUnknown() {
 		security.ServiceAccessToken = data.ServiceAccessToken.ValueStringPointer()
 	}
+	registerSensitiveValues(security.PersonalAccessToken, security.SystemAccountAccessToken, security.KonnectAccessToken, security.ServiceAccessToken)
 
 	providerHTTPTransportOpts := ProviderHTTPTransportOpts{
 		SetHeaders: make(map[string]string),
-		Transport:  http.DefaultTransport,
+		Transport:  cleanhttp.DefaultPooledTransport(),
 	}
 
-	httpClient := http.DefaultClient
-	httpClient.Transport = NewProviderHTTPTransport(providerHTTPTransportOpts)
+	httpClient := &http.Client{Transport: NewProviderHTTPTransport(providerHTTPTransportOpts)}
 
 	opts := []sdk.SDKOption{
 		sdk.WithServerURL(serverUrl),
@@ -175,8 +176,9 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewAIGatewayConsumerCredentialResource,
 		NewAIGatewayConsumerGroupResource,
 		NewAIGatewayConsumerGroupMemberResource,
+		NewAIGatewayCustomPolicyResource,
 		NewAIGatewayDataPlaneCertificateResource,
-		NewAIGatewayIdentityProviderResource,
+		NewAIGatewayDatastoreResource,
 		NewAIGatewayMCPServerResource,
 		NewAIGatewayModelResource,
 		NewAIGatewayModelProviderResource,
@@ -194,19 +196,24 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewEventGatewayResource,
 		NewEventGatewayBackendClusterResource,
 		NewEventGatewayClusterPolicyAclsResource,
+		NewEventGatewayClusterPolicyRequestRuleValidatorResource,
 		NewEventGatewayConsumePolicyDecryptResource,
 		NewEventGatewayConsumePolicyDecryptFieldsResource,
+		NewEventGatewayConsumePolicyMaskFieldsResource,
 		NewEventGatewayConsumePolicyModifyHeadersResource,
 		NewEventGatewayConsumePolicySchemaValidationResource,
 		NewEventGatewayConsumePolicySkipRecordResource,
+		NewEventGatewayConsumePolicyTranscodeResource,
 		NewEventGatewayDataPlaneCertificateResource,
 		NewEventGatewayListenerResource,
 		NewEventGatewayListenerPolicyForwardToVirtualClusterResource,
 		NewEventGatewayListenerPolicyTLSServerResource,
 		NewEventGatewayProducePolicyEncryptResource,
 		NewEventGatewayProducePolicyEncryptFieldsResource,
+		NewEventGatewayProducePolicyMaskFieldsResource,
 		NewEventGatewayProducePolicyModifyHeadersResource,
 		NewEventGatewayProducePolicySchemaValidationResource,
+		NewEventGatewayProducePolicyTranscodeResource,
 		NewEventGatewaySchemaRegistryResource,
 		NewEventGatewayStaticKeyResource,
 		NewEventGatewayTLSTrustBundleResource,
@@ -218,6 +225,18 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewIdentityAuthServerClientSecretResource,
 		NewIdentityAuthServerScopeResource,
 		NewIdentityDirectoryResource,
+		NewIdentityGroupResource,
+		NewIdentityGroupAPIKeyResource,
+		NewIdentityGroupMembershipResource,
+		NewIdentityPrincipalResource,
+		NewIdentityPrincipalAPIKeyResource,
+		NewIdentityPrincipalBasicAuthResource,
+		NewIdentityPrincipalBasicAuthPasswordResource,
+		NewIdentityPrincipalIdentityResource,
+		NewIdentityTrustedIdpResource,
+		NewIdentityVaultKeyResource,
+		NewIdentityVaultProviderResource,
+		NewIdentityVaultProviderCredentialResource,
 		NewMeshResource,
 		NewMeshAccessAuditResource,
 		NewMeshAccessLogResource,
@@ -255,6 +274,7 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewMeshZoneEgressResource,
 		NewMeshZoneIngressResource,
 		NewOrganizationPersonalAccessTokenSettingsResource,
+		NewOrganizationVpceIDAllowListResource,
 		NewPortalResource,
 		NewPortalApplicationResource,
 		NewPortalApplicationRegistrationResource,
@@ -264,6 +284,7 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewPortalCustomizationResource,
 		NewPortalDeveloperResource,
 		NewPortalFaviconResource,
+		NewPortalFormResource,
 		NewPortalIPAllowListResource,
 		NewPortalIdentityProviderResource,
 		NewPortalIdentityProviderTeamGroupMappingResource,
@@ -271,6 +292,7 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewPortalPageResource,
 		NewPortalSnippetResource,
 		NewPortalTeamResource,
+		NewPortalTeamDeveloperResource,
 		NewPortalTeamRoleResource,
 	}
 }
